@@ -3,4 +3,4 @@ A repository for a C++ chess engine that is the final project for CS246 Fall 202
 
 # Setup Instructions
 1) Copy the HTTPS link on this page to your clipboard.
-2) On your local machine, <pre><code>cd</code></pre> to the directory of your choice, and type <pre><code>git clone repo</code></pre> where <pre><code>repo</code></pre> is copied from your clipboard
+2) On your local machine, `cd` to the directory of your choice, and type `git clone <repo>` where `<repo>` is copied from your clipboard
