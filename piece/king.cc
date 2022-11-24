@@ -5,3 +5,7 @@ King::King(int colour, pos position, bool canCastle):colour{colour},position{pos
 bool King::canCastle(){
     return false;
 }
+
+bool King::validate(pos p){
+    return false;
+}
