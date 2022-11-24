@@ -5,7 +5,7 @@
 class Pawn:public Piece{
     bool canPassant;
  public:
-    Pawn(pieceType type, int colour, pos position, bool canPassant);  // Constructor
+    Pawn(int colour, pos position, bool canPassant);  // Constructor
     bool validate(pos p);
 }
 

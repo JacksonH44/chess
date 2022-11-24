@@ -5,7 +5,7 @@
 class Rook:public Piece{
     bool canCastle;
  public:
-    Rook(pieceType type, int colour, pos position, bool canCastle);  // Constructor
+    Rook(int colour, pos position, bool canCastle);  // Constructor
     bool validate(pos p);
 }
 

@@ -4,13 +4,13 @@
 #include <iostream>
 
 class Piece{
-    pieceType type;
+    char type;
     int colour;
     pos position;
  protected:
     virtual bool validate(pos) = 0; 
  public:
-    Piece(pieceType type, int colour, pos position);  // Constructor
+    Piece(int colour, pos position);  // Constructor
     pieceType getType();
     int getColour();
     bool isValidMove(pos p);

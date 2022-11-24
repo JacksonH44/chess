@@ -5,7 +5,7 @@
 class Queen:public Piece{
     bool validate(pos p);
  public:
-    Queen(pieceType type, int colour, pos position);  // Constructor
+    Queen(int colour, pos position);  // Constructor
 }
 
 #endif

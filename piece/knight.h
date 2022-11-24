@@ -4,7 +4,7 @@
 
 class Knight:public Piece{
  public:
-    Knight(pieceType type, int colour, pos position);  // Constructor
+    Knight(int colour, pos position);  // Constructor
     bool validate(pos p);
 }
 

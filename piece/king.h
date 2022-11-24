@@ -7,7 +7,7 @@ class King:public Piece{
     
     bool validate(pos p);
  public:
-    King(pieceType type, int colour, pos position, bool canCastle);  // Constructor
+    King(int colour, pos position, bool canCastle);  // Constructor
     bool canCastle();
 }
 

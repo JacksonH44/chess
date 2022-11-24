@@ -4,7 +4,7 @@
 
 class Bishop:public Piece{
  public:
-    Bishop(pieceType type, int colour, pos position);  // Constructor
+    Bishop(int colour, pos position);  // Constructor
     bool validate(pos p);
 }
 
