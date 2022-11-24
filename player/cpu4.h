@@ -6,10 +6,12 @@
 #include "../pos.h"
 
 /** CPU4 player subclass */
-class CPU4 : Player
+class CPU4 : public Player
 {
 public:
-    tuple<pos, pos> determineMove() override;
+    CPU4(int colour);
+
+    std::tuple<pos, pos> determineMove() override;
 };
 
 #endif

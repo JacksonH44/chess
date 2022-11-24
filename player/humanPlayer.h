@@ -6,9 +6,11 @@
 #include "../pos.h"
 
 /** Human player subclass */
-class humanPlayer : Player {
+class HumanPlayer : public Player {
 public:
-    tuple<pos,pos> determineMove() override;
+    HumanPlayer(int colour);
+
+    std::tuple<pos,pos> determineMove() override;
 };
 
 #endif

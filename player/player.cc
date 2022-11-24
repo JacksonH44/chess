@@ -1,6 +1,6 @@
 #include "player.h"
 
-Player::Player(int colour) : colour{colour}, checked{false} {}
+Player::Player(int colour) : colour{colour}, checked{false} {} // Ctor
 
 bool Player::isChecked() {
     return checked;
