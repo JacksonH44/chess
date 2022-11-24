@@ -1,6 +1,6 @@
 #include "piece.h"
 
-Piece(int colour, pos position):colour{colour},position{position}{}
+Piece::Piece(int colour, pos position):colour{colour},position{position}{}
 
 char Piece::getType(){
     return this->type;
