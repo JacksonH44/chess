@@ -10,9 +10,13 @@ enum gameState {whiteWin, blackWin, whiteChecked, blackChecked, ongoing};
 class Board {
     Piece** theBoard;
 public:
-    void updateBoard(pos a, pos b);  // add a new move onto the board
+    ~Board();  // dtor
 
-    gameState getState();  // get current state of the game
+    Board(const Board& other); // copy ctor
+
+    Board& operator=(const Board& other); // copy assignment
+
+    void updateBoard(pos a, pos b);  // add a new move onto the board
 
     void setToStart();  // set game board to start
 
