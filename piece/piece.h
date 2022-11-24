@@ -11,7 +11,7 @@ class Piece{
     virtual bool validate(pos) = 0; 
  public:
     Piece(int colour, pos position);  // Constructor
-    pieceType getType();
+    char getType();
     int getColour();
     bool isValidMove(pos p);
     void setPos(pos p);
