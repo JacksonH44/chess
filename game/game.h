@@ -1,10 +1,10 @@
 #ifndef _GAME_H_
 #define _GAME_H_
 
+struct pos;
 class Board;
 class GameView;
 class Player;
-struct pos;
 
 enum gameState
 {

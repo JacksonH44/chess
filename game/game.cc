@@ -1,4 +1,5 @@
 #include "game.h"
+#include "../pos.h"
 
 gameState Game::getState(){
     return this->state;
