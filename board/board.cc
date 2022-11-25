@@ -17,3 +17,6 @@ void Board::setToStart(){}
 Piece& Board::getPiece(pos a){
     return this->theBoard[a.x][a.y];
 }
+
+// board needs a setPiece method that sets a piece at a position, and deletes whatever was there.
+	// this function is assumed to exist in the implementation of setup mode
