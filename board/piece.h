@@ -26,6 +26,10 @@ public:
    pos getPos();
 
    virtual ~Piece() = 0;
+
+   Piece(const Piece& other); // copy ctor
+
+   virtual Piece *deepCopy() const = 0; // Allows us to deep copy a subtype of piece without knowing which one
 };
 
 #endif
