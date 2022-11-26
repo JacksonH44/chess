@@ -7,6 +7,10 @@
 #include "queen.h"
 #include "king.h"
 #include "pawn.h"
+#include <ostream>
+#include <cctype>
+
+using namespace std;
 
 Board::~Board() {
     for (int i = 0; i < 8; ++i) {
@@ -51,7 +55,6 @@ Board::Board() {
 Board::Board(const Board& other){}
 
 Board& Board::operator=(const Board& other){
-
     return *this;
 }
 
@@ -69,8 +72,45 @@ void Board::setPiece(Piece* piece, pos position) {
     theBoard[position.x][position.y] = piece;
 }
 
+// Prints out a character or its capital depending on the piece colour
+char printPiece(char type, int colour) {
+    if (colour == 1) {
+        return toupper(type);
+    } else {
+        return type;
+    }
+}
+
+ostream& operator<<(ostream& out, Board* board) {
+    for (int i = 0; i < 8; ++i) {
+        out << (8 - i) << " ";
+        for (int j = 0; j < 8; ++j) {
+            Piece* curPiece = board->getPiece(pos{i, j});
+            if (curPiece == nullptr) {
+                if ((i + j) % 2 == 1)
+                {
+                    out << "_"; // dark space
+                }
+                else
+                {
+                    out << " "; // white space
+                }
+            } else {
+                char pieceType = curPiece->getType();
+                int pieceColour = curPiece->getColour();
+                out << printPiece(pieceType, pieceColour);
+            }
+        }
+        out << endl;
+    }
+    out << endl;
+    out << "  " << 'a' << 'b' << 'c' << 'd' << 'e' << 'f' << 'g' << 'h' << endl;
+    return out;
+}
+
 int main() {
     Board* myBoard = new Board();
+    cout << myBoard;
     delete myBoard;
     return 0;
 }
