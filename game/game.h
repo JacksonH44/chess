@@ -8,7 +8,7 @@ class Player;
 
 enum gameState
 {
-    whiteWin,
+    whiteWin = 0,
     blackWin,
     whiteChecked,
     blackChecked,
@@ -17,8 +17,8 @@ enum gameState
 
 class Game {
     int curMove;
-    gameState state;
-    Board* theBoard;
+    gameState state = 4;
+    Board* theBoard = nullptr;
     GameView* theView;
     Player* whitePlayer = nullptr;
     Player* blackPlayer = nullptr;
@@ -36,6 +36,8 @@ public:
     void setTurn(int colour); // sets curMove to [colour]
 
     Board* getBoard(); // gets the board
+
+    void setBoard(Board* newBoard);
 };  
 
 #endif

@@ -31,10 +31,24 @@ int main() {
     while (cin >> s){
 		bool invalid = false;
 		if (s == "game") {
+			if (!game->getBoard()) {
+				Board* board = new Board(); //assumed to be empty
+				board->setToStart();
+				game->setBoard(board);
+			}
 			winner = game->play();
+			if (winner == 'w') {
+				++whiteWins;
+			}
+			else if (winner = 'b') {
+				++blackWins;
+			}
+			else {
+				cout << "invalid players" << endl;
+			}
 		}
 		else if (s == "setup") {
-			//void setupLoop(game);
+			setupLoop(game);
 		}
 		else {
 			invalid = true;
@@ -53,9 +67,10 @@ int main() {
 
 
 void setupLoop(Game* game) {
+	Board* board = new Board(); //assumed to be empty
     string s;
     int colour = 1;
-    // remove all pieces from game.board
+	
     while (cin >> s) {
 		bool invalid = false;
 		string chesspos = "";
@@ -116,7 +131,7 @@ void setupLoop(Game* game) {
 				}
 			}
 			if (!invalid) {
-				game->getBoard()->setPiece(p, arraypos);
+				board->setPiece(p, arraypos);
 			}
 		}
 
@@ -147,8 +162,12 @@ void setupLoop(Game* game) {
 		}
 
 		else if (s == "done") {
+			game->setBoard(board);
+			// if (game->isBoardValid())
 			// check that board is valid, then break
+			//TODO
 			cout << "not implemented yet" << endl;
+			return;
 		}
 
 		else {

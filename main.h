@@ -7,6 +7,5 @@
 
 char gameLoop(Game* game);
 
-void setupLoop(Board* board);
+void setupLoop(Game* game);
 
-struct pos convertPos(std::string s);
