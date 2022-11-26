@@ -62,11 +62,13 @@ Board::Board(const Board& other) { // copy ctor
     }
 }
 
-Board& Board::operator=(const Board& other){
-    return *this;
+void Board::updateBoard(pos a, pos b) {
+    Piece* curPiece = theBoard[a.x][a.y];
+    if (theBoard[b.x][b.y] != nullptr) {
+        delete theBoard[b.x][b.y];
+    }
+    theBoard[b.x][b.y] = curPiece;
 }
-
-void Board::updateBoard(pos a, pos b){}
 
 void Board::setToStart(){}
 
