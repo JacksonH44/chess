@@ -4,6 +4,7 @@
 #include "../player/playerFactory.h"
 #include "../player/player.h"
 #include "../board/board.h"
+#include "../board/piece.h"
 #include <tuple>
 
 using namespace std;
@@ -42,6 +43,7 @@ bool isMovePromotion(pos* from, pos* to) {
 }
 
 char Game::play() {
+    cout << theBoard;
     state = ongoing;
     delete whitePlayer;
     delete blackPlayer;
@@ -70,8 +72,45 @@ char Game::play() {
             curPlayer = blackPlayer;
         }
 
-        // NOTE: On resign, by convention, we return <pos{-1,-1}, pos{-1,-1}>
-        move = curPlayer->determineMove(cin); 
+        bool moveDone = false;
+
+        while (!moveDone) {
+            // NOTE: On resign, by convention, we return <pos{-1,-1}, pos{-1,-1}>
+            move = curPlayer->determineMove(cin); // get player's next move
+            pos start = get<0>(move);
+            if (start == pos{-1, -1})
+            { // player has resigned
+                if (curMove == 1)
+                {
+                    state = blackWin;
+                }
+                else
+                {
+                    state = whiteWin;
+                }
+            }
+            else if (theBoard->getPiece(start) == nullptr)
+            {
+                // No piece in the starting position
+            }
+            else
+            {
+                Piece *curPiece = theBoard->getPiece(start);
+                pos end = get<1>(move);
+                if (curPiece->isValidMove(end, theBoard))
+                {
+                    theBoard->updateBoard(get<0>(move), get<1>(move));
+                    cout << theBoard;
+                    moveDone = true;
+                }
+                else
+                {
+                    cout << "invalid move. Please make another move." << endl;
+                }
+            }
+        }
+
+        
 
 	    //if (isMovePromotion(from, to)) { // need a method in the game class to check if a move promotes a pawn
 	        // prompt player for new piece
@@ -80,8 +119,6 @@ char Game::play() {
 	        // validate piece, replace it on the board using setPiece()
 	    //}
         //validate move
-        theBoard->updateBoard(get<0>(move), get<1>(move));
-        cout << theBoard;
 	    if (state == whiteWin || state == blackWin) {
 	        break;
 	    }

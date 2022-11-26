@@ -110,8 +110,8 @@ void Board::setToStart() {
 }
 
 Piece* Board::getPiece(pos a){
-    if (theBoard[a.x][a.y] != nullptr) {
-        return theBoard[a.x][a.y];
+    if (theBoard[a.y][a.x] != nullptr) {
+        return theBoard[a.y][a.x];
     } else {
         return nullptr;
     }
@@ -127,7 +127,7 @@ ostream& operator<<(ostream& out, Board* board) {
     for (int i = 0; i < 8; ++i) {
         out << (8 - i) << " ";
         for (int j = 0; j < 8; ++j) {
-            Piece* curPiece = board->getPiece(pos{i, j});
+            Piece* curPiece = board->getPiece(pos{j, i});
             if (curPiece == nullptr) {
                 if ((i + j) % 2 == 1)
                 {
@@ -149,22 +149,22 @@ ostream& operator<<(ostream& out, Board* board) {
     return out;
 }
 
-int main() {
-    Board* myBoard = new Board();
-    cout << myBoard;
-    myBoard->setToStart();
-    cout << myBoard->countPieces('K') << endl;
-    cout << myBoard;
-    Board* myBoard2 = new Board(*myBoard);
-    myBoard2->setPiece(new Queen{1, pos{4,5}}, pos{4,5});
-    cout << myBoard;
-    cout << myBoard2;
-    delete myBoard2;
-    pos myPos1 = pos{3,7};
-    pos myPos2 = pos{5,4};
-    myBoard->updateBoard(myPos1, myPos2);
-    myBoard->updateBoard(pos{5,1}, pos{5,4});
-    cout << myBoard;
-    delete myBoard;
-    return 0;
-}
+// int main() {
+//     Board* myBoard = new Board();
+//     cout << myBoard;
+//     myBoard->setToStart();
+//     cout << myBoard->countPieces('K') << endl;
+//     cout << myBoard;
+//     Board* myBoard2 = new Board(*myBoard);
+//     myBoard2->setPiece(new Queen{1, pos{4,5}}, pos{4,5});
+//     cout << myBoard;
+//     cout << myBoard2;
+//     delete myBoard2;
+//     pos myPos1 = pos{3,7};
+//     pos myPos2 = pos{5,4};
+//     myBoard->updateBoard(myPos1, myPos2);
+//     myBoard->updateBoard(pos{5,1}, pos{5,4});
+//     cout << myBoard;
+//     delete myBoard;
+//     return 0;
+// }

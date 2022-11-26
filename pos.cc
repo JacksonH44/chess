@@ -6,15 +6,22 @@
 pos::pos(int x, int y) : x{x}, y{y} {}
 
 // equality
-bool operator==(const pos &pos1, const pos &pos2)
+bool pos::operator==(const pos &other)
 {
-    return pos1.x == pos2.x && pos1.y == pos2.y;
+    return this->x == other.x && this->y == other.y;
 }
 
 // inequality
-bool operator!=(const pos &pos1, const pos &pos2)
+bool pos::operator!=(const pos &other)
 {
-    return !(pos1 == pos2);
+    return !(*this == other);
+}
+
+// copy assignment
+pos& pos::operator=(const pos& other) {
+    this->x = other.x;
+    this->y = other.y;
+    return *this;
 }
 
 // addition
