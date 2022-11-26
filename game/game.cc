@@ -83,10 +83,12 @@ char Game::play() {
                 if (curMove == 1)
                 {
                     state = blackWin;
+                    moveDone = true;
                 }
                 else
                 {
                     state = whiteWin;
+                    moveDone = true;
                 }
             }
             else if (theBoard->getPiece(start) == nullptr)
@@ -96,6 +98,7 @@ char Game::play() {
             else
             {
                 Piece *curPiece = theBoard->getPiece(start);
+                curPiece->setPos(&start);
                 pos end = get<1>(move);
                 if (curPiece->isValidMove(end, theBoard))
                 {
