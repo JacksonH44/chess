@@ -20,8 +20,8 @@ class Game {
     gameState state;
     Board* theBoard;
     GameView* theView;
-    Player* whitePlayer;
-    Player* blackPlayer;
+    Player* whitePlayer = nullptr;
+    Player* blackPlayer = nullptr;
 
 public:
     gameState getState();  // get the current state of the board
@@ -30,6 +30,12 @@ public:
 
     // checks to see if a move is valid (only in the sense that it adheres to direction and blocking)
     bool validate(pos a, pos b);  
+
+    char play(int turn);
+
+    void setTurn(int colour);
+
+    Board* getBoard();
 };  
 
 #endif

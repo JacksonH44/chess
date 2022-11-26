@@ -25,43 +25,23 @@ using namespace std;
 int main() {
     int whiteWins = 0;
     int blackWins = 0;
+	char winner;
     string s;
     Game* game = new Game();
     while (cin >> s){
-	bool invalid = false;
-        if (s == "game") {
-	    Player* player1 = nullptr;
-	    Player* player2 = nullptr;
-	    string p1;
-	    string p2;
-	    cin >> p1;
-	    cin >> p2;
-	    try {
-	        //player1 = PlayerFactory::createPlayer(p1);
-		//player2 = PlayerFactory::createPlayer(p2);
-	    }
-	    catch (...) {
-		invalid = true;
-		delete player1;
-		delete player2;
-		break;
-	    }
-
-	    if (!invalid) {
-		//game->whitePlayer = player1; NEED EITHER PLAYERS TO BE PUBLIC OR DO THE GAME LOOP IN GAME.CC
-		//game->blackPlayer = player2;
-		//gameLoop(game);
-	    }
-	}
-        else if (s == "setup") {
-	    //void setupLoop(game);
-	}
-	else {
-	    invalid = true;
-	}
-	if (invalid) {
-	    cout << "invalid input" << endl;
-	}
+		bool invalid = false;
+		if (s == "game") {
+			winner = game->play();
+		}
+		else if (s == "setup") {
+			//void setupLoop(game);
+		}
+		else {
+			invalid = true;
+		}
+		if (invalid) {
+			cout << "invalid input" << endl;
+		}
     }//while
 
     cout << "Final Score:" << endl;
@@ -71,100 +51,113 @@ int main() {
     return 0;
 }
 
-char gameLoop(Game* game) { //main game loop. Handles turns, moves, etc
-    pos from = {0, 0};
-    pos to = {0, 0};
-    while (game->getState() >= 2 && game->getState() <= 4) {
-	//game->whitePlayer->determineMove(&from, &to); // determineMove should be void since it needs to return two positions through pointers
-	//if (game->isMovePromotion(from, to)) { // need a method in the game class to check if a move promotes a pawn
-	    // prompt player for new piece
-	    // validate piece, replace it on the board using setPiece()
-	//}
-	if (game->getState() < 2) {
-	    break;
-	}
-	//game->blackPlayer->determineMove(&from, &to);
-	//if (game->isMovePromotion(from, to)) {
-
-	//}
-    }
-    return 'w'; //white wins, obviously change this later
-}
 
 void setupLoop(Game* game) {
     string s;
     int colour = 1;
     // remove all pieces from game.board
     while (cin >> s) {
-	bool invalid = false;
-	string chesspos = "";
-	if (s == "+") {
-	    cin >> s;
-	    cin >> chesspos;
-	    pos arraypos = {0, 0};
-	    try {
-		arraypos = convertPos(chesspos);
-	    }
-	    catch(...) {
-		invalid = true;
-	    }
-	    if (!invalid) {
-		Piece* p = nullptr;
-		if (s == "K") {
-		    p = new King(colour, arraypos, false);
+		bool invalid = false;
+		string chesspos = "";
+
+		if (s == "+") {
+			cin >> s;
+			cin >> chesspos;
+			pos arraypos = {0, 0};
+			try {
+				arraypos = convertPos(chesspos);
+			}
+			catch(...) {
+				invalid = true;
+			}
+			if (!invalid) {
+				Piece* p = nullptr;
+				//white
+				if (s == "K") {
+					p = new King(1, arraypos, false);
+				}
+				else if (s == "Q") {
+					p = new Queen(1, arraypos);
+				}
+				else if (s == "R") {
+					p = new Rook(1, arraypos, false);
+				}
+				else if (s == "N") {
+					p = new Knight(1, arraypos);
+				}
+				else if (s == "B") {
+					p = new Bishop(1, arraypos);
+				}
+				else if (s == "P") {
+					p = new Pawn(1, arraypos, false);
+				}
+				//black
+				else if (s == "k") {
+					p = new King(0, arraypos, false);
+				}
+				else if (s == "q") {
+					p = new Queen(0, arraypos);
+				}
+				else if (s == "r") {
+					p = new Rook(0, arraypos, false);
+				}
+				else if (s == "n") {
+					p = new Knight(0, arraypos);
+				}
+				else if (s == "b") {
+					p = new Bishop(0, arraypos);
+				}
+				else if (s == "p") {
+					p = new Pawn(0, arraypos, false);
+				}
+				//otherwise
+				else {
+					invalid = true;
+				}
+			}
+			if (!invalid) {
+				game->getBoard()->setPiece(p, arraypos);
+			}
 		}
-		else if (s == "Q") {
-		    p = new Queen(colour, arraypos);
+
+		else if (s == "-") {
+			cin >> chesspos;
+			try {
+				pos arraypos = convertPos(chesspos);
+			}
+			catch(...) {
+				invalid = true;
+			}
+			if (!invalid) {
+				game->getBoard->setPiece(nullptr, arraypos);
+			}
 		}
-		else if (s == "r") {
-		    p = new Rook(colour, arraypos, false);
+
+		else if (s == "=") {
+			cin >> s;
+			if (s == "white") {
+				game->setTurn(1);
+			}
+			else if (s == "black") {
+				game->setTurn(0);
+			}
+			else {
+				invalid = true;
+			}
 		}
-		else if (s == "k") {
-		    p = new Knight(colour, arraypos);
+
+		else if (s == "done") {
+			// check that board is valid, then break
+			cout << "not implemented yet" << endl;
 		}
-		else if (s == "b") {
-		    p = new Bishop(colour, arraypos);
-		}
-		else if (s == "p") {
-		    p = new Pawn(colour, arraypos, false);
-		}
+
 		else {
-		    invalid = true;
+			invalid = true;
 		}
-	    }
-	    if (!invalid) {
-		// game.board->setPiece(p, arraypos);
-	    }
-	}
-	else if (s == "-") {
-	    cin >> chesspos;
-	    try {
-		pos arraypos = convertPos(chesspos);
-	    }
-	    catch(...) {
-		invalid = true;
-	    }
-	    if (!invalid) {
-		// game.board->setPiece(nullptr, arraypos);
-	    }
-	}
-	else if (s == "=") {
-	    if (colour == 1) {
-		colour = 0;
-	    }
-	    else {
-		colour = 1;
-	    }
-	}
-	else if (s == "done") {
-	    // check that board is valid, then break
-	}
-	else {
-	    invalid = true;
-	}
-	if (invalid) {
-	    cout << "invalid input" << endl;
-	}
+
+		if (invalid) {
+			cout << "invalid input" << endl;
+		}
     }
 }
 
