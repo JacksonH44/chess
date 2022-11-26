@@ -52,7 +52,15 @@ Board::Board() {
     }
 }
 
-Board::Board(const Board& other){}
+Board::Board(const Board& other) { // copy ctor
+    theBoard = new Piece**[8];
+    for (int i = 0; i < 8; ++i) {
+        theBoard[i] = new Piece*[8];
+        for (int j = 0; j < 8; ++j) {
+            theBoard[i][j] = (other.theBoard[i][j]) != nullptr ? other.theBoard[i][j]->deepCopy() : nullptr;
+        }
+    }
+}
 
 Board& Board::operator=(const Board& other){
     return *this;
@@ -94,12 +102,18 @@ ostream& operator<<(ostream& out, Board* board) {
     }
     out << endl;
     out << "  " << 'a' << 'b' << 'c' << 'd' << 'e' << 'f' << 'g' << 'h' << endl;
+    out << endl;
     return out;
 }
 
 int main() {
     Board* myBoard = new Board();
     cout << myBoard;
+    Board* myBoard2 = new Board(*myBoard);
+    myBoard2->setPiece(new Queen{1, pos{4,5}}, pos{4,5});
+    cout << myBoard;
+    cout << myBoard2;
     delete myBoard;
+    delete myBoard2;
     return 0;
 }
