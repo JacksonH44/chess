@@ -31,11 +31,11 @@ public:
     // checks to see if a move is valid (only in the sense that it adheres to direction and blocking)
     bool validate(pos a, pos b);  
 
-    char play(int turn);
+    char play(int turn); // plays a game, runs game loop
 
-    void setTurn(int colour);
+    void setTurn(int colour); // sets curMove to [colour]
 
-    Board* getBoard();
+    Board* getBoard(); // gets the board
 };  
 
 #endif
