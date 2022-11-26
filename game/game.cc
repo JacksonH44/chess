@@ -16,6 +16,7 @@ Game::~Game() {
 }
 
 gameState Game::getState(){
+    
     return this->state;
 }
 
@@ -108,8 +109,9 @@ char Game::play() {
                 pos end = get<1>(move);
                 if ((curPiece->getColour() == curMove) && (curPiece->isValidMove(end, theBoard)))
                 {
-                    // Board* snapshot = theBoard;
+                    Board* snapshot = theBoard;
                     theBoard->updateBoard(start, end);
+                    gameState curState = this->getState();
                     cout << theBoard;
                     moveDone = true;
                     curMove = (curMove + 1) % 2; // Flip the player's turn

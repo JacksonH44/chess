@@ -65,6 +65,18 @@ int Board::countPieces(char type) {
     return typeCount;
 }
 
+// A function that finds a certain piece in the board
+pos Board::findPiece(char type) {
+    for (int i = 0; i < 8; ++i) {
+        for (int j = 0; j < 8; ++j) {
+            if ((theBoard[i][j] != nullptr) && (theBoard[i][j]->getType() == type)) {
+                return pos{j, i};
+            }
+        }
+    }
+    return pos{-1, -1};
+}
+
 void Board::setToStart() {
     for (int i = 0; i < 8; ++i) {
         for (int j = 0; j < 8; ++j) {
