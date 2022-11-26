@@ -27,27 +27,7 @@ Board::Board() {
     for (int i = 0; i < 8; ++i) {
         theBoard[i] = new Piece*[8];
         for (int j = 0; j < 8; ++j) {
-            if (i == 0 || i == 7) {
-                int curColour = 0;
-                if (i == 7) { curColour = 1; }  // white
-                if (j == 0 || j == 7) {
-                    theBoard[i][j] = new Rook{curColour, pos{i, j}, true};
-                } else if (j == 1 || j == 6) {
-                    theBoard[i][j] = new Knight{curColour, pos{i, j}};
-                } else if (j == 2 || j == 5) {
-                    theBoard[i][j] = new Bishop{curColour, pos{i, j}};
-                } else if (j == 3) {
-                    theBoard[i][j] = new Queen{curColour, pos{i, j}};
-                } else { // j == 4; king
-                    theBoard[i][j] = new King{curColour, pos{i, j}, true};
-                }
-            } else if (i == 1 || i == 6) {
-                int curColour = 0;
-                if (i == 6) { curColour = 1; } // white
-                theBoard[i][j] = new Pawn{curColour, pos{i, j}, true};
-            } else {
-                theBoard[i][j] = nullptr;
-            }
+            theBoard[i][j] = nullptr;
         }
     }
 }
@@ -62,24 +42,74 @@ Board::Board(const Board& other) { // copy ctor
     }
 }
 
+// Method that moves a piece from one location to another
 void Board::updateBoard(pos a, pos b) {
-    Piece* curPiece = theBoard[a.x][a.y];
-    if (theBoard[b.x][b.y] != nullptr) {
-        delete theBoard[b.x][b.y];
-    }
-    theBoard[b.x][b.y] = curPiece;
+    // Piece* curPiece = theBoard[a.x][a.y];
+    Piece* curPiece = theBoard[a.y][a.x];
+    this->setPiece(curPiece, b);
+    // if (theBoard[b.x][b.y] != nullptr) {
+    //     delete theBoard[b.x][b.y];
+    // }
+    // theBoard[b.x][b.y] = curPiece;
+    theBoard[a.y][a.x] = nullptr;
 }
 
-void Board::setToStart(){}
+void Board::setToStart() {
+    for (int i = 0; i < 8; ++i) {
+        for (int j = 0; j < 8; ++j) {
+            if (i == 0 || i == 7)
+            {
+                int curColour = 0;
+                if (i == 7)
+                {
+                    curColour = 1;
+                } // white
+                if (j == 0 || j == 7)
+                {
+                    theBoard[i][j] = new Rook{curColour, pos{i, j}, true};
+                }
+                else if (j == 1 || j == 6)
+                {
+                    theBoard[i][j] = new Knight{curColour, pos{i, j}};
+                }
+                else if (j == 2 || j == 5)
+                {
+                    theBoard[i][j] = new Bishop{curColour, pos{i, j}};
+                }
+                else if (j == 3)
+                {
+                    theBoard[i][j] = new Queen{curColour, pos{i, j}};
+                }
+                else
+                { // j == 4; king
+                    theBoard[i][j] = new King{curColour, pos{i, j}, true};
+                }
+            }
+            else if (i == 1 || i == 6)
+            {
+                int curColour = 0;
+                if (i == 6)
+                {
+                    curColour = 1;
+                } // white
+                theBoard[i][j] = new Pawn{curColour, pos{i, j}, true};
+            }
+        }
+    }
+}
 
 Piece* Board::getPiece(pos a){
-    return this->theBoard[a.x][a.y];
+    if (theBoard[a.x][a.y] != nullptr) {
+        return theBoard[a.x][a.y];
+    } else {
+        return nullptr;
+    }
 }
 
 // method that sets piece piece at position on the board
 void Board::setPiece(Piece* piece, pos position) {
-    delete theBoard[position.x][position.y];
-    theBoard[position.x][position.y] = piece;
+    delete theBoard[position.y][position.x];
+    theBoard[position.y][position.x] = piece;
 }
 
 ostream& operator<<(ostream& out, Board* board) {
@@ -111,11 +141,18 @@ ostream& operator<<(ostream& out, Board* board) {
 int main() {
     Board* myBoard = new Board();
     cout << myBoard;
+    myBoard->setToStart();
+    cout << myBoard;
     Board* myBoard2 = new Board(*myBoard);
     myBoard2->setPiece(new Queen{1, pos{4,5}}, pos{4,5});
     cout << myBoard;
     cout << myBoard2;
-    delete myBoard;
     delete myBoard2;
+    pos myPos1 = pos{3,7};
+    pos myPos2 = pos{5,4};
+    myBoard->updateBoard(myPos1, myPos2);
+    myBoard->updateBoard(pos{5,1}, pos{5,4});
+    cout << myBoard;
+    delete myBoard;
     return 0;
 }
