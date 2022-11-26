@@ -7,7 +7,7 @@ class Rook : public Piece{
  public:
     Rook(int colour, pos position, bool canCastle);  // Constructor
     
-    bool validate(pos p) override ;
+    bool validate(pos p, Board* board) override ;
 
     bool castle();
 };

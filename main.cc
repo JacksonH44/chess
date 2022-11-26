@@ -15,6 +15,13 @@
 
 using namespace std;
 
+/**
+ * White: 1
+ * Black: 0
+ * 
+ * Use this when referencing colour
+*/
+
 int main() {
     int whiteWins = 0;
     int blackWins = 0;

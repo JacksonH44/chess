@@ -2,7 +2,7 @@
 
 Rook::Rook(int colour, pos position, bool canCastle): Piece{colour, &position}, canCastle{canCastle}{}
 
-bool Rook::validate(pos p){
+bool Rook::validate(pos p, Board* board){
     return false;
 }
 
