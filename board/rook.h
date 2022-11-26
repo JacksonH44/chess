@@ -8,12 +8,16 @@ class Rook : public Piece{
 
 public:
     Rook(int colour, pos position, bool canCastle);  // Constructor
+
+    Rook(const Rook& other);  // copy ctor
     
     bool validate(pos p, Board* board) override ;
 
     bool castle();
 
     char getType() const override;
+
+    Rook *deepCopy() const override; // deep copy
 };
 
 #endif

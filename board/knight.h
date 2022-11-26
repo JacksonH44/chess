@@ -7,10 +7,14 @@ class Knight : public Piece{
 
 public:
     Knight(int colour, pos position);  // Constructor
+
+    Knight(const Knight& other); // copy ctor
     
     bool validate(pos p, Board* board) override;
 
     char getType() const override;
+
+    Knight *deepCopy() const override; // deep copy
 };
 
 #endif

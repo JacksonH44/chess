@@ -1,8 +1,6 @@
 #include "queen.h"
-// #include "board.h"
+#include "board.h"
 #include <cstdlib>
-#include "../pos.h"
-#include <iostream>
 
 using namespace std;
 
@@ -113,7 +111,7 @@ bool Queen::validate(pos p, Board* board){
             }
             return true;  // nothing blocking a right diagonal play
         }
-        left diagonal
+        //left diagonal
         else {
             int xStart = position->x;
             int yStart = position->y;

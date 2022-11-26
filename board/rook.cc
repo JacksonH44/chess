@@ -7,6 +7,13 @@ Rook::Rook(int colour, pos position, bool canCastle) : Piece{colour, &position},
     }
 }
 
+Rook::Rook(const Rook &other) : Piece{other}, type{other.type} {} // copy ctor
+
+Rook *Rook::deepCopy() const
+{ // deep copy method
+    return (new Rook{*this});
+}
+
 bool Rook::validate(pos p, Board* board){
     return false;
 }

@@ -7,6 +7,13 @@ Bishop::Bishop(int colour, pos position) : Piece{colour, &position}, type{'b'} {
     }
 }
 
+Bishop::Bishop(const Bishop &other) : Piece{other}, type{other.type} {} // copy ctor
+
+Bishop *Bishop::deepCopy() const
+{ // deep copy method
+    return (new Bishop{*this});
+}
+
 char Bishop::getType() const {
     return type;
 }

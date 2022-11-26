@@ -9,11 +9,15 @@ class King : public Piece{
 public:
     King(int colour, pos position, bool canCastle);  // Constructor
 
+    King(const King& other); // copy ctor
+
     bool validate(pos p, Board* board) override;
 
     bool castle();
 
     char getType() const override;
+
+    King *deepCopy() const override;  // deep copy
 };
 
 #endif

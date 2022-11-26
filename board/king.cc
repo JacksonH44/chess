@@ -7,6 +7,13 @@ King::King(int colour, pos position, bool castle) : Piece{colour, &position}, ca
     }
 }
 
+King::King(const King &other) : Piece{other}, type{other.type} {} // copy ctor
+
+King *King::deepCopy() const
+{ // deep copy method
+    return (new King{*this});
+}
+
 bool King::castle(){
     return canCastle;
 }
