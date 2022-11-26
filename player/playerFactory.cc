@@ -9,7 +9,7 @@
 using namespace std;
 
 /** method that creates a new player based on what the user calls */
-Player* PlayerFactory::createPlayer(string player, int colour) {
+Player* PlayerFactory::createPlayer(string& player, int colour) {
     if (player == "human") {
         return new HumanPlayer{colour};
     } else if (player == "computer1") {

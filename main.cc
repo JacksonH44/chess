@@ -40,7 +40,7 @@ int main() {
 			if (winner == 'w') {
 				++whiteWins;
 			}
-			else if (winner = 'b') {
+			else if (winner == 'b') {
 				++blackWins;
 			}
 			else {
@@ -79,6 +79,7 @@ void setupLoop(Game* game) {
 			cin >> s;
 			cin >> chesspos;
 			pos arraypos = {0, 0};
+			Piece* p = nullptr;
 			try {
 				arraypos = convertPos(chesspos);
 			}
@@ -86,7 +87,6 @@ void setupLoop(Game* game) {
 				invalid = true;
 			}
 			if (!invalid) {
-				Piece* p = nullptr;
 				//white
 				if (s == "K") {
 					p = new King(1, arraypos, false);
@@ -137,14 +137,15 @@ void setupLoop(Game* game) {
 
 		else if (s == "-") {
 			cin >> chesspos;
+			pos arraypos = {0, 0};
 			try {
-				pos arraypos = convertPos(chesspos);
+				arraypos = convertPos(chesspos);
 			}
 			catch(...) {
 				invalid = true;
 			}
 			if (!invalid) {
-				game->getBoard->setPiece(nullptr, arraypos);
+				game->getBoard()->setPiece(nullptr, arraypos);
 			}
 		}
 

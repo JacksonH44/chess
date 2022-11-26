@@ -7,7 +7,7 @@ class Player;
 
 class PlayerFactory {
 public:
-    Player* createPlayer(std::string player, int colour);
+    static Player* createPlayer(std::string& player, int colour);
 };
 
 #endif

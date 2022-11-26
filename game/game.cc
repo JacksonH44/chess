@@ -1,6 +1,10 @@
 #include "game.h"
 #include "../pos.h"
 #include <iostream>
+#include "../player/playerFactory.h"
+#include "../player/player.h"
+#include "../board/board.h"
+#include <tuple>
 
 using namespace std;
 
@@ -19,12 +23,12 @@ void Game::setTurn(int colour) {
 }
 
 Board* Game::getBoard() {
-    return board;
+    return theBoard;
 }
 
-void setBoard(Board* newBoard) {
-    delete board;
-    board = newBoard;
+void Game::setBoard(Board* newBoard) {
+    delete theBoard;
+    theBoard = newBoard;
 }
 
 bool isMovePromotion(pos* from, pos* to) {
@@ -37,8 +41,8 @@ bool isMovePromotion(pos* from, pos* to) {
     return false;
 }
 
-char Game::play(int turn) {
-    state = 4;
+char Game::play() {
+    state = ongoing;
     delete whitePlayer;
     delete blackPlayer;
     string p1;
@@ -46,28 +50,27 @@ char Game::play(int turn) {
     cin >> p1;
     cin >> p2;
     try {
-        whitePlayer = PlayerFactory::createPlayer(p1);
-        blackPlayer = PlayerFactory::createPlayer(p2);
+        whitePlayer = PlayerFactory::createPlayer(p1, 1);
+        blackPlayer = PlayerFactory::createPlayer(p2, 0);
     }
     catch (...) {
         return 'i'; //return i for invalid setup
     }
 
-    pos from = {0, 0};
-    pos to = {0, 0};
+    tuple<pos, pos> move ({0, 0}, {0, 0});
     Player* curPlayer;
-    while (state >= 2 && state <= 4) {
+    while (state == whiteChecked || state == blackChecked || state == ongoing) {
         
         if (curMove == 1) {
             curPlayer = whitePlayer;
-	        whitePlayer->determineMove(&from, &to); // determineMove should be void since it needs to return two positions through pointers
+	        //move = whitePlayer->determineMove();
         }
         else {
-            blackPlayer->determineMove(&from, &to);
+            //move = blackPlayer->determineMove();
             curPlayer = blackPlayer;
         }
 
-        curPlayer->determineMove(&from, &to);
+        move = curPlayer->determineMove();
 	    //if (isMovePromotion(from, to)) { // need a method in the game class to check if a move promotes a pawn
 	        // prompt player for new piece
             // char newPiece = curPlayer->promptPromotion();
@@ -75,8 +78,8 @@ char Game::play(int turn) {
 	        // validate piece, replace it on the board using setPiece()
 	    //}
         //validate move
-        board->updateBoard(from, to);
-	    if (getState() < 2) {
+        theBoard->updateBoard(get<0>(move), get<1>(move));
+	    if (state == whiteWin || state == blackWin) {
 	        break;
 	    }
         //game->blackPlayer->determineMove(&from, &to);
@@ -85,10 +88,10 @@ char Game::play(int turn) {
         //}
     }//while
 
-    if (state == 0) {
+    if (state == whiteWin) {
         return 'w'; 
     }
-    else if (state == 1) {
+    else if (state == blackWin) {
         return 'b';
     }
     else {

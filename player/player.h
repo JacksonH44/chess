@@ -10,9 +10,11 @@ class Player {
     bool checked;
 
 protected:
-    virtual std::tuple<pos, pos> determineMove() = 0;
+    //idk why determineMove was protected, I need to use it in Game
 
 public:
+    virtual std::tuple<pos, pos> determineMove() = 0;
+    
     Player(int colour); // ctor
 
     bool isChecked();

@@ -8,7 +8,7 @@ class Player;
 
 enum gameState
 {
-    whiteWin = 0,
+    whiteWin,
     blackWin,
     whiteChecked,
     blackChecked,
@@ -17,7 +17,7 @@ enum gameState
 
 class Game {
     int curMove;
-    gameState state = 4;
+    gameState state = ongoing;
     Board* theBoard = nullptr;
     GameView* theView;
     Player* whitePlayer = nullptr;
@@ -31,7 +31,7 @@ public:
     // checks to see if a move is valid (only in the sense that it adheres to direction and blocking)
     bool validate(pos a, pos b);  
 
-    char play(int turn); // plays a game, runs game loop
+    char play(); // plays a game, runs game loop
 
     void setTurn(int colour); // sets curMove to [colour]
 

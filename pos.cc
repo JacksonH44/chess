@@ -30,7 +30,7 @@ pos operator-(const pos &pos1, const pos &pos2)
 }
 
 // convert chess coordinates to array coordinates
-pos convertPos(std::string s)
+pos convertPos(std::string& s)
 {
     if (s.size() != 2) {
 	throw std::length_error{"size must be 2"};

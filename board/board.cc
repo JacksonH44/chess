@@ -138,21 +138,21 @@ ostream& operator<<(ostream& out, Board* board) {
     return out;
 }
 
-int main() {
-    Board* myBoard = new Board();
-    cout << myBoard;
-    myBoard->setToStart();
-    cout << myBoard;
-    Board* myBoard2 = new Board(*myBoard);
-    myBoard2->setPiece(new Queen{1, pos{4,5}}, pos{4,5});
-    cout << myBoard;
-    cout << myBoard2;
-    delete myBoard2;
-    pos myPos1 = pos{3,7};
-    pos myPos2 = pos{5,4};
-    myBoard->updateBoard(myPos1, myPos2);
-    myBoard->updateBoard(pos{5,1}, pos{5,4});
-    cout << myBoard;
-    delete myBoard;
-    return 0;
-}
+// int main() {
+//     Board* myBoard = new Board();
+//     cout << myBoard;
+//     myBoard->setToStart();
+//     cout << myBoard;
+//     Board* myBoard2 = new Board(*myBoard);
+//     myBoard2->setPiece(new Queen{1, pos{4,5}}, pos{4,5});
+//     cout << myBoard;
+//     cout << myBoard2;
+//     delete myBoard2;
+//     pos myPos1 = pos{3,7};
+//     pos myPos2 = pos{5,4};
+//     myBoard->updateBoard(myPos1, myPos2);
+//     myBoard->updateBoard(pos{5,1}, pos{5,4});
+//     cout << myBoard;
+//     delete myBoard;
+//     return 0;
+// }
