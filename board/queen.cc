@@ -2,10 +2,20 @@
 #include "board.h"
 #include <cstdlib>
 
-Queen::Queen(int colour, pos position) : Piece{colour, &position}, type{'q'} {}
+using namespace std;
+
+Queen::Queen(int colour, pos position) : Piece{colour, &position}, type{'q'} {
+    if (colour == 1) { type = 'Q'; }
+}
 
 char Queen::getType() const {
     return type;
+}
+
+Queen::Queen(const Queen& other) : Piece{other}, type{other.type} {} // copy ctor
+
+Queen* Queen::deepCopy() const { // deep copy method
+    return (new Queen{*this});
 }
 
 bool Queen::validate(pos p, Board* board){
@@ -87,36 +97,36 @@ bool Queen::validate(pos p, Board* board){
                 }
             }
         }
-        // if (xDist * yDist < 0) {
-        //     int xStart = position->x;
-        //     int yStart = position->y;
-        //     if (xStart > p.x) {  // We want to start our checking at the smaller x value 
-        //         xStart = p.x;
-        //         yStart = p.y;
-        //     }
-        //     for (int i = 1; i < abs(xDist); ++i) {
-        //         if (board->getPiece(pos{xStart + i, yStart - i}) != nullptr) {
-        //             return false;
-        //         }
-        //     }
-        //     return true;  // nothing blocking a right diagonal play
-        // }
-        // left diagonal
-        // else {
-        //     int xStart = position->x;
-        //     int yStart = position->y;
-        //     if (xStart > p.x) {
-        //         xStart = p.x;
-        //         yStart = p.y;
-        //     }
-        //     for (int i = 1; i < xDist; ++i) {
-        //         if (board->getPiece(pos{xStart + i, yStart + i}) != nullptr)
-        //         {
-        //             return false;
-        //         }
-        //     }
-        //     return true; // nothing blocking a left diagonal play
-        // }
+        if (xDist * yDist < 0) {
+            int xStart = position->x;
+            int yStart = position->y;
+            if (xStart > p.x) {  // We want to start our checking at the smaller x value 
+                xStart = p.x;
+                yStart = p.y;
+            }
+            for (int i = 1; i < abs(xDist); ++i) {
+                if (board->getPiece(pos{xStart + i, yStart - i}) != nullptr) {
+                    return false;
+                }
+            }
+            return true;  // nothing blocking a right diagonal play
+        }
+        //left diagonal
+        else {
+            int xStart = position->x;
+            int yStart = position->y;
+            if (xStart > p.x) {
+                xStart = p.x;
+                yStart = p.y;
+            }
+            for (int i = 1; i < xDist; ++i) {
+                if (board->getPiece(pos{xStart + i, yStart + i}) != nullptr)
+                {
+                    return false;
+                }
+            }
+            return true; // nothing blocking a left diagonal play
+        }
     }
 
     return true;

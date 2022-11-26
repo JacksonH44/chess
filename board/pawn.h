@@ -8,12 +8,16 @@ class Pawn : public Piece {
 
 public:
     Pawn(int colour, pos position, bool canPassant);  // Constructor
+
+    Pawn(const Pawn& other);  // copy ctor
     
     bool validate(pos p, Board* board) override;
 
     bool passant();
 
     char getType() const override;
+
+    Pawn *deepCopy() const override; // deep copy
 };
 
 #endif

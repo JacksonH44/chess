@@ -15,8 +15,6 @@ public:
 
     Board(const Board& other); // copy ctor
 
-    Board& operator=(const Board& other); // copy assignment
-
     void updateBoard(pos a, pos b);  // add a new move onto the board
 
     void setToStart();  // set game board to start

@@ -1,7 +1,9 @@
 #include "piece.h"
 #include "board.h"
 
-Piece::Piece(int colour, pos* position):colour{colour},position{position}{}
+Piece::Piece(int colour, pos* position):colour{colour},position{position}{} //ctor
+
+Piece::Piece(const Piece &other) : colour{other.colour}, position{other.position} {} // copy ctor
 
 int Piece::getColour(){
     return this->colour;

@@ -8,9 +8,13 @@ class Queen : public Piece{
  public:
     Queen(int colour, pos position);  // Constructor
 
+    Queen(const Queen& other); // copy ctor
+
     char getType() const override;
 
     bool validate(pos p, Board* board) override;
+
+    Queen* deepCopy() const override;  // deep copy
 };
 
 #endif
