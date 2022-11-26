@@ -4,13 +4,14 @@
 #include "player.h"
 #include <tuple>
 #include "../pos.h"
+#include <istream>
 
 /** Human player subclass */
 class HumanPlayer : public Player {
 public:
     HumanPlayer(int colour);
 
-    std::tuple<pos,pos> determineMove() override;
+    std::tuple<pos, pos, char> determineMove(std::istream& in) override;
 };
 
 #endif

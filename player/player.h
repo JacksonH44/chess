@@ -3,6 +3,7 @@
 
 #include <tuple>
 #include "../pos.h"
+#include <istream>
 
 /** Player class representing an abstract player */
 class Player {
@@ -13,7 +14,7 @@ protected:
     //idk why determineMove was protected, I need to use it in Game
 
 public:
-    virtual std::tuple<pos, pos> determineMove() = 0;
+    virtual std::tuple<pos, pos, char> determineMove(std::istream& in) = 0;
     
     Player(int colour); // ctor
 

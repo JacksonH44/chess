@@ -11,7 +11,7 @@ class CPU2 : public Player
 public:
     CPU2(int colour);
 
-    std::tuple<pos, pos> determineMove() override;
+    std::tuple<pos, pos, char> determineMove(std::istream& in) override;
 };
 
 #endif

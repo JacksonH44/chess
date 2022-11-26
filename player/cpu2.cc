@@ -1,8 +1,10 @@
 #include "cpu2.h"
 
+using namespace std;
+
 CPU2::CPU2(int colour) : Player{colour} {}
 
-std::tuple<pos, pos> CPU2::determineMove()
+tuple<pos, pos, char> CPU2::determineMove(istream& in)
 {
-    throw std::logic_error("Function not implemented yet");
+    throw logic_error("Function not implemented yet");
 }

@@ -12,9 +12,9 @@ gameState Game::getState(){
     return this->state;
 }
 
-void Game::update(pos a, pos b){}
+void Game::update(pos a, pos b) {}
 
-bool Game::validate(pos a, pos b){
+bool Game::validate(pos a, pos b) {
     return false;
 }
 
@@ -57,7 +57,7 @@ char Game::play() {
         return 'i'; //return i for invalid setup
     }
 
-    tuple<pos, pos> move ({0, 0}, {0, 0});
+    tuple<pos, pos, char> move ({-1, -1}, {-1, -1}, ' ');
     Player* curPlayer;
     while (state == whiteChecked || state == blackChecked || state == ongoing) {
         
@@ -70,7 +70,9 @@ char Game::play() {
             curPlayer = blackPlayer;
         }
 
-        move = curPlayer->determineMove();
+        // NOTE: On resign, by convention, we return <pos{-1,-1}, pos{-1,-1}>
+        move = curPlayer->determineMove(cin); 
+
 	    //if (isMovePromotion(from, to)) { // need a method in the game class to check if a move promotes a pawn
 	        // prompt player for new piece
             // char newPiece = curPlayer->promptPromotion();
@@ -79,6 +81,7 @@ char Game::play() {
 	    //}
         //validate move
         theBoard->updateBoard(get<0>(move), get<1>(move));
+        cout << theBoard;
 	    if (state == whiteWin || state == blackWin) {
 	        break;
 	    }

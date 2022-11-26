@@ -4,6 +4,7 @@
 #include "player.h"
 #include <tuple>
 #include "../pos.h"
+#include <istream>
 
 /** CPU1 player subclass */
 class CPU1 : public Player
@@ -11,7 +12,7 @@ class CPU1 : public Player
 public:
     CPU1(int colour); // ctor
 
-    std::tuple<pos, pos> determineMove() override;
+    std::tuple<pos, pos, char> determineMove(std::istream& in) override;
 };
 
 #endif

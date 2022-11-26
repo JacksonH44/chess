@@ -165,7 +165,7 @@ void setupLoop(Game* game) {
 		}
 
 		else if (s == "done") {
-			game->setBoard(board);
+			// game->setBoard(board);
 			// if (game->isBoardValid())
 			// check that board is valid, then break
 			//TODO
