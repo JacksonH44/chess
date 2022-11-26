@@ -68,6 +68,7 @@ int main() {
 
 void setupLoop(Game* game) {
 	Board* board = new Board(); //assumed to be empty
+	game->setBoard(board);
 	cout << board;
     string s;
     int colour = 1;
