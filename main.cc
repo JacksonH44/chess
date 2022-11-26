@@ -68,6 +68,7 @@ int main() {
 
 void setupLoop(Game* game) {
 	Board* board = new Board(); //assumed to be empty
+	cout << board;
     string s;
     int colour = 1;
 	
@@ -178,6 +179,8 @@ void setupLoop(Game* game) {
 		if (invalid) {
 			cout << "invalid input" << endl;
 		}
+
+		cout << board << endl; // fix this
     }
 }
 
