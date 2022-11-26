@@ -72,15 +72,6 @@ void Board::setPiece(Piece* piece, pos position) {
     theBoard[position.x][position.y] = piece;
 }
 
-// Prints out a character or its capital depending on the piece colour
-char printPiece(char type, int colour) {
-    if (colour == 1) {
-        return toupper(type);
-    } else {
-        return type;
-    }
-}
-
 ostream& operator<<(ostream& out, Board* board) {
     for (int i = 0; i < 8; ++i) {
         out << (8 - i) << " ";
@@ -96,9 +87,7 @@ ostream& operator<<(ostream& out, Board* board) {
                     out << " "; // white space
                 }
             } else {
-                char pieceType = curPiece->getType();
-                int pieceColour = curPiece->getColour();
-                out << printPiece(pieceType, pieceColour);
+                out << curPiece->getType();
             }
         }
         out << endl;

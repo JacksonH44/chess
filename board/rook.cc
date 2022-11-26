@@ -1,6 +1,11 @@
 #include "rook.h"
 
-Rook::Rook(int colour, pos position, bool canCastle) : Piece{colour, &position}, canCastle{canCastle}, type{'r'} {}
+Rook::Rook(int colour, pos position, bool canCastle) : Piece{colour, &position}, canCastle{canCastle}, type{'r'} {
+    if (colour == 1)
+    {
+        type = 'R';
+    }
+}
 
 bool Rook::validate(pos p, Board* board){
     return false;
