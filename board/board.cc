@@ -8,10 +8,20 @@
 #include "king.h"
 #include "pawn.h"
 
-Board::~Board(){}  // dtor
+Board::~Board() {
+    for (int i = 0; i < 8; ++i) {
+        for (int j = 0; j < 8; ++j) {
+            delete theBoard[i][j];
+        }
+        delete[] theBoard[i];
+    }
+    delete[] theBoard;
+}  // dtor
 
 Board::Board() {
+    theBoard = new Piece**[8];
     for (int i = 0; i < 8; ++i) {
+        theBoard[i] = new Piece*[8];
         for (int j = 0; j < 8; ++j) {
             if (i == 0 || i == 7) {
                 int curColour = 0;
@@ -31,6 +41,8 @@ Board::Board() {
                 int curColour = 0;
                 if (i == 6) { curColour = 1; } // white
                 theBoard[i][j] = new Pawn{curColour, pos{i, j}, true};
+            } else {
+                theBoard[i][j] = nullptr;
             }
         }
     }
@@ -39,6 +51,7 @@ Board::Board() {
 Board::Board(const Board& other){}
 
 Board& Board::operator=(const Board& other){
+
     return *this;
 }
 
@@ -54,4 +67,10 @@ Piece* Board::getPiece(pos a){
 void Board::setPiece(Piece* piece, pos position) {
     delete theBoard[position.x][position.y];
     theBoard[position.x][position.y] = piece;
+}
+
+int main() {
+    Board* myBoard = new Board();
+    delete myBoard;
+    return 0;
 }

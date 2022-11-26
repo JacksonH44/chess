@@ -121,8 +121,3 @@ bool Queen::validate(pos p, Board* board){
 
     return true;
 }
-
-int main() {
-
-    return 0;
-}
