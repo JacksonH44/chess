@@ -6,8 +6,11 @@ class Piece;
 
 /** board class representing the chess board */
 class Board {
-    Piece** theBoard;
+    Piece*** theBoard;
+
 public:
+    Board(); // ctor
+
     ~Board();  // dtor
 
     Board(const Board& other); // copy ctor
@@ -18,7 +21,9 @@ public:
 
     void setToStart();  // set game board to start
 
-    Piece& getPiece(pos a);  // get specific piece
+    Piece* getPiece(pos a);  // get specific piece
+
+    void setPiece(Piece* piece, pos position);
 
 };
 

@@ -7,7 +7,7 @@ class Queen : public Piece{
  public:
     Queen(int colour, pos position);  // Constructor
 
-    bool validate(pos p) override;
+    bool validate(pos p, Board* board) override;
 };
 
 #endif

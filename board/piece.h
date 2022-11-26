@@ -3,13 +3,15 @@
 #include "../pos.h"
 #include <iostream>
 
+class Board;
+
 class Piece {
-   char type;
-   int colour;
-   pos* position;
 
 protected:
-   virtual bool validate(pos) = 0;
+   virtual bool validate(pos, Board* board) = 0;
+   char type;
+   int colour;
+   pos *position;
 
 public:
    Piece(int colour, pos* position); // Constructor
@@ -18,7 +20,7 @@ public:
 
    int getColour();
 
-   bool isValidMove(pos p);
+   bool isValidMove(pos p, Board* board);
 
    void setPos(pos p);
 
