@@ -24,6 +24,8 @@ public:
 
     void setPiece(Piece* piece, pos position);
 
+    int countPieces(char type);  // Function that counts how many occurrences of a certain type there are
+
     friend std::ostream& operator<<(std::ostream& out, Board* board);  // TEMP: Remove once view is implemented
 
 };

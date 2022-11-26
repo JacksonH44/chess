@@ -44,14 +44,25 @@ Board::Board(const Board& other) { // copy ctor
 
 // Method that moves a piece from one location to another
 void Board::updateBoard(pos a, pos b) {
-    // Piece* curPiece = theBoard[a.x][a.y];
     Piece* curPiece = theBoard[a.y][a.x];
     this->setPiece(curPiece, b);
-    // if (theBoard[b.x][b.y] != nullptr) {
-    //     delete theBoard[b.x][b.y];
-    // }
-    // theBoard[b.x][b.y] = curPiece;
     theBoard[a.y][a.x] = nullptr;
+}
+
+// Count number of pieces of a certain type (case sensitive)
+int Board::countPieces(char type) {
+    int typeCount = 0;
+    for (int i = 0; i < 8; ++i) {
+        for (int j = 0; j < 8; ++j) {
+            if (theBoard[i][j] != nullptr) {
+                if (theBoard[i][j]->getType() == type) {
+                    ++typeCount;
+                } 
+                    
+            }
+        }
+    }
+    return typeCount;
 }
 
 void Board::setToStart() {
@@ -138,21 +149,22 @@ ostream& operator<<(ostream& out, Board* board) {
     return out;
 }
 
-// int main() {
-//     Board* myBoard = new Board();
-//     cout << myBoard;
-//     myBoard->setToStart();
-//     cout << myBoard;
-//     Board* myBoard2 = new Board(*myBoard);
-//     myBoard2->setPiece(new Queen{1, pos{4,5}}, pos{4,5});
-//     cout << myBoard;
-//     cout << myBoard2;
-//     delete myBoard2;
-//     pos myPos1 = pos{3,7};
-//     pos myPos2 = pos{5,4};
-//     myBoard->updateBoard(myPos1, myPos2);
-//     myBoard->updateBoard(pos{5,1}, pos{5,4});
-//     cout << myBoard;
-//     delete myBoard;
-//     return 0;
-// }
+int main() {
+    Board* myBoard = new Board();
+    cout << myBoard;
+    myBoard->setToStart();
+    cout << myBoard->countPieces('K') << endl;
+    cout << myBoard;
+    Board* myBoard2 = new Board(*myBoard);
+    myBoard2->setPiece(new Queen{1, pos{4,5}}, pos{4,5});
+    cout << myBoard;
+    cout << myBoard2;
+    delete myBoard2;
+    pos myPos1 = pos{3,7};
+    pos myPos2 = pos{5,4};
+    myBoard->updateBoard(myPos1, myPos2);
+    myBoard->updateBoard(pos{5,1}, pos{5,4});
+    cout << myBoard;
+    delete myBoard;
+    return 0;
+}
