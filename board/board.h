@@ -1,5 +1,6 @@
 #ifndef _BOARD_H_
 #define _BOARD_H_
+#include <ostream>
 
 struct pos;
 class Piece;
@@ -22,6 +23,8 @@ public:
     Piece* getPiece(pos a);  // get specific piece
 
     void setPiece(Piece* piece, pos position);
+
+    friend std::ostream& operator<<(std::ostream& out, Board* board);  // TEMP: Remove once view is implemented
 
 };
 
