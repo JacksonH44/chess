@@ -9,6 +9,12 @@
 
 using namespace std;
 
+Game::~Game() {
+    delete theBoard;
+    delete blackPlayer;
+    delete whitePlayer;
+}
+
 gameState Game::getState(){
     return this->state;
 }
@@ -91,20 +97,22 @@ char Game::play() {
                     moveDone = true;
                 }
             }
-            else if (theBoard->getPiece(start) == nullptr)
+            else if (theBoard->getPiece(start) == nullptr)  // No piece in the starting position
             {
-                // No piece in the starting position
+                cout << "Invalid move. Please make another move." << endl;
             }
             else
             {
                 Piece *curPiece = theBoard->getPiece(start);
                 curPiece->setPos(&start);
                 pos end = get<1>(move);
-                if (curPiece->isValidMove(end, theBoard))
+                if ((curPiece->getColour() == curMove) && (curPiece->isValidMove(end, theBoard)))
                 {
+                    // Board* snapshot = theBoard;
                     theBoard->updateBoard(start, end);
                     cout << theBoard;
                     moveDone = true;
+                    curMove = (curMove + 1) % 2; // Flip the player's turn
                 }
                 else
                 {

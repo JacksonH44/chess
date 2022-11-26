@@ -24,6 +24,8 @@ class Game {
     Player* blackPlayer = nullptr;
 
 public:
+    ~Game(); // dtor
+
     gameState getState();  // get the current state of the board
 
     void update(pos a, pos b);  // update the board with a move

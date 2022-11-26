@@ -57,6 +57,7 @@ int main() {
 			cout << "invalid input" << endl;
 		}
     }//while
+	delete game;
 
     cout << "Final Score:" << endl;
     cout << "White: " << whiteWins << endl;
