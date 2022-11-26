@@ -19,5 +19,11 @@ char Knight::getType() const {
 }
 
 bool Knight::validate(pos p, Board* board) {
-    return false;
+    int xDist = position->x - p.x;
+    int yDist = position->y - p.y;
+    if ((abs(xDist) == 2 && abs(yDist) == 1) || (abs(xDist) == 1 && abs(yDist) == 2)) {
+        return true;  // In an L-shape
+    } else {
+        return false;
+    }
 }

@@ -102,7 +102,7 @@ char Game::play() {
                 pos end = get<1>(move);
                 if (curPiece->isValidMove(end, theBoard))
                 {
-                    theBoard->updateBoard(get<0>(move), get<1>(move));
+                    theBoard->updateBoard(start, end);
                     cout << theBoard;
                     moveDone = true;
                 }
