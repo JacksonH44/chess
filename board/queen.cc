@@ -2,7 +2,11 @@
 #include "board.h"
 #include <cstdlib>
 
-Queen::Queen(int colour, pos position): Piece{colour, &position} {}
+Queen::Queen(int colour, pos position) : Piece{colour, &position}, type{'q'} {}
+
+char Queen::getType() const {
+    return type;
+}
 
 bool Queen::validate(pos p, Board* board){
 

@@ -3,9 +3,12 @@
 #include "piece.h"
 
 class Queen : public Piece{
+    char type;
     
  public:
     Queen(int colour, pos position);  // Constructor
+
+    char getType() const override;
 
     bool validate(pos p, Board* board) override;
 };

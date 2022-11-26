@@ -3,13 +3,10 @@
 
 Piece::Piece(int colour, pos* position):colour{colour},position{position}{}
 
-char Piece::getType(){
-    return this->type;
-}
-
 int Piece::getColour(){
     return this->colour;
 }
+
 
 bool Piece::isValidMove(pos p, Board* board){
 
@@ -37,7 +34,9 @@ bool Piece::isValidMove(pos p, Board* board){
     return validate(p, board);
 }
 
-void Piece::setPos(pos p){}
+void Piece::setPos(pos* p) {
+    position = p;
+}
 
 pos Piece::getPos(){
     return *position;

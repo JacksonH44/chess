@@ -4,13 +4,16 @@
 
 class Pawn : public Piece {
     bool canPassant;
+    char type;
 
- public:
+public:
     Pawn(int colour, pos position, bool canPassant);  // Constructor
     
-    bool validate(pos p) override;
+    bool validate(pos p, Board* board) override;
 
     bool passant();
+
+    char getType() const override;
 };
 
 #endif

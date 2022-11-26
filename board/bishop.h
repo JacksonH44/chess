@@ -3,10 +3,14 @@
 #include "piece.h"
 
 class Bishop : public Piece {
- public:
+    char type;
+
+public:
     Bishop(int colour, pos position);  // Constructor
     
-    bool validate(pos p) override;
+    bool validate(pos p, Board* board) override;
+
+    char getType() const override;
 };
 
 #endif

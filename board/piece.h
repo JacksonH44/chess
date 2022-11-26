@@ -9,20 +9,19 @@ class Piece {
 
 protected:
    virtual bool validate(pos, Board* board) = 0;
-   char type;
    int colour;
    pos *position;
 
 public:
    Piece(int colour, pos* position); // Constructor
 
-   char getType();
+   virtual char getType() const = 0;
 
    int getColour();
 
    bool isValidMove(pos p, Board* board);
 
-   void setPos(pos p);
+   void setPos(pos* p);
 
    pos getPos();
 

@@ -2,6 +2,11 @@
 #include "../pos.h"
 #include "piece.h"
 #include "rook.h"
+#include "knight.h"
+#include "bishop.h"
+#include "queen.h"
+#include "king.h"
+#include "pawn.h"
 
 Board::~Board(){}  // dtor
 
@@ -10,14 +15,22 @@ Board::Board() {
         for (int j = 0; j < 8; ++j) {
             if (i == 0 || i == 7) {
                 int curColour = 0;
-                if (i == 1) { curColour = 1; }
-                if (j == 0) {
+                if (i == 7) { curColour = 1; }  // white
+                if (j == 0 || j == 7) {
                     theBoard[i][j] = new Rook{curColour, pos{i, j}, true};
+                } else if (j == 1 || j == 6) {
+                    theBoard[i][j] = new Knight{curColour, pos{i, j}};
+                } else if (j == 2 || j == 5) {
+                    theBoard[i][j] = new Bishop{curColour, pos{i, j}};
+                } else if (j == 3) {
+                    theBoard[i][j] = new Queen{curColour, pos{i, j}};
+                } else { // j == 4; king
+                    theBoard[i][j] = new King{curColour, pos{i, j}, true};
                 }
             } else if (i == 1 || i == 6) {
-                if (j == 0) {
-                    
-                }
+                int curColour = 0;
+                if (i == 6) { curColour = 1; } // white
+                theBoard[i][j] = new Pawn{curColour, pos{i, j}, true};
             }
         }
     }

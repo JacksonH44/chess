@@ -4,12 +4,16 @@
 
 class Rook : public Piece{
     bool canCastle;
- public:
+    char type;
+
+public:
     Rook(int colour, pos position, bool canCastle);  // Constructor
     
     bool validate(pos p, Board* board) override ;
 
     bool castle();
+
+    char getType() const override;
 };
 
 #endif

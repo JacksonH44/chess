@@ -4,13 +4,16 @@
 
 class King : public Piece{
     bool canCastle;
+    char type;
 
- public:
+public:
     King(int colour, pos position, bool canCastle);  // Constructor
 
-    bool validate(pos p) override;
+    bool validate(pos p, Board* board) override;
 
     bool castle();
+
+    char getType() const override;
 };
 
 #endif
