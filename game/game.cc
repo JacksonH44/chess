@@ -5,6 +5,12 @@
 #include "../player/player.h"
 #include "../board/board.h"
 #include "../board/piece.h"
+#include "../board/king.h"
+#include "../board/queen.h"
+#include "../board/knight.h"
+#include "../board/bishop.h"
+#include "../board/rook.h"
+#include "../board/pawn.h" // Consider replacing all these with a pieceFactory class
 #include <tuple>
 
 using namespace std;
@@ -39,18 +45,112 @@ void Game::setBoard(Board* newBoard) {
     theBoard = newBoard;
 }
 
-bool isMovePromotion(pos* from, pos* to) {
-    // if (board->pieceAt(from)->getChar() == 'p' && to->y == 7) {
-    //     return true;
-    // }
-    // if (board->pieceAt(from)->getChar() == 'P' && to->y == 0) {
-    //     return true;
-    // }
-    return false;
+// if the move is a promotion and the new piece is valid, swaps the new piece in and returns true
+// if the move is not a promotion, returns true without swapping pieces, and false if the promotion is invalid
+bool Game::handlePromotion(pos a, pos b, char piece) {
+    bool invalidPiece = false;
+    Piece* p = nullptr;
+
+    if (theBoard->getPiece(a)->getType() == 'p' && b.y == 7) {
+        switch (piece) {
+            case 'q' :
+                p = new Queen(0, a);
+                break;
+            case 'r' :
+                p = new Rook(0, a, false);
+                break;
+            case 'n' :
+                p = new Knight(0, a);
+                break;
+            case 'b' :
+                p = new Bishop(0, a);
+                break;
+            default:
+                invalidPiece = true;
+        }
+        if (invalidPiece) {
+            delete p;
+            return false;
+        }
+        theBoard->setPiece(p, a);
+    }
+    if (theBoard->getPiece(a)->getType() == 'P' && b.y == 0) {
+        switch (piece) {
+            case 'Q' :
+                p = new Queen(1, a);
+                break;
+            case 'R' :
+                p = new Rook(1, a, false);
+                break;
+            case 'N' :
+                p = new Knight(1, a);
+                break;
+            case 'B' :
+                p = new Bishop(1, a);
+                break;
+            default:
+                invalidPiece = true;
+        }
+        if (invalidPiece) {
+            delete p;
+            return false;
+        }
+        theBoard->setPiece(p, a);
+    }
+    return true;
+}
+
+bool Game::handleCastle(pos a, pos b) {
+    if (theBoard->getPiece(a)->getType() != 'k' && theBoard->getPiece(a)->getType() != 'K') {
+        //not a king making the move
+        return true;
+    }
+    int direction = (b.x - a.x)/2; // -1 for left, 1 for right
+    // know that the move is laterally by 2 and the move is in turn and the king canCastle by king's validate()
+    if (direction == -1) {
+        if ((theBoard->getPiece({a.x-4, a.y})->getType() != 'r' && theBoard->getPiece({a.x-4, a.y})->getType() != 'R') || !theBoard->getPiece({a.x-4, a.y})->castle()) {
+            //not a rook in the corner or it can't castle
+            return false;
+        }
+        if (theBoard->getPiece({a.x-1, a.y}) != nullptr || theBoard->getPiece({a.x-2, a.y}) != nullptr || theBoard->getPiece({a.x-3, a.y}) != nullptr) {
+            //something in the way
+            return false;
+        }
+        // [check for in check, if so, return false] (can't be in check to start a castle)
+
+        Board* snapshot = new Board(*theBoard);
+        theBoard->updateBoard(a, {a.x-1, a.y}); //checking for in check on the in-between space. The end space is checked in play() after the move has been made
+        // check for in check, if so, return false
+        delete theBoard;
+        theBoard = snapshot;
+        
+        //all conditions passed, move rook to where it will be after castling, then play() handles the movement of the king
+        theBoard->updateBoard({0, a.y}, {3, a.y});
+    }
+    if (direction == 1) {
+        if ((theBoard->getPiece({a.x+3, a.y})->getType() != 'r' && theBoard->getPiece({a.x+3, a.y})->getType() != 'R') || !theBoard->getPiece({a.x+3, a.y})->castle()) {
+            //not a rook in the corner or it can't castle
+            return false;
+        }
+        if (theBoard->getPiece({a.x+1, a.y}) != nullptr || theBoard->getPiece({a.x+2, a.y}) != nullptr) {
+            //something in the way
+            return false;
+        }
+        // [check for in check, if so, return false] (can't be in check to start a castle)
+
+        Board* snapshot = new Board(*theBoard);
+        theBoard->updateBoard(a, {a.x+1, a.y}); //checking for in check on the in-between space. The end space is checked in play() after the move has been made
+        // check for in check, if so, return false
+        delete theBoard;
+        theBoard = snapshot;
+        //all conditions passed, move rook to where it will be after castling, then play() handles the movement of the king
+        theBoard->updateBoard({7, a.y}, {5, a.y});
+    }
+    return true;
 }
 
 char Game::play() {
-    cout << theBoard;
+    
     theBoard->updateBoard(pos{-1, -1}, pos{-1, -1});
     state = ongoing;
     delete whitePlayer;
@@ -66,6 +166,8 @@ char Game::play() {
     catch (...) {
         return 'i'; //return i for invalid setup
     }
+
+    cout << theBoard;
 
     tuple<pos, pos, char> move ({-1, -1}, {-1, -1}, ' ');
     Player* curPlayer;
@@ -86,6 +188,7 @@ char Game::play() {
         while (!moveDone) {
             // NOTE: On resign, by convention, we return <pos{-1,-1}, pos{-1,-1}>
             move = curPlayer->determineMove(cin); // get player's next move
+
             pos start = get<0>(move);
             if (start == pos{-1, -1})
             { // player has resigned
@@ -107,11 +210,24 @@ char Game::play() {
             else
             {
                 Piece *curPiece = theBoard->getPiece(start);
-                curPiece->setPos(&start);
                 pos end = get<1>(move);
-                if ((curPiece->getColour() == curMove) && (curPiece->isValidMove(end, theBoard)))
+                if (!(curPiece->getColour() == curMove)) 
                 {
-                    Board* snapshot = theBoard;
+                    cout << "That is not your piece. Please make another move." << endl;
+                }
+                else if (curPiece->isValidMove(end, theBoard)) 
+                {
+                    Board* snapshot = theBoard; //this will be for checking for check after a move has been made and possibly reverting it,
+                                                //it will need to use the copy constructor to actually work, but I'm not using it rn -Blake
+                    if (!handlePromotion(get<0>(move), get<1>(move), get<2>(move))) {
+                        cout << "You cannot promote to that piece. Please try again." << endl;
+                        continue;
+                    }
+                    if (!handleCastle(get<0>(move), get<1>(move))) {
+                        cout << "You may not castle now. Please make another move." << endl;
+                        continue;
+                    }
+                    
                     theBoard->updateBoard(start, end);
                     gameState curState = this->getState();
                     cout << theBoard;

@@ -5,7 +5,7 @@
 
 using namespace std;
 
-Knight::Knight(int colour, pos position) : Piece{colour, &position}, type{'n'} {
+Knight::Knight(int colour, pos position) : Piece{colour, position}, type{'n'} {
     if (colour == 1)
     {
         type = 'N';
@@ -24,9 +24,9 @@ char Knight::getType() const {
 }
 
 void Knight::updateValidMoves(Board* board, pos p) {
-    this->position->x = p.x;
-    this->position->y = p.y;
-    pos tmpPos = pos{this->position->x + 2, this->position->y + 1};
+    this->position.x = p.x;
+    this->position.y = p.y;
+    pos tmpPos = pos{this->position.x + 2, this->position.y + 1};
     if (tmpPos.inBounds()) {
         if (board->getPiece(tmpPos) != nullptr && board->getPiece(tmpPos)->getColour() != colour) {
             validMoves.emplace_back(tmpPos);
@@ -34,7 +34,7 @@ void Knight::updateValidMoves(Board* board, pos p) {
             validMoves.emplace_back(tmpPos);
         }
     }
-    tmpPos = pos{this->position->x + 2, this->position->y - 1};
+    tmpPos = pos{this->position.x + 2, this->position.y - 1};
     if (tmpPos.inBounds())
     {
         if (board->getPiece(tmpPos) != nullptr && board->getPiece(tmpPos)->getColour() != colour)
@@ -46,7 +46,7 @@ void Knight::updateValidMoves(Board* board, pos p) {
             validMoves.emplace_back(tmpPos);
         }
     }
-    tmpPos = pos{this->position->x + 1, this->position->y + 2};
+    tmpPos = pos{this->position.x + 1, this->position.y + 2};
     if (tmpPos.inBounds())
     {
         if (board->getPiece(tmpPos) != nullptr && board->getPiece(tmpPos)->getColour() != colour)
@@ -58,7 +58,7 @@ void Knight::updateValidMoves(Board* board, pos p) {
             validMoves.emplace_back(tmpPos);
         }
     }
-    tmpPos = pos{this->position->x + 1, this->position->y - 2};
+    tmpPos = pos{this->position.x + 1, this->position.y - 2};
     if (tmpPos.inBounds())
     {
         if (board->getPiece(tmpPos) != nullptr && board->getPiece(tmpPos)->getColour() != colour)
@@ -70,7 +70,7 @@ void Knight::updateValidMoves(Board* board, pos p) {
             validMoves.emplace_back(tmpPos);
         }
     }
-    tmpPos = pos{this->position->x - 2, this->position->y + 1};
+    tmpPos = pos{this->position.x - 2, this->position.y + 1};
     if (tmpPos.inBounds())
     {
         if (board->getPiece(tmpPos) != nullptr && board->getPiece(tmpPos)->getColour() != colour)
@@ -82,7 +82,7 @@ void Knight::updateValidMoves(Board* board, pos p) {
             validMoves.emplace_back(tmpPos);
         }
     }
-    tmpPos = pos{this->position->x - 2, this->position->y - 1};
+    tmpPos = pos{this->position.x - 2, this->position.y - 1};
     if (tmpPos.inBounds())
     {
         if (board->getPiece(tmpPos) != nullptr && board->getPiece(tmpPos)->getColour() != colour)
@@ -94,7 +94,7 @@ void Knight::updateValidMoves(Board* board, pos p) {
             validMoves.emplace_back(tmpPos);
         }
     }
-    tmpPos = pos{this->position->x - 1, this->position->y + 2};
+    tmpPos = pos{this->position.x - 1, this->position.y + 2};
     if (tmpPos.inBounds())
     {
         if (board->getPiece(tmpPos) != nullptr && board->getPiece(tmpPos)->getColour() != colour)
@@ -106,7 +106,7 @@ void Knight::updateValidMoves(Board* board, pos p) {
             validMoves.emplace_back(tmpPos);
         }
     }
-    tmpPos = pos{this->position->x - 1, this->position->y - 2};
+    tmpPos = pos{this->position.x - 1, this->position.y - 2};
     if (tmpPos.inBounds())
     {
         if (board->getPiece(tmpPos) != nullptr && board->getPiece(tmpPos)->getColour() != colour)

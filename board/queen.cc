@@ -6,7 +6,7 @@
 
 using namespace std;
 
-Queen::Queen(int colour, pos position) : Piece{colour, &position}, type{'q'} {
+Queen::Queen(int colour, pos position) : Piece{colour, position}, type{'q'} {
     if (colour == 1) { type = 'Q'; }
 }
 
@@ -21,14 +21,14 @@ Queen* Queen::deepCopy() const { // deep copy method
 }
 
 void Queen::updateValidMoves(Board* board, pos p) {
-    this->position->x = p.x;
-    this->position->y = p.y;
+    this->position.x = p.x;
+    this->position.y = p.y;
     bool up = true, down = true, left = true, right = true;
     bool upRight = true, upLeft = true, downRight = true, downLeft = true;
     int i = 1;
     while (up || down || left || right || upRight || upLeft || downRight || downLeft) {
         if (up) {
-            pos tmpPos = pos{this->position->x, this->position->y + i};
+            pos tmpPos = pos{this->position.x, this->position.y + i};
             if (!tmpPos.inBounds()) {  // position out of bounds
                 up = false;
             } else {
@@ -44,7 +44,7 @@ void Queen::updateValidMoves(Board* board, pos p) {
             }            
         }
         if (down) {
-            pos tmpPos = pos{this->position->x, this->position->y - i};
+            pos tmpPos = pos{this->position.x, this->position.y - i};
             if (!tmpPos.inBounds())
             { // position out of bounds
                 down = false;
@@ -67,7 +67,7 @@ void Queen::updateValidMoves(Board* board, pos p) {
             }
         }
         if (left) {
-            pos tmpPos = pos{this->position->x - i, this->position->y};
+            pos tmpPos = pos{this->position.x - i, this->position.y};
             if (!tmpPos.inBounds())
             { // position out of bounds
                 left = false;
@@ -90,7 +90,7 @@ void Queen::updateValidMoves(Board* board, pos p) {
             }
         }
         if (right) {
-            pos tmpPos = pos{this->position->x + i, this->position->y};
+            pos tmpPos = pos{this->position.x + i, this->position.y};
             if (!tmpPos.inBounds())
             { // position out of bounds
                 right = false;
@@ -113,7 +113,7 @@ void Queen::updateValidMoves(Board* board, pos p) {
             }
         }
         if (upRight) {
-            pos tmpPos = pos{this->position->x + i, this->position->y + i};
+            pos tmpPos = pos{this->position.x + i, this->position.y + i};
             if (!tmpPos.inBounds())
             { // position out of bounds
                 upRight = false;
@@ -136,7 +136,7 @@ void Queen::updateValidMoves(Board* board, pos p) {
             }
         }
         if (upLeft) {
-            pos tmpPos = pos{this->position->x - i, this->position->y + i};
+            pos tmpPos = pos{this->position.x - i, this->position.y + i};
             if (!tmpPos.inBounds())
             { // position out of bounds
                 upLeft = false;
@@ -159,7 +159,7 @@ void Queen::updateValidMoves(Board* board, pos p) {
             }
         }
         if (downRight) {
-            pos tmpPos = pos{this->position->x + i, this->position->y - i};
+            pos tmpPos = pos{this->position.x + i, this->position.y - i};
             if (!tmpPos.inBounds())
             { // position out of bounds
                 downRight = false;
@@ -182,7 +182,7 @@ void Queen::updateValidMoves(Board* board, pos p) {
             }
         }
         if (downLeft) {
-            pos tmpPos = pos{this->position->x - i, this->position->y - i};
+            pos tmpPos = pos{this->position.x - i, this->position.y - i};
             if (!tmpPos.inBounds())
             { // position out of bounds
                 downLeft = false;
@@ -220,16 +220,16 @@ bool Queen::validate(pos p, Board* board){
 
     // // Check for valid move type for a queen:
     // // Check for diagonal move
-    // int xDist = position->x - p.x;
-    // int yDist = position->y - p.y;
+    // int xDist = position.x - p.x;
+    // int yDist = position.y - p.y;
     // if (abs(xDist) != abs(yDist)) { // not diagonal
     //     // Check for a horizontal move
-    //     if (position->y == p.y) {
-    //         int xStart = position->x;
+    //     if (position.y == p.y) {
+    //         int xStart = position.x;
     //         int xEnd = p.x;
     //         if (xDist > 0) {
     //             xStart = p.x;
-    //             xEnd = position->x;
+    //             xEnd = position.x;
     //         }
     //         for (int i = xStart + 1; i < xEnd; ++i) {
     //             if (board->getPiece(pos{i, p.y}) != nullptr)
@@ -239,13 +239,13 @@ bool Queen::validate(pos p, Board* board){
     //         }
     //         return true;  // vertical with no blocking
 
-    //     } else if (position->x == p.x) { // horizontal move
-    //         int yStart = position->y;
+    //     } else if (position.x == p.x) { // horizontal move
+    //         int yStart = position.y;
     //         int yEnd = p.y;
     //         if (yDist > 0)
     //         {
     //             yStart = p.y;
-    //             yEnd = position->y;
+    //             yEnd = position.y;
     //         }
     //         for (int i = yStart + 1; i < yEnd; ++i)
     //         {
@@ -265,7 +265,7 @@ bool Queen::validate(pos p, Board* board){
     //     // right upwards diagonal
     //     if (xDist < 0 && yDist > 0) {
     //         for (int i = 1; i < abs(xDist); ++i) {
-    //             if (board->getPiece(pos{position->x + i, position->y - i}) != nullptr)
+    //             if (board->getPiece(pos{position.x + i, position.y - i}) != nullptr)
     //             {
     //                 return false;
     //             }
@@ -273,7 +273,7 @@ bool Queen::validate(pos p, Board* board){
     //     } else if (xDist < 0 && yDist < 0) {  // right downwards diagonal
     //         for (int i = 1; i < abs(xDist); ++i)
     //         {
-    //             if (board->getPiece(pos{position->x + i, position->y + i}) != nullptr)
+    //             if (board->getPiece(pos{position.x + i, position.y + i}) != nullptr)
     //             {
     //                 return false;
     //             }
@@ -281,7 +281,7 @@ bool Queen::validate(pos p, Board* board){
     //     } else if (xDist > 0 && yDist > 0) { // left upwards diagonal
     //         for (int i = 1; i < abs(xDist); ++i)
     //         {
-    //             if (board->getPiece(pos{position->x - i, position->y - i}) != nullptr)
+    //             if (board->getPiece(pos{position.x - i, position.y - i}) != nullptr)
     //             {
     //                 return false;
     //             }
@@ -289,15 +289,15 @@ bool Queen::validate(pos p, Board* board){
     //     } else { // left downwards diagonal
     //         for (int i = 1; i < abs(xDist); ++i)
     //         {
-    //             if (board->getPiece(pos{position->x - i, position->y + i}) != nullptr)
+    //             if (board->getPiece(pos{position.x - i, position.y + i}) != nullptr)
     //             {
     //                 return false;
     //             }
     //         }
     //     }
     //     if (xDist * yDist < 0) {
-    //         int xStart = position->x;
-    //         int yStart = position->y;
+    //         int xStart = position.x;
+    //         int yStart = position.y;
     //         if (xStart > p.x) {  // We want to start our checking at the smaller x value 
     //             xStart = p.x;
     //             yStart = p.y;
@@ -311,8 +311,8 @@ bool Queen::validate(pos p, Board* board){
     //     }
     //     //left diagonal
     //     else {
-    //         int xStart = position->x;
-    //         int yStart = position->y;
+    //         int xStart = position.x;
+    //         int yStart = position.y;
     //         if (xStart > p.x) {
     //             xStart = p.x;
     //             yStart = p.y;

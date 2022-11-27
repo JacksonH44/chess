@@ -1,6 +1,8 @@
 #ifndef _GAME_H_
 #define _GAME_H_
 
+#include <tuple>
+
 struct pos;
 class Board;
 class GameView;
@@ -42,6 +44,10 @@ public:
     Board* getBoard(); // gets the board
 
     void setBoard(Board* newBoard);
+
+    bool handlePromotion(pos a, pos b, char piece);
+
+    bool handleCastle(pos a, pos b);
 };  
 
 #endif

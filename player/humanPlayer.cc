@@ -12,8 +12,8 @@ HumanPlayer::HumanPlayer(int colour) : Player{colour} {}
 
 tuple<pos, pos, char> HumanPlayer::determineMove(istream& in) {
     string cmd;
-    while (true) {
-        in >> cmd;
+    while (in >> cmd) {
+        // infinite loops when EOF is given
         if (cmd == "move")
         {
             string line;
@@ -24,9 +24,23 @@ tuple<pos, pos, char> HumanPlayer::determineMove(istream& in) {
                 iss >> end;
                 char promotePiece;
                 if (iss >> promotePiece) {
-                    return tuple<pos, pos, char>{convertPos(start), convertPos(end), promotePiece};
+                    try {
+                        tuple<pos, pos, char> move = {convertPos(start), convertPos(end), promotePiece};
+                        return move;
+                    }
+                    catch (...) {
+                        cout << "invalid input. try again." << endl;
+                        continue;
+                    }
                 } else {
-                    return tuple<pos, pos, char>{convertPos(start), convertPos(end), ' '};
+                    try {
+                        tuple<pos, pos, char> move ={convertPos(start), convertPos(end), ' '};
+                        return move;
+                    }
+                    catch (...) {
+                        cout << "invalid input. try again." << endl;
+                        continue;
+                    }
                 }
             } else {
                 cout << "invalid input. try again." << endl;

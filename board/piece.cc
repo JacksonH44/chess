@@ -3,9 +3,9 @@
 
 using namespace std;
 
-Piece::Piece(int colour, pos* position):colour{colour},position{position} {} //ctor
+Piece::Piece(int colour, pos position):colour{colour},position{position} {} //ctor
 
-Piece::Piece(const Piece &other) : colour{other.colour}, position{other.position} {} // copy ctor
+Piece::Piece(const Piece &other) : colour{other.colour}, position{other.position}, validMoves{other.validMoves} {} // copy ctor
 
 int Piece::getColour(){
     return this->colour;
@@ -19,7 +19,7 @@ bool Piece::isValidMove(pos p, Board* board){
     {
         return false;
     }
-    else if ((position->x == p.x) && (position->y == p.y)) // Not moving anywhere
+    else if ((position.x == p.x) && (position.y == p.y)) // Not moving anywhere
     {
         return false;
     }
@@ -38,12 +38,17 @@ bool Piece::isValidMove(pos p, Board* board){
     return validate(p, board);
 }
 
-void Piece::setPos(pos* p) {
+void Piece::setPos(pos p) {
     position = p;
 }
 
 pos Piece::getPos(){
-    return *position;
+    return position;
+}
+
+//Needed so we can call canCastle() on Rooks and Kings stored in Piece pointers
+bool Piece::castle() {
+    return false;
 }
 
 Piece::~Piece(){}

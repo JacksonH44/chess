@@ -4,7 +4,7 @@
 
 using namespace std;
 
-Pawn::Pawn(int colour, pos position, bool canPassant) : Piece{colour, &position}, canPassant{canPassant}, type{'p'} {
+Pawn::Pawn(int colour, pos position, bool canPassant) : Piece{colour, position}, canPassant{canPassant}, type{'p'} {
     if (colour == 1)
     {
         type = 'P';
@@ -19,20 +19,20 @@ Pawn *Pawn::deepCopy() const
 }
 
 void Pawn::updateValidMoves(Board* board, pos p) {
-    this->position->x = p.x;
-    this->position->y = p.y;
+    this->position.x = p.x;
+    this->position.y = p.y;
     validMoves.clear();  // Remove all old valid moves
     int dir = -1;
     if (this->colour == 0) { // black pawn, can only move down
         dir = 1;
     }
-    pos tmpPos = pos{this->position->x, this->position->y + (dir * 1)};
+    pos tmpPos = pos{this->position.x, this->position.y + (dir * 1)};
     if (tmpPos.inBounds() && board->getPiece(tmpPos) == nullptr)
     { // good
         validMoves.emplace_back(tmpPos);
         if (canPassant)
         {
-            tmpPos = pos{this->position->x, this->position->y + (dir * 2)};
+            tmpPos = pos{this->position.x, this->position.y + (dir * 2)};
             if (tmpPos.inBounds() && board->getPiece(tmpPos) == nullptr)
             { // nothing in the way
                 validMoves.emplace_back(tmpPos);
@@ -41,7 +41,7 @@ void Pawn::updateValidMoves(Board* board, pos p) {
     }
 
     // check first attack
-    tmpPos = pos{this->position->x - 1, this->position->y + (dir * 1)};
+    tmpPos = pos{this->position.x - 1, this->position.y + (dir * 1)};
     if (tmpPos.inBounds()) {
         Piece* tmpPiece = board->getPiece(tmpPos);
         if (tmpPiece != nullptr && tmpPiece->getColour() != colour) {
@@ -50,7 +50,7 @@ void Pawn::updateValidMoves(Board* board, pos p) {
     }
 
     // check second attack
-    tmpPos = pos{this->position->x + 1, this->position->y + (dir * 1)};
+    tmpPos = pos{this->position.x + 1, this->position.y + (dir * 1)};
     if (tmpPos.inBounds())
     {
         Piece *tmpPiece = board->getPiece(tmpPos);
@@ -67,8 +67,8 @@ bool Pawn::validate(pos p, Board* board){
     } else {
         return false;
     }
-    // int xDist = position->x - p.x;
-    // int yDist = position->y - p.y;
+    // int xDist = position.x - p.x;
+    // int yDist = position.y - p.y;
     // if (this->colour == 0) { // black, should only move down on the board
     //     if (xDist == 0) {  // forward down
     //         if (yDist == -1) {

@@ -142,6 +142,7 @@ Piece* Board::getPiece(pos a){
 void Board::setPiece(Piece* piece, pos position) {
     delete theBoard[position.y][position.x];
     theBoard[position.y][position.x] = piece;
+    piece->setPos(position);
 }
 
 ostream& operator<<(ostream& out, Board* board) {

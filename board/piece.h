@@ -12,11 +12,11 @@ class Piece {
 protected:
    virtual bool validate(pos, Board* board) = 0;
    int colour;
-   pos *position;
+   pos position;
    std::vector<pos> validMoves;
 
 public:
-   Piece(int colour, pos* position); // Constructor
+   Piece(int colour, pos position); // Constructor
 
    virtual char getType() const = 0;
 
@@ -26,7 +26,7 @@ public:
 
    virtual void updateValidMoves(Board* board, pos p) = 0;  // Updates a list of all valid moves
 
-   void setPos(pos* p);
+   void setPos(pos p);
 
    pos getPos();
 
@@ -35,6 +35,8 @@ public:
    Piece(const Piece& other); // copy ctor
 
    virtual Piece *deepCopy() const = 0; // Allows us to deep copy a subtype of piece without knowing which one
+
+   virtual bool castle(); //Needed so we can call canCastle() on Rooks and Kings stored in Piece pointers
 };
 
 #endif

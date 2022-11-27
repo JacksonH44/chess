@@ -3,7 +3,7 @@
 #include <vector>
 #include <algorithm>
 
-Bishop::Bishop(int colour, pos position) : Piece{colour, &position}, type{'b'} {
+Bishop::Bishop(int colour, pos position) : Piece{colour, position}, type{'b'} {
     if (colour == 1)
     {
         type = 'B';
@@ -22,14 +22,14 @@ char Bishop::getType() const {
 }
 
 void Bishop::updateValidMoves(Board* board, pos p) {
-    this->position->x = p.x;
-    this->position->y = p.y;
+    this->position.x = p.x;
+    this->position.y = p.y;
     bool upRight = true, upLeft = true, downRight = true, downLeft = true;
     int i = 1;
     while (upRight || upLeft || downRight || downLeft) {
         if (upRight)
         {
-            pos tmpPos = pos{this->position->x + i, this->position->y + i};
+            pos tmpPos = pos{this->position.x + i, this->position.y + i};
             if (!tmpPos.inBounds())
             { // position out of bounds
                 upRight = false;
@@ -53,7 +53,7 @@ void Bishop::updateValidMoves(Board* board, pos p) {
         }
         if (upLeft)
         {
-            pos tmpPos = pos{this->position->x - i, this->position->y + i};
+            pos tmpPos = pos{this->position.x - i, this->position.y + i};
             if (!tmpPos.inBounds())
             { // position out of bounds
                 upLeft = false;
@@ -77,7 +77,7 @@ void Bishop::updateValidMoves(Board* board, pos p) {
         }
         if (downRight)
         {
-            pos tmpPos = pos{this->position->x + i, this->position->y - i};
+            pos tmpPos = pos{this->position.x + i, this->position.y - i};
             if (!tmpPos.inBounds())
             { // position out of bounds
                 downRight = false;
@@ -101,7 +101,7 @@ void Bishop::updateValidMoves(Board* board, pos p) {
         }
         if (downLeft)
         {
-            pos tmpPos = pos{this->position->x - i, this->position->y - i};
+            pos tmpPos = pos{this->position.x - i, this->position.y - i};
             if (!tmpPos.inBounds())
             { // position out of bounds
                 downLeft = false;

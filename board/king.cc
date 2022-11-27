@@ -3,14 +3,14 @@
 #include <vector>
 #include <algorithm>
 
-King::King(int colour, pos position, bool castle) : Piece{colour, &position}, canCastle{canCastle}, type{'k'} {
+King::King(int colour, pos position, bool canCastle) : Piece{colour, position}, canCastle{canCastle}, type{'k'} {
     if (colour == 1)
     {
         type = 'K';
     }
 }
 
-King::King(const King &other) : Piece{other}, type{other.type} {} // copy ctor
+King::King(const King &other) : Piece{other}, type{other.type}, canCastle{other.canCastle} {} // copy ctor
 
 King *King::deepCopy() const
 { // deep copy method
@@ -27,11 +27,11 @@ char King::getType() const
 }
 
 void King::updateValidMoves(Board* board, pos p) {
-    this->position->x = p.x;
-    this->position->y = p.y;
+    this->position.x = p.x;
+    this->position.y = p.y;
 
     // move right
-    pos tmpPos = pos{this->position->x + 1, this->position->y};
+    pos tmpPos = pos{this->position.x + 1, this->position.y};
     if (tmpPos.inBounds()) {
         if (board->getPiece(tmpPos) == nullptr || board->getPiece(tmpPos)->getColour() != colour) {
             validMoves.emplace_back(tmpPos);
@@ -39,7 +39,7 @@ void King::updateValidMoves(Board* board, pos p) {
     }
 
     // move left
-    tmpPos = pos{this->position->x - 1, this->position->y};
+    tmpPos = pos{this->position.x - 1, this->position.y};
     if (tmpPos.inBounds())
     {
         if (board->getPiece(tmpPos) == nullptr || board->getPiece(tmpPos)->getColour() != colour)
@@ -49,7 +49,7 @@ void King::updateValidMoves(Board* board, pos p) {
     }
 
     // move down
-    tmpPos = pos{this->position->x, this->position->y + 1};
+    tmpPos = pos{this->position.x, this->position.y + 1};
     if (tmpPos.inBounds())
     {
         if (board->getPiece(tmpPos) == nullptr || board->getPiece(tmpPos)->getColour() != colour)
@@ -59,7 +59,7 @@ void King::updateValidMoves(Board* board, pos p) {
     }
 
     // move up
-    tmpPos = pos{this->position->x, this->position->y - 1};
+    tmpPos = pos{this->position.x, this->position.y - 1};
     if (tmpPos.inBounds())
     {
         if (board->getPiece(tmpPos) == nullptr || board->getPiece(tmpPos)->getColour() != colour)
@@ -69,7 +69,7 @@ void King::updateValidMoves(Board* board, pos p) {
     }
 
     // move right down
-    tmpPos = pos{this->position->x + 1, this->position->y + 1};
+    tmpPos = pos{this->position.x + 1, this->position.y + 1};
     if (tmpPos.inBounds())
     {
         if (board->getPiece(tmpPos) == nullptr || board->getPiece(tmpPos)->getColour() != colour)
@@ -79,7 +79,7 @@ void King::updateValidMoves(Board* board, pos p) {
     }
 
     // move right up
-    tmpPos = pos{this->position->x + 1, this->position->y - 1};
+    tmpPos = pos{this->position.x + 1, this->position.y - 1};
     if (tmpPos.inBounds())
     {
         if (board->getPiece(tmpPos) == nullptr || board->getPiece(tmpPos)->getColour() != colour)
@@ -89,7 +89,7 @@ void King::updateValidMoves(Board* board, pos p) {
     }
 
     // move left down
-    tmpPos = pos{this->position->x - 1, this->position->y + 1};
+    tmpPos = pos{this->position.x - 1, this->position.y + 1};
     if (tmpPos.inBounds())
     {
         if (board->getPiece(tmpPos) == nullptr || board->getPiece(tmpPos)->getColour() != colour)
@@ -99,7 +99,7 @@ void King::updateValidMoves(Board* board, pos p) {
     }
 
     // move left up
-    tmpPos = pos{this->position->x - 1, this->position->y - 1};
+    tmpPos = pos{this->position.x - 1, this->position.y - 1};
     if (tmpPos.inBounds())
     {
         if (board->getPiece(tmpPos) == nullptr || board->getPiece(tmpPos)->getColour() != colour)
@@ -110,7 +110,13 @@ void King::updateValidMoves(Board* board, pos p) {
 }
 
 bool King::validate(pos p, Board* board) {
-    if (find(validMoves.begin(), validMoves.end(), p) != validMoves.end())
+    if (canCastle && (p.x - this->position.x == -2 || p.x - this->position.x == 2) //castle case
+                && (p.y - this->position.y == 0)) 
+    {
+        //the rest of this is handled in game.cc
+        return true;
+    }
+    else if (find(validMoves.begin(), validMoves.end(), p) != validMoves.end()) //normal case
     {
         return true;
     }

@@ -3,14 +3,14 @@
 #include <vector>
 #include <algorithm>
 
-Rook::Rook(int colour, pos position, bool canCastle) : Piece{colour, &position}, canCastle{canCastle}, type{'r'} {
+Rook::Rook(int colour, pos position, bool canCastle) : Piece{colour, position}, canCastle{canCastle}, type{'r'} {
     if (colour == 1)
     {
         type = 'R';
     }
 }
 
-Rook::Rook(const Rook &other) : Piece{other}, type{other.type} {} // copy ctor
+Rook::Rook(const Rook &other) : Piece{other}, type{other.type}, canCastle{other.canCastle} {} // copy ctor
 
 Rook *Rook::deepCopy() const
 { // deep copy method
@@ -18,14 +18,14 @@ Rook *Rook::deepCopy() const
 }
 
 void Rook::updateValidMoves(Board* board, pos p) { 
-    this->position->x = p.x;
-    this->position->y = p.y;
+    this->position.x = p.x;
+    this->position.y = p.y;
     bool up = true, down = true, right = true, left = true;
     int i = 1;
     while (up || down || right || left) {
         if (up)
         {
-            pos tmpPos = pos{this->position->x, this->position->y + i};
+            pos tmpPos = pos{this->position.x, this->position.y + i};
             if (!tmpPos.inBounds())
             { // position out of bounds
                 up = false;
@@ -49,7 +49,7 @@ void Rook::updateValidMoves(Board* board, pos p) {
         }
         if (down)
         {
-            pos tmpPos = pos{this->position->x, this->position->y - i};
+            pos tmpPos = pos{this->position.x, this->position.y - i};
             if (!tmpPos.inBounds())
             { // position out of bounds
                 down = false;
@@ -73,7 +73,7 @@ void Rook::updateValidMoves(Board* board, pos p) {
         }
         if (left)
         {
-            pos tmpPos = pos{this->position->x - i, this->position->y};
+            pos tmpPos = pos{this->position.x - i, this->position.y};
             if (!tmpPos.inBounds())
             { // position out of bounds
                 left = false;
@@ -97,7 +97,7 @@ void Rook::updateValidMoves(Board* board, pos p) {
         }
         if (right)
         {
-            pos tmpPos = pos{this->position->x + i, this->position->y};
+            pos tmpPos = pos{this->position.x + i, this->position.y};
             if (!tmpPos.inBounds())
             { // position out of bounds
                 right = false;
