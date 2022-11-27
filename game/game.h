@@ -14,7 +14,8 @@ enum gameState
     blackWin,
     whiteChecked,
     blackChecked,
-    ongoing
+    ongoing,
+    tieGame
 };
 
 class Game {

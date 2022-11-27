@@ -3,7 +3,6 @@
 #include "../pos.h"
 #include <iostream>
 #include <vector>
-#include "../pos.h"
 
 class Board;
 

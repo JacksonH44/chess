@@ -12,6 +12,7 @@
 #include "../board/rook.h"
 #include "../board/pawn.h" // Consider replacing all these with a pieceFactory class
 #include <tuple>
+#include <vector>
 
 using namespace std;
 
@@ -21,8 +22,69 @@ Game::~Game() {
     delete whitePlayer;
 }
 
+// Function that checks the game state after a player has made a valid move
 gameState Game::getState(){
-    
+    int playerThreatened = 1;
+    if (curMove == 1) {
+        playerThreatened = 0;
+    }
+
+    // First check that there are more than two kings on the board
+    vector<Piece*> whitePieces = theBoard->getPieces(1);
+    vector<Piece*> blackPieces = theBoard->getPieces(0);
+    if (whitePieces.size() == 1 && blackPieces.size() == 1) { // there's only two kings left
+        this->state = tieGame;
+        return this->state;
+    }
+
+    // determine if the player who's move it is not is in check
+    bool playerChecked = theBoard->isChecked(playerThreatened);
+
+    vector<Piece *> remainingPieces = theBoard->getPieces(playerThreatened);
+    for (Piece *piece : remainingPieces)
+    {                                                    // for each piece of that colour
+        vector<pos> pieceMoves = piece->getValidMoves(); // get their valid moves
+        pos curPos = piece->getPos();
+        for (pos p : pieceMoves)
+        {
+            Board *snapshot = new Board{*theBoard};
+            snapshot->updateBoard(curPos, p); // try each move
+            // If there exists a move that puts a player out of check
+            if (!(snapshot->isChecked(playerThreatened)))
+            {
+                delete snapshot;
+                if (playerChecked) { // the player is in check but there is a move to move them out
+                    if (playerThreatened == 1)
+                    {
+                        this->state = whiteChecked;
+                    }
+                    else
+                    {
+                        this->state = blackChecked;
+                    }
+                } else { // the player is not in check and they can move to a spot not in check
+                    this->state = ongoing;
+                }
+                return this->state;
+            }
+        }
+    }
+    // We've looped through all pieces and there is no move that keeps a player out of check
+    if (playerChecked)
+    { // the opposing player is checkmated
+        if (playerThreatened == 1)
+        {
+            this->state = blackWin; // white has been checkmated
+        }
+        else
+        {
+            this->state = whiteWin; // black has been checkmated
+        }
+    }
+    else
+    { // The player is not in check but any move will put them in check
+        this->state = tieGame;
+    }
     return this->state;
 }
 
@@ -150,19 +212,18 @@ bool Game::handleCastle(pos a, pos b) {
 }
 
 bool Game::isBoardValid(){
-    bool result = true;
     int BKings = theBoard->countPieces('k');
     int Wkings = theBoard->countPieces('K');
     // Checking if there is only one white king and one black king
     if (BKings != 1 || Wkings!= 1){
-        result = false;
+        return false;
     }
     // Checking if there are any pawns on the last rows
     int Pawns = 0;
     for (int i = 0; i < 1; ++i) {
         for (int j = 0; j < 8; ++j) {
-            if (theBoard->getPiece({i, j}) != nullptr) {
-                if (theBoard->getPiece({i, j})->getType() == 'p' || theBoard->getPiece({i, j})->getType() == 'P') {
+            if (theBoard->getPiece(pos{i, j}) != nullptr) {
+                if (theBoard->getPiece(pos{i, j})->getType() == 'p' || theBoard->getPiece(pos{i, j})->getType() == 'P') {
                     ++Pawns;
                 }
             }
@@ -170,21 +231,21 @@ bool Game::isBoardValid(){
     }
     for (int i = 7; i < 8; ++i) {
         for (int j = 0; j < 8; ++j) {
-            if (theBoard->getPiece({i, j}) != nullptr) {
-                if (theBoard->getPiece({i, j})->getType() == 'p' || theBoard->getPiece({i, j})->getType() == 'P') {
+            if (theBoard->getPiece(pos{i, j}) != nullptr) {
+                if (theBoard->getPiece(pos{i, j})->getType() == 'p' || theBoard->getPiece(pos{i, j})->getType() == 'P') {
                     ++Pawns;
                 }
             }
         }
     }
     if (Pawns != 0){
-        result = false;
+        return false;
     }
     // Checking if either of the kings is in check
     if (theBoard->isChecked(0) == true || theBoard->isChecked(1) == true){
-        result = false;
+        return false;
     }
-    return result;
+    return true;
 }
 
 char Game::play() {
@@ -268,12 +329,23 @@ char Game::play() {
                         if (snapshot->isChecked(curMove))
                         { // player puts themselves in check
                             delete snapshot;
-                            cout << "This move puts yourself in check. Please make another move." << endl;
+                            cout << "You are in check. Please make another move." << endl;
                         } else {  // happy path
                             delete snapshot;
                             theBoard->updateBoard(start, end);
                             gameState curState = this->getState();
                             cout << theBoard;
+                            if (curState == blackChecked) {
+                                cout << "black is in check." << endl;
+                            } else if (curState == whiteChecked) {
+                                cout << "white is in check." << endl;
+                            } else if (curState == tieGame) {
+                                cout << "Tie game! Congratulations to both players!" << endl;
+                            } else if (curState == whiteWin) {
+                                cout << "White wins! Congratulations!" << endl;
+                            } else if (curState == blackWin) {
+                                cout << "Black wins! Congratulations!" << endl;
+                            }
                             moveDone = true;
                             curMove = (curMove + 1) % 2; // Flip the player's turn
                         }
@@ -309,6 +381,8 @@ char Game::play() {
     }
     else if (state == blackWin) {
         return 'b';
+    } else if (state == tieGame) {
+        return 't';
     }
     else {
         return 'i';

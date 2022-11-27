@@ -12,6 +12,7 @@
 #include "board/bishop.h"
 #include "board/rook.h"
 #include "board/pawn.h"
+#include <iomanip>
 
 using namespace std;
 
@@ -23,8 +24,8 @@ using namespace std;
 */
 
 int main() {
-    int whiteWins = 0;
-    int blackWins = 0;
+    float whiteWins = 0;
+    float blackWins = 0;
 	char winner;
     string s;
     Game* game = new Game();
@@ -38,10 +39,12 @@ int main() {
 			}
 			winner = game->play();
 			if (winner == 'w') {
-				++whiteWins;
-			}
-			else if (winner == 'b') {
-				++blackWins;
+				whiteWins = whiteWins + 1;
+			} else if (winner == 'b') {
+				blackWins = blackWins + 1;
+			} else if (winner == 't') {
+				whiteWins = whiteWins + 0.5;
+				blackWins = blackWins + 0.5;
 			}
 			else {
 				cout << "invalid players" << endl;
@@ -56,10 +59,11 @@ int main() {
 		if (invalid) {
 			cout << "invalid input" << endl;
 		}
-    }//while
+    } //while
 	delete game;
 
     cout << "Final Score:" << endl;
+	cout << setprecision(1) << fixed;
     cout << "White: " << whiteWins << endl;
     cout << "Black: " << blackWins << endl;
 
@@ -167,11 +171,15 @@ void setupLoop(Game* game) {
 
 		else if (s == "done") {
 			// game->setBoard(board);
-			// if (game->isBoardValid())
+			if (game->isBoardValid()) {
+				return;
+			} else {
+				cout << "This board setup is not valid." << endl;
+			}
 			// check that board is valid, then break
 			//TODO
-			cout << "not implemented yet" << endl;
-			return;
+			// cout << "not implemented yet" << endl;
+			// return;
 		}
 
 		else {

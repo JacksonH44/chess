@@ -63,8 +63,8 @@ int Board::countPieces(char type) {
     int typeCount = 0;
     for (int i = 0; i < 8; ++i) {
         for (int j = 0; j < 8; ++j) {
-            if (theBoard[i][j] != nullptr) {
-                if (theBoard[i][j]->getType() == type) {
+            if (this->getPiece(pos{i, j}) != nullptr) {
+                if (this->getPiece(pos{i,j})->getType() == type) {
                     ++typeCount;
                 } 
                     
