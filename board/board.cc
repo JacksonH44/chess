@@ -138,6 +138,18 @@ Piece* Board::getPiece(pos a){
     }
 }
 
+vector<Piece*> Board::getPieces(int col){
+    vector<Piece*> AvailablePieces = {};
+    for (int i = 0; i < 8; ++i) {
+        for (int j = 0; j < 8; ++j) {
+            if ((theBoard[i][j] != nullptr) && (theBoard[i][j]->getColour() == col)) {
+                AvailablePieces.emplace_back(theBoard[i][j]);
+            }
+        }
+    }
+    return AvailablePieces;
+}
+
 // method that sets piece piece at position on the board
 void Board::setPiece(Piece* piece, pos position) {
     delete theBoard[position.y][position.x];

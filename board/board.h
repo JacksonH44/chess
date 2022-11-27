@@ -22,6 +22,8 @@ public:
 
     Piece* getPiece(pos a);  // get specific piece
 
+    vector<Piece*> Board::getPieces(int colour);
+
     void setPiece(Piece* piece, pos position);
 
     int countPieces(char type);  // Function that counts how many occurrences of a certain type there are
