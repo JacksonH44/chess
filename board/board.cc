@@ -147,7 +147,7 @@ void Board::setPiece(Piece* piece, pos position) {
 
 // determine whether a player is in check
 bool Board::isChecked(int colour) { 
-    pos kingPos;
+    pos kingPos = pos{-1,-1};
     if (colour == 1) { // white king
         kingPos = this->findPiece('K');
     } else { // black king
@@ -160,7 +160,7 @@ bool Board::isChecked(int colour) {
             for (int j = 0; j < 8; ++j) {
                 Piece* curPiece = this->getPiece(pos{i,j});
                 if (curPiece != nullptr) {
-                    if (curPiece->isValidMove(kingPos)) {  // check if all pieces can move onto the king's position
+                    if (curPiece->isValidMove(kingPos, this)) {  // check if all pieces can move onto the king's position
                         return true;
                     }
                 }

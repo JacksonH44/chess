@@ -184,7 +184,6 @@ bool Game::isBoardValid(){
     return result;
 }
 
-
 char Game::play() {
     
     theBoard->updateBoard(pos{-1, -1}, pos{-1, -1});
@@ -255,6 +254,12 @@ char Game::play() {
                 {
                     Board* snapshot = theBoard; //this will be for checking for check after a move has been made and possibly reverting it,
                                                 //it will need to use the copy constructor to actually work, but I'm not using it rn -Blake
+                    snapshot->updateBoard(start, end);
+                    if (snapshot->isChecked(curMove)) { // player puts themselves in check
+                        delete snapshot;
+                        cout << "This move puts yourself in check. Please make another move." << endl;
+                        continue;
+                    } 
                     if (!handlePromotion(get<0>(move), get<1>(move), get<2>(move))) {
                         cout << "You cannot promote to that piece. Please try again." << endl;
                         continue;
