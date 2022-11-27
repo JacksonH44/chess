@@ -26,6 +26,8 @@ public:
 
    virtual void updateValidMoves(Board* board, pos p) = 0;  // Updates a list of all valid moves
 
+   std::vector<pos> getValidMoves();  // returns all valid moves
+
    void setPos(pos p);
 
    pos getPos();

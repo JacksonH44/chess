@@ -38,6 +38,10 @@ bool Piece::isValidMove(pos p, Board* board){
     return validate(p, board);
 }
 
+vector<pos> Piece::getValidMoves() {
+    return validMoves;
+}
+
 void Piece::setPos(pos p) {
     position = p;
 }
