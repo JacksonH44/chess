@@ -28,6 +28,8 @@ public:
 
     pos findPiece(char type);  // Function that finds a particular piece within the board
 
+    bool isChecked(int colour); // determines if the player with that colour is in check
+
     friend std::ostream& operator<<(std::ostream& out, Board* board);  // TEMP: Remove once view is implemented
 
 };

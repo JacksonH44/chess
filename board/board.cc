@@ -145,6 +145,31 @@ void Board::setPiece(Piece* piece, pos position) {
     piece->setPos(position);
 }
 
+// determine whether a player is in check
+bool Board::isChecked(int colour) { 
+    pos kingPos;
+    if (colour == 1) { // white king
+        kingPos = this->findPiece('K');
+    } else { // black king
+        kingPos = this->findPiece('k');
+    }
+    if (kingPos == pos{-1,-1}) { // this condition should never run, is an invariant
+        return false;
+    } else {
+        for (int i = 0; i < 8; ++i) {
+            for (int j = 0; j < 8; ++j) {
+                Piece* curPiece = this->getPiece(pos{i,j});
+                if (curPiece != nullptr) {
+                    if (curPiece->isValidMove(kingPos)) {  // check if all pieces can move onto the king's position
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+ }
+
 ostream& operator<<(ostream& out, Board* board) {
     for (int i = 0; i < 8; ++i) {
         out << (8 - i) << " ";
