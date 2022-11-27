@@ -1,6 +1,7 @@
 #ifndef _BOARD_H_
 #define _BOARD_H_
 #include <ostream>
+#include <vector>
 
 struct pos;
 class Piece;
@@ -22,7 +23,7 @@ public:
 
     Piece* getPiece(pos a);  // get specific piece
 
-    vector<Piece*> Board::getPieces(int colour);
+    std::vector<Piece*> getPieces(int colour);
 
     void setPiece(Piece* piece, pos position);
 
