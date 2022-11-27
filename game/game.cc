@@ -252,28 +252,29 @@ char Game::play() {
                 }
                 else if (curPiece->isValidMove(end, theBoard)) 
                 {
-                    Board* snapshot = theBoard; //this will be for checking for check after a move has been made and possibly reverting it,
-                                                //it will need to use the copy constructor to actually work, but I'm not using it rn -Blake
-                    snapshot->updateBoard(start, end);
-                    if (snapshot->isChecked(curMove)) { // player puts themselves in check
-                        delete snapshot;
-                        cout << "This move puts yourself in check. Please make another move." << endl;
-                        continue;
-                    } 
-                    if (!handlePromotion(get<0>(move), get<1>(move), get<2>(move))) {
+                    if (!handlePromotion(get<0>(move), get<1>(move), get<2>(move)))
+                    {
                         cout << "You cannot promote to that piece. Please try again." << endl;
-                        continue;
-                    }
-                    if (!handleCastle(get<0>(move), get<1>(move))) {
+                    } else if (!handleCastle(get<0>(move), get<1>(move)))
+                    {
                         cout << "You may not castle now. Please make another move." << endl;
-                        continue;
+                    } else {
+                        Board *snapshot = new Board(*theBoard); // this will be for checking for check after a move has been made and possibly reverting it,
+                                                    // it will need to use the copy constructor to actually work, but I'm not using it rn -Blake
+                        snapshot->updateBoard(start, end);
+                        if (snapshot->isChecked(curMove))
+                        { // player puts themselves in check
+                            delete snapshot;
+                            cout << "This move puts yourself in check. Please make another move." << endl;
+                        } else {  // happy path
+                            delete snapshot;
+                            theBoard->updateBoard(start, end);
+                            gameState curState = this->getState();
+                            cout << theBoard;
+                            moveDone = true;
+                            curMove = (curMove + 1) % 2; // Flip the player's turn
+                        }
                     }
-                    
-                    theBoard->updateBoard(start, end);
-                    gameState curState = this->getState();
-                    cout << theBoard;
-                    moveDone = true;
-                    curMove = (curMove + 1) % 2; // Flip the player's turn
                 }
                 else
                 {
