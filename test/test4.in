@@ -1,7 +1,0 @@
-setup 
-+ Q d1
-done
-game human human
-move d1 d3
-move d3 g4
-resign
