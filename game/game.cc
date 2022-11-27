@@ -180,7 +180,10 @@ bool Game::isBoardValid(){
     if (Pawns != 0){
         result = false;
     }
-    // no implementation to check if either king is in check or not
+    // Checking if either of the kings is in check
+    if (theBoard->isChecked(0) == true || theBoard->isChecked(1) == true){
+        result = false;
+    }
     return result;
 }
 
