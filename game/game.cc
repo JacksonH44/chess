@@ -149,6 +149,41 @@ bool Game::handleCastle(pos a, pos b) {
     return true;
 }
 
+bool Game::isBoardValid(){
+    bool result = true;
+    int BKings = theBoard->countPieces('k');
+    int Wkings = theBoard->countPieces('K');
+    // Checking if there is only one white king and one black king
+    if (BKings != 1 || Wkings!= 1){
+        result = false;
+    }
+    // Checking if there are any pawns on the last rows
+    int Pawns = 0;
+    for (int i = 0; i < 1; ++i) {
+        for (int j = 0; j < 8; ++j) {
+            if (theBoard->getPiece({i, j}) != nullptr) {
+                if (theBoard->getPiece({i, j})->getType() == 'p' || theBoard->getPiece({i, j})->getType() == 'P') {
+                    ++Pawns;
+                }
+            }
+        }
+    }
+    for (int i = 7; i < 8; ++i) {
+        for (int j = 0; j < 8; ++j) {
+            if (theBoard->getPiece({i, j}) != nullptr) {
+                if (theBoard->getPiece({i, j})->getType() == 'p' || theBoard->getPiece({i, j})->getType() == 'P') {
+                    ++Pawns;
+                }
+            }
+        }
+    }
+    if (Pawns != 0){
+        result = false;
+    }
+    // no implementation to check if either king is in check or not
+    return result;
+}
+
 char Game::play() {
     
     theBoard->updateBoard(pos{-1, -1}, pos{-1, -1});
