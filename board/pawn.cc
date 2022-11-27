@@ -62,7 +62,6 @@ void Pawn::updateValidMoves(Board* board, pos p) {
 }
 
 bool Pawn::validate(pos p, Board* board){
-    std::cout << validMoves[0].x << validMoves[0].y << std::endl;
     if (find(validMoves.begin(), validMoves.end(), p) != validMoves.end()) {
         return true;
     } else {
