@@ -2,6 +2,8 @@
 #define _PIECE_H_
 #include "../pos.h"
 #include <iostream>
+#include <vector>
+#include "../pos.h"
 
 class Board;
 
@@ -11,6 +13,7 @@ protected:
    virtual bool validate(pos, Board* board) = 0;
    int colour;
    pos *position;
+   std::vector<pos> validMoves;
 
 public:
    Piece(int colour, pos* position); // Constructor
@@ -20,6 +23,8 @@ public:
    int getColour();
 
    bool isValidMove(pos p, Board* board);
+
+   virtual void updateValidMoves(Board* board, pos p) = 0;  // Updates a list of all valid moves
 
    void setPos(pos* p);
 

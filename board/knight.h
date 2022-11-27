@@ -12,6 +12,8 @@ public:
     
     bool validate(pos p, Board* board) override;
 
+    void updateValidMoves(Board* board, pos p) override;
+
     char getType() const override;
 
     Knight *deepCopy() const override; // deep copy

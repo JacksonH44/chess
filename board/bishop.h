@@ -12,6 +12,8 @@ public:
     
     bool validate(pos p, Board* board) override;
 
+    void updateValidMoves(Board* board, pos p) override;  // update all valid moves
+
     char getType() const override;
 
     Bishop *deepCopy() const override; // deep copy

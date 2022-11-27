@@ -18,6 +18,11 @@ char Bishop::getType() const {
     return type;
 }
 
+void Bishop::updateValidMoves(Board* board, pos p) {
+    this->position->x = p.x;
+    this->position->y = p.y;
+}
+
 bool Bishop::validate(pos p, Board* board) {
     return false;
 }

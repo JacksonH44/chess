@@ -24,6 +24,11 @@ pos& pos::operator=(const pos& other) {
     return *this;
 }
 
+// determine if it is in the board bounds
+bool pos::inBounds() {
+    return 0 <= x && x < 8 && 0 <= y && y < 8;
+}
+
 // addition
 pos operator+(const pos &pos1, const pos &pos2)
 {

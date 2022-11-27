@@ -14,6 +14,8 @@ class Queen : public Piece{
 
     bool validate(pos p, Board* board) override;
 
+    void updateValidMoves(Board* board, pos p) override;
+
     Queen* deepCopy() const override;  // deep copy
 };
 

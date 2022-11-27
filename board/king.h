@@ -13,6 +13,8 @@ public:
 
     bool validate(pos p, Board* board) override;
 
+    void updateValidMoves(Board* board, pos p) override;
+
     bool castle();
 
     char getType() const override;

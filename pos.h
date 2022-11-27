@@ -14,6 +14,8 @@ struct pos {
     bool operator!=(const pos& other); // inequality
 
     pos& operator=(const pos& other);  // copy assignment
+
+    bool inBounds();  // in board boundary
 };
 
 pos convertPos(std::string& s);

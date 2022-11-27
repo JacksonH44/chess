@@ -51,6 +51,7 @@ bool isMovePromotion(pos* from, pos* to) {
 
 char Game::play() {
     cout << theBoard;
+    theBoard->updateBoard(pos{-1, -1}, pos{-1, -1});
     state = ongoing;
     delete whitePlayer;
     delete blackPlayer;
@@ -68,6 +69,7 @@ char Game::play() {
 
     tuple<pos, pos, char> move ({-1, -1}, {-1, -1}, ' ');
     Player* curPlayer;
+    curMove = 1;
     while (state == whiteChecked || state == blackChecked || state == ongoing) {
         
         if (curMove == 1) {

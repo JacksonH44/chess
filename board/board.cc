@@ -44,9 +44,18 @@ Board::Board(const Board& other) { // copy ctor
 
 // Method that moves a piece from one location to another
 void Board::updateBoard(pos a, pos b) {
-    Piece* curPiece = theBoard[a.y][a.x];
-    this->setPiece(curPiece, b);
-    theBoard[a.y][a.x] = nullptr;
+    if (a.inBounds() && b.inBounds()) {
+        Piece *curPiece = theBoard[a.y][a.x];
+        this->setPiece(curPiece, b);
+        theBoard[a.y][a.x] = nullptr;
+    }
+    for (int i = 0; i < 8; ++i) {
+        for (int j = 0; j < 8; ++j) {
+            if (theBoard[i][j] != nullptr) {
+                theBoard[i][j]->updateValidMoves(this, pos{j,i});
+            }
+        }
+    }
 }
 
 // Count number of pieces of a certain type (case sensitive)

@@ -18,6 +18,11 @@ char Knight::getType() const {
     return type;
 }
 
+void Knight::updateValidMoves(Board* board, pos p) {
+    this->position->x = p.x;
+    this->position->y = p.y;
+}
+
 bool Knight::validate(pos p, Board* board) {
     int xDist = position->x - p.x;
     int yDist = position->y - p.y;

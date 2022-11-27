@@ -14,6 +14,11 @@ Rook *Rook::deepCopy() const
     return (new Rook{*this});
 }
 
+void Rook::updateValidMoves(Board* board, pos p) { 
+    this->position->x = p.x;
+    this->position->y = p.y;
+}
+
 bool Rook::validate(pos p, Board* board){
     return false;
 }

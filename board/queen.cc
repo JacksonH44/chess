@@ -18,6 +18,11 @@ Queen* Queen::deepCopy() const { // deep copy method
     return (new Queen{*this});
 }
 
+void Queen::updateValidMoves(Board* board, pos p) {
+    this->position->x = p.x;
+    this->position->y = p.y;
+}
+
 bool Queen::validate(pos p, Board* board){
 
     // Check for valid move type for a queen:

@@ -23,6 +23,11 @@ char King::getType() const
     return type;
 }
 
+void King::updateValidMoves(Board* board, pos p) {
+    this->position->x = p.x;
+    this->position->y = p.y;
+}
+
 bool King::validate(pos p, Board* board) {
     return false;
 }

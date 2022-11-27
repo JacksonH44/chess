@@ -1,0 +1,6 @@
+setup
++ P b2
+done
+game human human
+move b2 b3
+resign

@@ -28,6 +28,8 @@ public:
 
     gameState getState();  // get the current state of the board
 
+    bool isChecked(pos kingPos, int colour);  // Determines whether a player is in check
+
     void update(pos a, pos b);  // update the board with a move
 
     // checks to see if a move is valid (only in the sense that it adheres to direction and blocking)
