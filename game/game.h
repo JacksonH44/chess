@@ -48,6 +48,8 @@ public:
     bool handlePromotion(pos a, pos b, char piece);
 
     bool handleCastle(pos a, pos b);
+    
+    bool isBoardValid();
 };  
 
 #endif
