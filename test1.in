@@ -1,0 +1,6 @@
+setup
++ R h1
+done
+game human human
+move h1 a1
+resign
