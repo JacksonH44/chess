@@ -184,6 +184,7 @@ bool Game::isBoardValid(){
     return result;
 }
 
+
 char Game::play() {
     
     theBoard->updateBoard(pos{-1, -1}, pos{-1, -1});
