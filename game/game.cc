@@ -66,6 +66,8 @@ gameState Game::getState(){
                     this->state = ongoing;
                 }
                 return this->state;
+            } else {
+                delete snapshot;
             }
         }
     }
