@@ -1,4 +1,5 @@
 #include "player.h"
+#include "../game/game.h"
 
 Player::Player(int colour) : colour{colour}, checked{false} {} // Ctor
 

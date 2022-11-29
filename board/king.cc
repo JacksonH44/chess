@@ -114,10 +114,12 @@ bool King::validate(pos p, Board* board) {
                 && (p.y - this->position.y == 0)) 
     {
         //the rest of this is handled in game.cc
+        canCastle = false;
         return true;
     }
     else if (find(validMoves.begin(), validMoves.end(), p) != validMoves.end()) //normal case
     {
+        canCastle = false;
         return true;
     }
     else

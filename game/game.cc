@@ -220,24 +220,29 @@ bool Game::isBoardValid(){
     }
     // Checking if there are any pawns on the last rows
     int Pawns = 0;
-    for (int i = 0; i < 1; ++i) {
-        for (int j = 0; j < 8; ++j) {
-            if (theBoard->getPiece(pos{i, j}) != nullptr) {
-                if (theBoard->getPiece(pos{i, j})->getType() == 'p' || theBoard->getPiece(pos{i, j})->getType() == 'P') {
-                    ++Pawns;
-                }
+
+    for (int j = 0; j < 8; ++j)
+    {
+        if (theBoard->getPiece(pos{j, 0}) != nullptr)
+        {
+            if (theBoard->getPiece(pos{j, 0})->getType() == 'p' || theBoard->getPiece(pos{j, 0})->getType() == 'P')
+            {
+                ++Pawns;
             }
         }
     }
-    for (int i = 7; i < 8; ++i) {
-        for (int j = 0; j < 8; ++j) {
-            if (theBoard->getPiece(pos{i, j}) != nullptr) {
-                if (theBoard->getPiece(pos{i, j})->getType() == 'p' || theBoard->getPiece(pos{i, j})->getType() == 'P') {
-                    ++Pawns;
-                }
+
+    for (int j = 0; j < 8; ++j)
+    {
+        if (theBoard->getPiece(pos{j, 7}) != nullptr)
+        {
+            if (theBoard->getPiece(pos{j, 7})->getType() == 'p' || theBoard->getPiece(pos{j, 7})->getType() == 'P')
+            {
+                ++Pawns;
             }
         }
     }
+
     if (Pawns != 0){
         return false;
     }
@@ -259,8 +264,8 @@ char Game::play() {
     cin >> p1;
     cin >> p2;
     try {
-        whitePlayer = PlayerFactory::createPlayer(p1, 1);
-        blackPlayer = PlayerFactory::createPlayer(p2, 0);
+        whitePlayer = PlayerFactory::createPlayer(p1, 1, this);
+        blackPlayer = PlayerFactory::createPlayer(p2, 0, this);
     }
     catch (...) {
         return 'i'; //return i for invalid setup

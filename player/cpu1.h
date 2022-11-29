@@ -13,6 +13,7 @@
 class CPU1 : public Player
 {
 Game* theGame;
+
 public:
     CPU1(int colour, Game* theGame); // ctor
 

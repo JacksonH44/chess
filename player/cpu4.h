@@ -6,11 +6,15 @@
 #include "../pos.h"
 #include <istream>
 
+class Game;
+
 /** CPU4 player subclass */
 class CPU4 : public Player
 {
+Game* game;
+
 public:
-    CPU4(int colour);
+    CPU4(int colour, Game* game);
 
     std::tuple<pos, pos, char> determineMove(std::istream& in) override;
 };

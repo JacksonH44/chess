@@ -1,0 +1,32 @@
+setup
++ r a8
++ n b8
++ b f8
++ n g8
++ p a7
++ k f7
++ p g7
++ r h7
++ P a6
++ P d6
++ B f5
++ p h6
++ p b5
++ q g5
++ P h5
++ P b4
++ p g4
++ N a3
++ p c3
++ P e3
++ b f3
++ R h3
++ R a2
++ P c2
++ P d2
++ N e2
++ B c1
++ Q d1
++ K e1
+done
+game computer1 computer1
