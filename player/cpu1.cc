@@ -21,6 +21,11 @@ tuple<pos, pos, char> CPU1::determineMove(istream& in){
         randomPieceIndex = (rand() % AvailablePieces.size());
         randomPiece = AvailablePieces[randomPieceIndex];
     }
+    if (randomPiece->getType() == 'K' || randomPiece->getType() == 'k') {
+        for (pos a : randomPiece->getValidMoves()) {
+            pos myPos = randomPiece->getPos();
+        }
+    }
     int randomPosIndex = (rand() % randomPiece->getValidMoves().size());
     pos start = randomPiece->getPos();
     pos end = randomPiece->getValidMoves()[randomPosIndex];

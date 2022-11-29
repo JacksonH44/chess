@@ -23,6 +23,8 @@ Queen* Queen::deepCopy() const { // deep copy method
 void Queen::updateValidMoves(Board* board, pos p) {
     this->position.x = p.x;
     this->position.y = p.y;
+    validMoves.clear();
+
     bool up = true, down = true, left = true, right = true;
     bool upRight = true, upLeft = true, downRight = true, downLeft = true;
     int i = 1;

@@ -26,6 +26,8 @@ char Knight::getType() const {
 void Knight::updateValidMoves(Board* board, pos p) {
     this->position.x = p.x;
     this->position.y = p.y;
+    validMoves.clear();
+
     pos tmpPos = pos{this->position.x + 2, this->position.y + 1};
     if (tmpPos.inBounds()) {
         if (board->getPiece(tmpPos) != nullptr && board->getPiece(tmpPos)->getColour() != colour) {

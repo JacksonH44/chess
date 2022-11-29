@@ -20,6 +20,8 @@ Rook *Rook::deepCopy() const
 void Rook::updateValidMoves(Board* board, pos p) { 
     this->position.x = p.x;
     this->position.y = p.y;
+    validMoves.clear();
+
     bool up = true, down = true, right = true, left = true;
     int i = 1;
     while (up || down || right || left) {

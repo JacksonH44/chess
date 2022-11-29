@@ -29,6 +29,7 @@ char King::getType() const
 void King::updateValidMoves(Board* board, pos p) {
     this->position.x = p.x;
     this->position.y = p.y;
+    validMoves.clear();
 
     // move right
     pos tmpPos = pos{this->position.x + 1, this->position.y};

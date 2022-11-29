@@ -24,6 +24,8 @@ char Bishop::getType() const {
 void Bishop::updateValidMoves(Board* board, pos p) {
     this->position.x = p.x;
     this->position.y = p.y;
+    validMoves.clear();
+
     bool upRight = true, upLeft = true, downRight = true, downLeft = true;
     int i = 1;
     while (upRight || upLeft || downRight || downLeft) {
