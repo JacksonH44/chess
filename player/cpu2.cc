@@ -11,12 +11,12 @@ Game* CPU2::getGame(){
     return game;
 }
 
-vector<pos> checkingMoves(vector<pos> AvailableMoves){
-    return AvailableMoves;  // not implemented yet
+vector<pos> CPU2::checkingMoves(vector<pos> availableMoves){
+    return availableMoves;  // not implemented yet
 }
 
-vector<pos> CapturingMoves(vector<pos> AvailableMoves){
-    return AvailableMoves;  // not implemented yet
+vector<pos> CPU2::capturingMoves(vector<pos> availableMoves){
+    return availableMoves;  // not implemented yet
 }
 
 tuple<pos, pos, char> CPU2::determineMove(istream& in){
@@ -48,11 +48,11 @@ tuple<pos, pos, char> CPU2::determineMove(istream& in){
         if (curValidMoves.empty()){
             continue;
         }
-        vector<pos> capturingMoves = CapturingMoves(curValidMoves);
-        if (!(capturingMoves.empty())) {
+        vector<pos> curCapturingMoves = capturingMoves(curValidMoves);
+        if (!(curCapturingMoves.empty())) {
             pos start = selectedPiece->getPos();
-            randomPosIndex = (rand() % capturingMoves.size());
-            pos end = capturingMoves[randomPosIndex];
+            randomPosIndex = (rand() % curCapturingMoves.size());
+            pos end = curCapturingMoves[randomPosIndex];
             move = {start, end, ' '};
             return move;
         }
