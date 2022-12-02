@@ -14,6 +14,7 @@
 #include "board/pawn.h"
 #include "view/view.h"
 #include "view/textView.h"
+#include "view/graphicsView.h"
 #include <iomanip>
 
 using namespace std;
@@ -77,6 +78,7 @@ void setupLoop(Game* game) {
 	Board* board = new Board(); //assumed to be empty
 	game->setBoard(board);
 	game->addView(new TextView{board, cout});
+	game->addView(new GraphicsView{board});
     string s;
     int colour = 1;
 	

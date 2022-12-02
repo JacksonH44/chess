@@ -1,3 +1,41 @@
 #include "graphicsView.h"
+#include "../board/board.h"
+#include "window.h"
+#include "../board/piece.h"
+#include <string>
 
-void GraphicsView::printOutput(pos a, pos b) {}
+using namespace std;
+
+GraphicsView::GraphicsView(Board* board) : View{board}, window{new Xwindow(1200, 1200)} {
+    for (int i = 0; i < 8; ++i) {
+        window->drawString(32, i * 75 + 32, to_string(8 - i));
+        for (int j = 0; j < 8; ++j) {
+            if ((i + j) % 2 == 1)
+            {
+                window->fillRectangle(j * 75 + 75, i * 75, 75, 75, 4);
+            }
+            else
+            {
+                window->fillRectangle(j * 75 + 75, i * 75, 75, 75, 2);
+            }
+            Piece* curPiece = board->getPiece(pos{j,i});
+            if (curPiece != nullptr) {
+                string pieceName;
+                pieceName.push_back(curPiece->getType());
+                window->drawString(j * 75 + 32 + 75, i * 75 + 32, pieceName);
+            }
+        }
+    }
+
+    char legend = 'a';
+    for (int i = 0 ; i < 8; ++i) {
+        string s;
+        s.push_back(legend);
+        window->drawString(i * 75 + 32 + 75, 8 * 75 + 32, s);
+        ++legend;
+    }
+} // ctor
+
+void GraphicsView::printOutput(pos a, pos b) {
+
+}

@@ -13,6 +13,7 @@
 #include "../board/pawn.h" // Consider replacing all these with a pieceFactory class
 #include "../view/textView.h"
 #include "../view/view.h"
+#include "../view/graphicsView.h"
 #include <tuple>
 #include <vector>
 
@@ -286,6 +287,7 @@ char Game::play() {
     
     theBoard->updateBoard(pos{-1, -1}, pos{-1, -1});
     this->addView(new TextView{theBoard, cout});
+    this->addView(new GraphicsView{theBoard});
     state = ongoing;
     delete whitePlayer;
     delete blackPlayer;
