@@ -138,7 +138,7 @@ bool Game::handlePromotion(pos a, pos b, char piece) {
         }
         theBoard->setPiece(p, a);
     }
-    if (theBoard->getPiece(a)->getType() == 'P' && b.y == 0) {
+    else if (theBoard->getPiece(a)->getType() == 'P' && b.y == 0) {
         switch (piece) {
             case 'Q' :
                 p = new Queen(1, a);
@@ -181,17 +181,24 @@ bool Game::handleCastle(pos a, pos b) {
             return false;
         }
         // [check for in check, if so, return false] (can't be in check to start a castle)
+        if (theBoard->isChecked(curMove)) {
+            return false;
+        }
 
         Board* snapshot = new Board(*theBoard);
-        theBoard->updateBoard(a, {a.x-1, a.y}); //checking for in check on the in-between space. The end space is checked in play() after the move has been made
-        // check for in check, if so, return false
-        delete theBoard;
-        theBoard = snapshot;
+        snapshot->updateBoard(a, {a.x-1, a.y}); //checking for in check on the in-between space. The end space is checked in play() after the move has been made
+        if (snapshot->isChecked(curMove)) {
+            delete snapshot;
+            return false;
+        }
+        else {
+            delete snapshot;
+        }
         
         //all conditions passed, move rook to where it will be after castling, then play() handles the movement of the king
         theBoard->updateBoard({0, a.y}, {3, a.y});
     }
-    if (direction == 1) {
+    else if (direction == 1) {
         if ((theBoard->getPiece({a.x+3, a.y})->getType() != 'r' && theBoard->getPiece({a.x+3, a.y})->getType() != 'R') || !theBoard->getPiece({a.x+3, a.y})->castle()) {
             //not a rook in the corner or it can't castle
             return false;
@@ -202,11 +209,19 @@ bool Game::handleCastle(pos a, pos b) {
         }
         // [check for in check, if so, return false] (can't be in check to start a castle)
 
+        if (theBoard->isChecked(curMove)) {
+            return false;
+        }
+
         Board* snapshot = new Board(*theBoard);
-        theBoard->updateBoard(a, {a.x+1, a.y}); //checking for in check on the in-between space. The end space is checked in play() after the move has been made
-        // check for in check, if so, return false
-        delete theBoard;
-        theBoard = snapshot;
+        snapshot->updateBoard(a, {a.x+1, a.y}); //checking for in check on the in-between space. The end space is checked in play() after the move has been made
+        if (snapshot->isChecked(curMove)) {
+            delete snapshot;
+            return false;
+        }
+        else {
+            delete snapshot;
+        }
         //all conditions passed, move rook to where it will be after castling, then play() handles the movement of the king
         theBoard->updateBoard({7, a.y}, {5, a.y});
     }
@@ -330,8 +345,7 @@ char Game::play() {
                     {
                         cout << "You may not castle now. Please make another move." << endl;
                     } else {
-                        Board *snapshot = new Board(*theBoard); // this will be for checking for check after a move has been made and possibly reverting it,
-                                                    // it will need to use the copy constructor to actually work, but I'm not using it rn -Blake
+                        Board *snapshot = new Board(*theBoard); 
                         snapshot->updateBoard(start, end);
                         if (snapshot->isChecked(curMove))
                         { // player puts themselves in check

@@ -172,7 +172,7 @@ bool Board::isChecked(int colour) {
             for (int j = 0; j < 8; ++j) {
                 Piece* curPiece = this->getPiece(pos{i,j});
                 if (curPiece != nullptr) {
-                    if (curPiece->isValidMove(kingPos, this)) {  // check if all pieces can move onto the king's position
+                    if (curPiece->isValidMove(kingPos, this)) {  // check if any piece can move onto the king's position
                         return true;
                     }
                 }
