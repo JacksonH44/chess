@@ -3,9 +3,11 @@
 
 #include "view.h"
 
+struct pos;
+
 class GraphicsView : public View {
 public:
-    void printOutput() override;
+    void printOutput(pos a, pos b) override;
 };
 
 #endif

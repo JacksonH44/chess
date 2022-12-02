@@ -5,7 +5,7 @@
 
 struct pos;
 class Board;
-class GameView;
+class View;
 class Player;
 
 enum gameState
@@ -22,7 +22,7 @@ class Game {
     int curMove;
     gameState state = ongoing;
     Board* theBoard = nullptr;
-    GameView* theView;
+    View* theView;
     Player* whitePlayer = nullptr;
     Player* blackPlayer = nullptr;
 

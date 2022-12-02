@@ -11,6 +11,8 @@
 #include "../board/bishop.h"
 #include "../board/rook.h"
 #include "../board/pawn.h" // Consider replacing all these with a pieceFactory class
+#include "../view/textView.h"
+#include "../view/view.h"
 #include <tuple>
 #include <vector>
 
@@ -273,6 +275,7 @@ bool Game::isBoardValid(){
 char Game::play() {
     
     theBoard->updateBoard(pos{-1, -1}, pos{-1, -1});
+    theView = new TextView{theBoard, cout};
     state = ongoing;
     delete whitePlayer;
     delete blackPlayer;
@@ -287,8 +290,6 @@ char Game::play() {
     catch (...) {
         return 'i'; //return i for invalid setup
     }
-
-    cout << theBoard;
 
     tuple<pos, pos, char> move ({-1, -1}, {-1, -1}, ' ');
     Player* curPlayer;
@@ -355,7 +356,7 @@ char Game::play() {
                             delete snapshot;
                             theBoard->updateBoard(start, end);
                             gameState curState = this->getState();
-                            cout << theBoard;
+                            theView->printBoard(start, end);
                             if (curState == blackChecked) {
                                 cout << "black is in check." << endl;
                             } else if (curState == whiteChecked) {

@@ -1,3 +1,3 @@
 #include "graphicsView.h"
 
-void GraphicsView::printOutput() {}
+void GraphicsView::printOutput(pos a, pos b) {}
