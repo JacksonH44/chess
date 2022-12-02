@@ -8,6 +8,7 @@
 #include <istream>
 #include "../board/board.h"
 #include "../board/piece.h"
+#include <vector>
 
 class Game;
 
@@ -19,8 +20,8 @@ Game* game;
 public:
     CPU2(int colour, Game* game);
     Game* getGame();
-    vector<pos> CheckingMoves(vector<pos> AvailableMoves);
-    vector<pos> CapturingMoves(vector<pos> AvailableMoves);
+    std::vector<pos> checkingMoves(std::vector<pos> AvailableMoves);
+    std::vector<pos> CapturingMoves(std::vector<pos> AvailableMoves);
     std::tuple<pos, pos, char> determineMove(std::istream& in) override;
 };
 

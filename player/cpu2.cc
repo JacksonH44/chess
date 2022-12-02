@@ -11,7 +11,7 @@ Game* CPU2::getGame(){
     return game;
 }
 
-vector<pos> CheckingMoves(vector<pos> AvailableMoves){
+vector<pos> checkingMoves(vector<pos> AvailableMoves){
     return AvailableMoves;  // not implemented yet
 }
 
@@ -25,16 +25,19 @@ tuple<pos, pos, char> CPU2::determineMove(istream& in){
     Piece* selectedPiece =  AvailablePieces[0];
     int randomPosIndex = -1;
     tuple<pos, pos, char> move = {{0, 0}, {0, 0}, ' '};
+    vector<pos> curValidMoves = selectedPiece->getValidMoves();
+
     // if there are check moves
     for(int i = 0; i < apsize; ++i){
         selectedPiece =  AvailablePieces[i];
-        if (selectedPiece->getValidMoves().empty() == true){
+        if (curValidMoves.empty()){
             continue;
         }
-        if (CheckingMoves(selectedPiece->getValidMoves()).empty() != true){
+        vector<pos> curCheckingMoves = checkingMoves(curValidMoves);
+        if (!(curCheckingMoves.empty())) { // there are checking moves
             pos start = selectedPiece->getPos();
-            randomPosIndex = (rand() % CheckingMoves(selectedPiece->getValidMoves()).size());
-            pos end = CheckingMoves(selectedPiece->getValidMoves())[randomPosIndex];
+            randomPosIndex = (rand() % curCheckingMoves.size());
+            pos end = curCheckingMoves[randomPosIndex];
             move = {start, end, ' '};
             return move;
         }
@@ -42,13 +45,14 @@ tuple<pos, pos, char> CPU2::determineMove(istream& in){
     // if there are capturing moves
     for(int j = 0; j < apsize; ++j){
         selectedPiece =  AvailablePieces[j];
-        if (selectedPiece->getValidMoves().empty() == true){
+        if (curValidMoves.empty()){
             continue;
         }
-        if (CapturingMoves(selectedPiece->getValidMoves()).empty() != true){
+        vector<pos> capturingMoves = CapturingMoves(curValidMoves);
+        if (!(capturingMoves.empty())) {
             pos start = selectedPiece->getPos();
-            randomPosIndex = (rand() % CapturingMoves(selectedPiece->getValidMoves()).size());
-            pos end = CapturingMoves(selectedPiece->getValidMoves())[randomPosIndex];
+            randomPosIndex = (rand() % capturingMoves.size());
+            pos end = capturingMoves[randomPosIndex];
             move = {start, end, ' '};
             return move;
         }
@@ -56,13 +60,13 @@ tuple<pos, pos, char> CPU2::determineMove(istream& in){
     // random move
     int randomPieceIndex = (rand() % AvailablePieces.size());
     Piece* randomPiece = AvailablePieces[randomPieceIndex];
-    while((randomPiece->getValidMoves()).empty() == true){
+    while((randomPiece->getValidMoves()).empty()){
         // Remove piece with no available moves 
         AvailablePieces.erase(AvailablePieces.begin() + randomPieceIndex);
         randomPieceIndex = (rand() % AvailablePieces.size());
         randomPiece = AvailablePieces[randomPieceIndex];
     }
-    int randomPosIndex = (rand() % randomPiece->getValidMoves().size());
+    randomPosIndex = (rand() % randomPiece->getValidMoves().size());
     pos start = randomPiece->getPos();
     pos end = randomPiece->getValidMoves()[randomPosIndex];
 
@@ -85,6 +89,6 @@ tuple<pos, pos, char> CPU2::determineMove(istream& in){
         }
     }
 
-    tuple<pos, pos, char> move = {start, end, newPieceType};
+    move = {start, end, newPieceType};
     return move;
 }
