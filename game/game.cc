@@ -92,6 +92,16 @@ gameState Game::getState(){
     return this->state;
 }
 
+void Game::notify(pos a, pos b) {
+    for (auto view : views) {
+        view->printBoard(a, b);
+    }
+}
+
+void Game::addView(View* view) {
+    views.emplace_back(view);
+}
+
 void Game::update(pos a, pos b) {}
 
 bool Game::validate(pos a, pos b) {
@@ -275,7 +285,7 @@ bool Game::isBoardValid(){
 char Game::play() {
     
     theBoard->updateBoard(pos{-1, -1}, pos{-1, -1});
-    theView = new TextView{theBoard, cout};
+    this->addView(new TextView{theBoard, cout});
     state = ongoing;
     delete whitePlayer;
     delete blackPlayer;
@@ -356,7 +366,7 @@ char Game::play() {
                             delete snapshot;
                             theBoard->updateBoard(start, end);
                             gameState curState = this->getState();
-                            theView->printBoard(start, end);
+                            notify(start, end);
                             if (curState == blackChecked) {
                                 cout << "black is in check." << endl;
                             } else if (curState == whiteChecked) {

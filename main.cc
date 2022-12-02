@@ -12,6 +12,8 @@
 #include "board/bishop.h"
 #include "board/rook.h"
 #include "board/pawn.h"
+#include "view/view.h"
+#include "view/textView.h"
 #include <iomanip>
 
 using namespace std;
@@ -74,7 +76,7 @@ int main() {
 void setupLoop(Game* game) {
 	Board* board = new Board(); //assumed to be empty
 	game->setBoard(board);
-	cout << board;
+	game->addView(new TextView{board, cout});
     string s;
     int colour = 1;
 	
@@ -140,6 +142,7 @@ void setupLoop(Game* game) {
 			if (!invalid) {
 				board->setPiece(p, arraypos);
 			}
+			game->notify(arraypos, arraypos);
 		}
 
 		else if (s == "-") {
@@ -154,6 +157,7 @@ void setupLoop(Game* game) {
 			if (!invalid) {
 				game->getBoard()->setPiece(nullptr, arraypos);
 			}
+			game->notify(arraypos, arraypos);
 		}
 
 		else if (s == "=") {
@@ -189,8 +193,6 @@ void setupLoop(Game* game) {
 		if (invalid) {
 			cout << "invalid input" << endl;
 		}
-
-		cout << board << endl; // fix this
     }
 }
 

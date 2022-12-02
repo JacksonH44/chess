@@ -2,6 +2,7 @@
 #define _GAME_H_
 
 #include <tuple>
+#include <vector>
 
 struct pos;
 class Board;
@@ -22,7 +23,7 @@ class Game {
     int curMove;
     gameState state = ongoing;
     Board* theBoard = nullptr;
-    View* theView;
+    std::vector<View*> views;
     Player* whitePlayer = nullptr;
     Player* blackPlayer = nullptr;
 
@@ -30,6 +31,10 @@ public:
     ~Game(); // dtor
 
     gameState getState();  // get the current state of the board
+
+    void notify(pos a, pos b);
+
+    void addView(View* view);
 
     bool isChecked(pos kingPos, int colour);  // Determines whether a player is in check
 
