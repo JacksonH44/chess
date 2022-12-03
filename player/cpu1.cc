@@ -12,22 +12,39 @@ Game* CPU1::getGame(){
 }
 
 tuple<pos, pos, char> CPU1::determineMove(istream& in){
-    vector<Piece*> AvailablePieces = getGame()->getBoard()->getPieces(this->getColour());
-    int randomPieceIndex = (rand() % AvailablePieces.size());
-    Piece* randomPiece = AvailablePieces[randomPieceIndex];
-    while((randomPiece->getValidMoves()).empty() == true){
-        // Remove piece with no available moves 
-        AvailablePieces.erase(AvailablePieces.begin() + randomPieceIndex);
-        randomPieceIndex = (rand() % AvailablePieces.size());
-        randomPiece = AvailablePieces[randomPieceIndex];
+    Board *theBoard = getGame()->getBoard();
+
+    vector<Piece*> teamPieces = theBoard->getPieces(this->getColour());
+    vector<Piece*> availablePieces;
+    for (int i = 0; i < teamPieces.size(); ++i) {
+        if (!((teamPieces[i]->getValidMoves()).empty())) {
+            availablePieces.emplace_back(teamPieces[i]);
+        }
     }
-    int randomPosIndex = (rand() % randomPiece->getValidMoves().size());
-    pos start = randomPiece->getPos();
-    pos end = randomPiece->getValidMoves()[randomPosIndex];
+
+    vector<tuple<pos, pos>> safeMoves;
+
+    for (int i = 0; i < availablePieces.size(); ++i) {
+        Piece* selectedPiece = availablePieces[i];
+        vector<pos> curValidMoves = selectedPiece->getValidMoves();
+        for (int j = 0; j < curValidMoves.size(); ++j) {
+            tuple<pos, pos> move = {selectedPiece->getPos(), curValidMoves[j]};
+            Board *snapshot = new Board(*theBoard);
+            snapshot->updateBoard(selectedPiece->getPos(), curValidMoves[j]);
+            if (!snapshot->isChecked(this->getColour())) {
+                safeMoves.emplace_back(move);
+            }
+            delete snapshot;
+        }
+    }
+
+    tuple<pos, pos> selectedMove = safeMoves[rand() % safeMoves.size()];
+    pos start = get<0>(selectedMove);
+    pos end = get<1>(selectedMove);
 
     // pawn promotion
     char newPieceType = ' ';
-    if ((randomPiece->getType() == 'P' && end.y == 0) || (randomPiece->getType() == 'p' && end.y == 0)) {
+    if ((theBoard->getPiece(start)->getType() == 'P' && end.y == 0) || (theBoard->getPiece(start)->getType() == 'p' && end.y == 7)) {
         int pieceChoice = rand() % 4;
         switch(pieceChoice) {
             case 0: // Queen
@@ -42,8 +59,12 @@ tuple<pos, pos, char> CPU1::determineMove(istream& in){
             default: // Knight
                 newPieceType = 'N';
         }
+        if (this->getColour() == 0) {
+            newPieceType += 32; // converts to lowercase if black 
+        }
     }
 
     tuple<pos, pos, char> move = {start, end, newPieceType};
+    cout << "moving " << theBoard->getPiece(start)->getType() << " from " << convertBack(start) << " to " << convertBack(end) << endl;
     return move;
 }
