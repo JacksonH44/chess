@@ -2,6 +2,7 @@
 #include <vector>
 #include <algorithm>
 #include <iostream>
+#include <time.h>
 
 using namespace std;
 
@@ -12,6 +13,7 @@ Game* CPU1::getGame(){
 }
 
 tuple<pos, pos, char> CPU1::determineMove(istream& in){
+    srand(time(NULL)); // random seed
     Board *theBoard = getGame()->getBoard();
 
     vector<Piece*> teamPieces = theBoard->getPieces(this->getColour());

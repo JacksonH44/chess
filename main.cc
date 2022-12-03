@@ -34,14 +34,14 @@ int main() {
     Game* game = new Game();
 	Board* board = new Board();
 	game->setBoard(board);
-	game->addView(new TextView{board, cout});
-	game->addView(new GraphicsView{board});
     while (cin >> s){
 		bool invalid = false;
 		if (s == "game") {
 			if (board->isEmpty()) {
 				board->setToStart();
 			}
+			game->addView(new TextView{board, cout});
+			game->addView(new GraphicsView{board});
 			winner = game->play();
 			if (winner == 'w') {
 				whiteWins = whiteWins + 1;
@@ -85,7 +85,10 @@ int main() {
 
 void setupLoop(Game* game) {
 	Board* board = game->getBoard();
-    string s;
+	board->clear();
+	game->addView(new TextView{board, cout});
+	game->addView(new GraphicsView{board});
+	string s;
     int colour = 1;
 	
     while (cin >> s) {

@@ -329,7 +329,7 @@ char Game::play() {
     tuple<pos, pos, char> move ({-1, -1}, {-1, -1}, ' ');
     Player* curPlayer;
     curMove = 1;
-    notify(pos{0, 0}, pos{7, 7});
+    // notify(pos{0, 0}, pos{7, 7});
     while (state == whiteChecked || state == blackChecked || state == ongoing) {
         
         if (curMove == 1) {
@@ -437,7 +437,7 @@ char Game::play() {
 
         //}
     }//while
-
+    this->getBoard()->setToStart();
     if (state == whiteWin) {
         return 'w'; 
     }

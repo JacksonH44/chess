@@ -125,6 +125,8 @@ void Board::setToStart() {
                     curColour = 1;
                 } // white
                 theBoard[i][j] = new Pawn{curColour, pos{i, j}, true};
+            } else {
+                theBoard[i][j] = nullptr;
             }
         }
     }
