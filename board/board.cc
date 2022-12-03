@@ -194,3 +194,27 @@ void Board::resetPassantable(int colour) {
         }
     }
 }
+
+// determines if the board has no pieces on it
+bool Board::isEmpty() {
+    for (int i = 0; i < 8; ++i) {
+        for (int j = 0; j < 8; ++j) {
+            if (theBoard[i][j] != nullptr) {
+                return false;
+            }
+        }
+    }
+    return true;
+} 
+
+// clears the board
+void Board::clear() {
+    for (int i = 0; i < 8; ++i) {
+        for (int j = 0; j < 8; ++j) {
+            if (theBoard[i][j] != nullptr) {
+                delete theBoard[i][j];
+                theBoard[i][j] = nullptr;
+            }
+        }
+    }
+}

@@ -32,15 +32,15 @@ int main() {
 	char winner;
     string s;
     Game* game = new Game();
+	Board* board = new Board();
+	game->setBoard(board);
+	game->addView(new TextView{board, cout});
+	game->addView(new GraphicsView{board});
     while (cin >> s){
 		bool invalid = false;
 		if (s == "game") {
-			if (!game->getBoard()) {
-				Board* board = new Board(); //assumed to be empty
+			if (board->isEmpty()) {
 				board->setToStart();
-				game->setBoard(board);
-				game->addView(new TextView{board, cout});
-    			//game->addView(new GraphicsView{board});
 			}
 			winner = game->play();
 			if (winner == 'w') {
@@ -84,11 +84,7 @@ int main() {
 
 
 void setupLoop(Game* game) {
-	delete game->getBoard();
-	Board* board = new Board(); //assumed to be empty
-	game->setBoard(board);
-	game->addView(new TextView{board, cout});
-	//game->addView(new GraphicsView{board});
+	Board* board = game->getBoard();
     string s;
     int colour = 1;
 	
@@ -200,13 +196,13 @@ void setupLoop(Game* game) {
 		}
 
 		else if (s == "default") {
+			board->clear();
 			board->setToStart();
 			game->notify({0, 0}, {7, 7});
 		}
 
 		else if (s == "clear") {
-			delete board;
-			board = new Board();
+			board->clear();
 			game->notify({0, 0}, {7, 7});
 		}
 

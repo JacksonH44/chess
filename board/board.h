@@ -35,6 +35,10 @@ public:
 
     void resetPassantable(int colour); // sets all pawns to not be passantable
 
+    bool isEmpty(); // determines if the board has no pieces on it
+
+    void clear(); // clears the board
+
 };
 
 #endif
