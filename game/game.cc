@@ -43,7 +43,7 @@ gameState Game::getState(){
         return this->state;
     }
 
-    // determine if the player who's move it is not is in check
+    // determine if the player whose move it is not is in check
     bool playerChecked = theBoard->isChecked(playerThreatened);
 
     vector<Piece *> remainingPieces = theBoard->getPieces(playerThreatened);
@@ -91,7 +91,7 @@ gameState Game::getState(){
     }
     else
     { // The player is not in check but any move will put them in check
-        this->state = tieGame;
+        this->state = stalemate;
     }
     return this->state;
 }
@@ -400,6 +400,8 @@ char Game::play() {
                                 cout << "white is in check." << endl;
                             } else if (curState == tieGame) {
                                 return 't';
+                            } else if (curState == stalemate) {
+                                return 's';
                             } else if (curState == whiteWin) {
                                 return 'w';
                             } else if (curState == blackWin) {

@@ -53,6 +53,10 @@ int main() {
 				whiteWins = whiteWins + 0.5;
 				blackWins = blackWins + 0.5;
 				cout << "Tie game! Congratulations to both players!" << endl;
+			} else if (winner == 's') {
+				whiteWins = whiteWins + 0.5;
+				blackWins = blackWins + 0.5;
+				cout << "Stalemate! Congratulations to both players!" << endl;
 			}
 			else {
 				cout << "invalid players" << endl;
