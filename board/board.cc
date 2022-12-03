@@ -154,7 +154,9 @@ vector<Piece*> Board::getPieces(int col){
 void Board::setPiece(Piece* piece, pos position) {
     delete theBoard[position.y][position.x];
     theBoard[position.y][position.x] = piece;
-    piece->setPos(position);
+    if (piece != nullptr) {
+        piece->setPos(position);
+    }
 }
 
 // determine whether a player is in check
@@ -181,3 +183,14 @@ bool Board::isChecked(int colour) {
         return false;
     }
  }
+
+// sets all of the current player's pawns to not be passantable
+void Board::resetPassantable(int colour) {
+    for (int i = 0; i < 8; ++i) {
+        for (int j = 0; j < 8; ++j) {
+            if (theBoard[i][j] != nullptr && theBoard[i][j]->getColour() == colour) {
+                theBoard[i][j]->setPassantable(false);
+            }
+        }
+    }
+}

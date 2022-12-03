@@ -244,6 +244,27 @@ bool Game::handleCastle(pos a, pos b) {
     return true;
 }
 
+void Game::handlePassant(pos a, pos b) {
+    int colour = theBoard->getPiece(a)->getColour();
+    theBoard->resetPassantable(colour);
+    theBoard->getPiece(a)->setCanMoveTwo(false);
+
+    if (theBoard->getPiece(a)->getType() != 'p' && theBoard->getPiece(a)->getType() != 'P') {
+        //not a pawn making the move
+        return;
+    }
+
+    if (a.x != b.x && theBoard->getPiece(b) == nullptr) { // passant kill case
+        theBoard->setPiece(nullptr, {b.x, a.y});
+        return;
+    }
+
+    if ((a.y - b.y == 2) || (a.y - b.y == -2)) { // set passantable to true if pawn moves 2
+        theBoard->getPiece(a)->setPassantable(true);
+        return;
+    }
+}
+
 bool Game::isBoardValid(){
     int BKings = theBoard->countPieces('k');
     int Wkings = theBoard->countPieces('K');
@@ -252,7 +273,7 @@ bool Game::isBoardValid(){
         return false;
     }
     // Checking if there are any pawns on the last rows
-    int Pawns = 0;
+    int pawns = 0;
 
     for (int j = 0; j < 8; ++j)
     {
@@ -260,7 +281,7 @@ bool Game::isBoardValid(){
         {
             if (theBoard->getPiece(pos{j, 0})->getType() == 'p' || theBoard->getPiece(pos{j, 0})->getType() == 'P')
             {
-                ++Pawns;
+                ++pawns;
             }
         }
     }
@@ -271,12 +292,12 @@ bool Game::isBoardValid(){
         {
             if (theBoard->getPiece(pos{j, 7})->getType() == 'p' || theBoard->getPiece(pos{j, 7})->getType() == 'P')
             {
-                ++Pawns;
+                ++pawns;
             }
         }
     }
 
-    if (Pawns != 0){
+    if (pawns != 0){
         return false;
     }
     // Checking if either of the kings is in check
@@ -289,8 +310,7 @@ bool Game::isBoardValid(){
 char Game::play() {
     
     theBoard->updateBoard(pos{-1, -1}, pos{-1, -1});
-    this->addView(new TextView{theBoard, cout});
-    this->addView(new GraphicsView{theBoard});
+    
     state = ongoing;
     delete whitePlayer;
     delete blackPlayer;
@@ -354,6 +374,8 @@ char Game::play() {
                 }
                 else if (curPiece->isValidMove(end, theBoard)) 
                 {
+                    Board *snapshot = new Board(*theBoard); 
+                    handlePassant(get<0>(move), get<1>(move));
                     if (!handlePromotion(get<0>(move), get<1>(move), get<2>(move)))
                     {
                         cout << "You cannot promote to that piece. Please try again." << endl;
@@ -361,15 +383,15 @@ char Game::play() {
                     {
                         cout << "You may not castle now. Please make another move." << endl;
                     } else {
-                        Board *snapshot = new Board(*theBoard); 
-                        snapshot->updateBoard(start, end);
-                        if (snapshot->isChecked(curMove))
+                        
+                        theBoard->updateBoard(start, end);
+                        if (theBoard->isChecked(curMove))
                         { // player puts themselves in check
-                            delete snapshot;
+                            delete theBoard;
+                            theBoard = snapshot;
                             cout << "You are in check. Please make another move." << endl;
                         } else {  // happy path
                             delete snapshot;
-                            theBoard->updateBoard(start, end);
                             gameState curState = this->getState();
                             notify(start, end);
                             if (curState == blackChecked) {
@@ -377,11 +399,11 @@ char Game::play() {
                             } else if (curState == whiteChecked) {
                                 cout << "white is in check." << endl;
                             } else if (curState == tieGame) {
-                                cout << "Tie game! Congratulations to both players!" << endl;
+                                return 't';
                             } else if (curState == whiteWin) {
-                                cout << "White wins! Congratulations!" << endl;
+                                return 'w';
                             } else if (curState == blackWin) {
-                                cout << "Black wins! Congratulations!" << endl;
+                                return 'b';
                             }
                             moveDone = true;
                             curMove = (curMove + 1) % 2; // Flip the player's turn

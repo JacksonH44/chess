@@ -33,6 +33,8 @@ public:
 
     bool isChecked(int colour); // determines if the player with that colour is in check
 
+    void resetPassantable(int colour); // sets all pawns to not be passantable
+
 };
 
 #endif

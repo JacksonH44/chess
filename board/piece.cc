@@ -55,4 +55,17 @@ bool Piece::castle() {
     return false;
 }
 
+//Needed so we can call isPassantable() on Pawns stored in Piece pointers
+bool Piece::isPassantable() {
+    return false;
+}
+
+void Piece::setPassantable(bool P) {
+    // literally do nothing for every piece type except pawn
+}
+
+void Piece::setCanMoveTwo(bool b) {
+    // literally do nothing for every piece type except pawn
+}
+
 Piece::~Piece(){}

@@ -39,15 +39,20 @@ int main() {
 				Board* board = new Board(); //assumed to be empty
 				board->setToStart();
 				game->setBoard(board);
+				game->addView(new TextView{board, cout});
+    			game->addView(new GraphicsView{theBoard});
 			}
 			winner = game->play();
 			if (winner == 'w') {
 				whiteWins = whiteWins + 1;
+				cout << "White wins! Congratulations!" << endl;
 			} else if (winner == 'b') {
 				blackWins = blackWins + 1;
+				cout << "Black wins! Congratulations!" << endl;
 			} else if (winner == 't') {
 				whiteWins = whiteWins + 0.5;
 				blackWins = blackWins + 0.5;
+				cout << "Tie game! Congratulations to both players!" << endl;
 			}
 			else {
 				cout << "invalid players" << endl;

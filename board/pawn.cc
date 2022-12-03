@@ -4,14 +4,14 @@
 
 using namespace std;
 
-Pawn::Pawn(int colour, pos position, bool canPassant) : Piece{colour, position}, canPassant{canPassant}, type{'p'} {
+Pawn::Pawn(int colour, pos position, bool canMoveTwo) : Piece{colour, position}, canMoveTwo{canMoveTwo}, type{'p'} {
     if (colour == 1)
     {
         type = 'P';
     }
 }
 
-Pawn::Pawn(const Pawn &other) : Piece{other}, type{other.type}, canPassant{other.canPassant} {} // copy ctor
+Pawn::Pawn(const Pawn &other) : Piece{other}, type{other.type}, canMoveTwo{other.canMoveTwo} {} // copy ctor
 
 Pawn *Pawn::deepCopy() const
 { // deep copy method
@@ -30,7 +30,7 @@ void Pawn::updateValidMoves(Board* board, pos p) {
     if (tmpPos.inBounds() && board->getPiece(tmpPos) == nullptr)
     { // good
         validMoves.emplace_back(tmpPos);
-        if (canPassant)
+        if (canMoveTwo)
         {
             tmpPos = pos{this->position.x, this->position.y + (dir * 2)};
             if (tmpPos.inBounds() && board->getPiece(tmpPos) == nullptr)
@@ -44,8 +44,15 @@ void Pawn::updateValidMoves(Board* board, pos p) {
     tmpPos = pos{this->position.x - 1, this->position.y + (dir * 1)};
     if (tmpPos.inBounds()) {
         Piece* tmpPiece = board->getPiece(tmpPos);
-        if (tmpPiece != nullptr && tmpPiece->getColour() != colour) {
+        if (tmpPiece != nullptr && tmpPiece->getColour() != colour) 
+        {
             validMoves.emplace_back(tmpPos);
+        }
+        else {
+            tmpPiece = board->getPiece(pos{this->position.x - 1, this->position.y});
+            if (tmpPiece != nullptr && tmpPiece->getColour() != colour && tmpPiece->isPassantable()) {
+                validMoves.emplace_back(tmpPos);
+            }
         }
     }
 
@@ -57,6 +64,12 @@ void Pawn::updateValidMoves(Board* board, pos p) {
         if (tmpPiece != nullptr && tmpPiece->getColour() != colour)
         {
             validMoves.emplace_back(tmpPos);
+        }
+        else {
+            tmpPiece = board->getPiece(pos{this->position.x + 1, this->position.y});
+            if (tmpPiece != nullptr && tmpPiece->getColour() != colour && tmpPiece->isPassantable()) {
+                validMoves.emplace_back(tmpPos);
+            }
         }
     }
 }
@@ -77,15 +90,15 @@ bool Pawn::validate(pos p, Board* board){
     //             } else {
     //                 return true; // free space one step ahead
     //             }
-    //         } else if (yDist == -2) { // passant attempt
+    //         } else if (yDist == -2) { // moveTwo attempt
     //             if ((board->getPiece(pos{p.x, p.y - 1}) == nullptr) && (board->getPiece(pos{p.x, p.y}) == nullptr)) {
-    //                 if (canPassant) {  // one-time passant
-    //                     canPassant = false;
+    //                 if (canMoveTwo) {  // one-time moveTwo
+    //                     canMoveTwo = false;
     //                     return true;
     //                 }
     //                 else {
     //                     return false;
-    //                 } // Not blocked, depends on whether can passant or not
+    //                 } // Not blocked, depends on whether can moveTwo or not
     //             } else {
     //                 return false; // blocked
     //             }
@@ -109,10 +122,10 @@ bool Pawn::validate(pos p, Board* board){
     //             } else {
     //                 return true;  // valid move one step up
     //             }
-    //         } else if (yDist == 2) { // passant attempt
+    //         } else if (yDist == 2) { // moveTwo attempt
     //             if ((board->getPiece(pos{p.x, p.y + 1}) == nullptr) && (board->getPiece(pos{p.x, p.y}) == nullptr)) {
-    //                 if (canPassant) { // one-time passant
-    //                     canPassant = false;
+    //                 if (canMoveTwo) { // one-time moveTwo
+    //                     canMoveTwo = false;
     //                     return true;
     //                 } else {
     //                     return false;
@@ -134,8 +147,20 @@ bool Pawn::validate(pos p, Board* board){
     // return false;
 }
 
-bool Pawn::passant() {
-    return canPassant;
+bool Pawn::moveTwo() {
+    return canMoveTwo;
+}
+
+void Pawn::setCanMoveTwo(bool b) {
+    canMoveTwo = b;
+}
+
+bool Pawn::isPassantable() {
+    return passantable;
+}
+
+void Pawn::setPassantable(bool p) {
+    this->passantable = p;
 }
 
 char Pawn::getType() const {

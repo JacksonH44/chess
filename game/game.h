@@ -55,6 +55,8 @@ public:
 
     bool handleCastle(pos a, pos b);
 
+    void handlePassant(pos a, pos b);
+
     bool isBoardValid();
 };  
 
