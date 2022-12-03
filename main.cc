@@ -40,7 +40,7 @@ int main() {
 				board->setToStart();
 				game->setBoard(board);
 				game->addView(new TextView{board, cout});
-    			game->addView(new GraphicsView{theBoard});
+    			game->addView(new GraphicsView{board});
 			}
 			winner = game->play();
 			if (winner == 'w') {
