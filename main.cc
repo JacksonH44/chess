@@ -40,7 +40,7 @@ int main() {
 				board->setToStart();
 				game->setBoard(board);
 				game->addView(new TextView{board, cout});
-    			game->addView(new GraphicsView{board});
+    			//game->addView(new GraphicsView{board});
 			}
 			winner = game->play();
 			if (winner == 'w') {
@@ -84,10 +84,11 @@ int main() {
 
 
 void setupLoop(Game* game) {
+	delete game->getBoard();
 	Board* board = new Board(); //assumed to be empty
 	game->setBoard(board);
 	game->addView(new TextView{board, cout});
-	game->addView(new GraphicsView{board});
+	//game->addView(new GraphicsView{board});
     string s;
     int colour = 1;
 	
@@ -186,6 +187,7 @@ void setupLoop(Game* game) {
 
 		else if (s == "done") {
 			// game->setBoard(board);
+			board->updateBoard(pos{-1, -1}, pos{-1, -1}); // this just makes it updateValidMoves for all pieces
 			if (game->isBoardValid()) {
 				return;
 			} else {
@@ -195,6 +197,17 @@ void setupLoop(Game* game) {
 			//TODO
 			// cout << "not implemented yet" << endl;
 			// return;
+		}
+
+		else if (s == "default") {
+			board->setToStart();
+			game->notify({0, 0}, {7, 7});
+		}
+
+		else if (s == "clear") {
+			delete board;
+			board = new Board();
+			game->notify({0, 0}, {7, 7});
 		}
 
 		else {

@@ -44,7 +44,7 @@ Board::Board(const Board& other) { // copy ctor
 
 // Method that moves a piece from one location to another
 void Board::updateBoard(pos a, pos b) {
-    if (a.inBounds() && b.inBounds()) {
+    if (a.inBounds() && b.inBounds() && a != b) {
         Piece *curPiece = theBoard[a.y][a.x];
         this->setPiece(curPiece, b);
         theBoard[a.y][a.x] = nullptr;
