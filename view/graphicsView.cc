@@ -38,41 +38,41 @@ GraphicsView::GraphicsView(Board* board) : View{board}, window{new Xwindow(1200,
 
 void GraphicsView::printOutput(pos a, pos b) {
     Piece* startPiece = board->getPiece(a);
-    if (startPiece == nullptr) {
-        int colour;
-        if ((a.x + a.y) % 2 == 1) {
-            colour = 4;
-        } else {
-            colour = 2;
-        }
-        window->fillRectangle(a.x * 75 + 75, a.y * 75, 75, 75, colour);
-        window->drawString(a.x * 75 + 32 + 75, a.y * 75 + 32, " ");
-    } else {
+    int colour;
+    if ((a.x + a.y) % 2 == 1)
+    {
+        colour = 4;
+    }
+    else
+    {
+        colour = 2;
+    }
+    window->fillRectangle(a.x * 75 + 75, a.y * 75, 75, 75, colour);
+    if (startPiece != nullptr) {
         char pieceType = startPiece->getType();
         string s;
         s.push_back(pieceType);
         window->drawString(a.x * 75 + 32 + 75, a.y * 75 + 32, s);
     }
     Piece *endPiece = board->getPiece(b);
-    if (endPiece == nullptr)
+    if ((b.x + b.y) % 2 == 1)
     {
-        int colour;
-        if ((b.x + b.y) % 2 == 1)
-        {
-            colour = 4;
-        }
-        else
-        {
-            colour = 2;
-        }
-        window->fillRectangle(b.x * 75 + 75, b.y * 75, 75, 75, colour);
-        window->drawString(b.x * 75 + 32 + 75, b.y * 75 + 32, " ");
+        colour = 4;
     }
     else
+    {
+        colour = 2;
+    }
+    window->fillRectangle(b.x * 75 + 75, b.y * 75, 75, 75, colour);
+    if (endPiece != nullptr)
     {
         char pieceType = endPiece->getType();
         string s;
         s.push_back(pieceType);
         window->drawString(b.x * 75 + 32 + 75, b.y * 75 + 32, s);
     }
+}
+
+GraphicsView::~GraphicsView() {
+    delete window;
 }

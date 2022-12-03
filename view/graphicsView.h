@@ -14,6 +14,8 @@ public:
     GraphicsView(Board* board); // ctor
 
     void printOutput(pos a, pos b) override;
+
+    ~GraphicsView() override;
 };
 
 #endif

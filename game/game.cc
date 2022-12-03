@@ -23,6 +23,9 @@ Game::~Game() {
     delete theBoard;
     delete blackPlayer;
     delete whitePlayer;
+    for (auto view : views) {
+        delete view;
+    }
 }
 
 // Function that checks the game state after a player has made a valid move
