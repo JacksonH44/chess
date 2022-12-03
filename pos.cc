@@ -57,3 +57,13 @@ pos convertPos(std::string& s)
     int y = 8 - yc; // converts from chessboard y to array y
     return pos(x, y);
 }
+
+std::string convertBack(pos p) {
+    char x = p.x + 'a';
+    int yi = 8 - p.y;
+    char y = yi + '0';
+    std::string s = "";
+    s.append(1, x);
+    s.append(1, y);
+    return s;
+}

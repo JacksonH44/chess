@@ -19,5 +19,6 @@ struct pos {
 };
 
 pos convertPos(std::string& s);
+std::string convertBack(pos);
 
 #endif
