@@ -16,6 +16,8 @@ Game* game;
 public:
     CPU3(int colour, Game* game); // ctor
 
+    Game* getGame();
+
     std::tuple<pos, pos, char> determineMove(std::istream& in) override;
 };
 

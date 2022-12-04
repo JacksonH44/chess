@@ -4,6 +4,7 @@
 #include <iostream>
 #include "../board/board.h"
 #include "../pos.h"
+#include <time.h>
 
 using namespace std;
 
@@ -97,6 +98,7 @@ vector<pos> CPU2::capturingMoves(vector<pos> availableMoves){
 
 
 tuple<pos, pos, char> CPU2::determineMove(istream& in){
+    srand(time(NULL));
     Board *theBoard = getGame()->getBoard();
 
     vector<Piece*> teamPieces = theBoard->getPieces(this->getColour());

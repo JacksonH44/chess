@@ -106,6 +106,13 @@ void Game::addView(View* view) {
     views.emplace_back(view);
 }
 
+void Game::clearViews() {
+    for (auto view : views) {
+        delete view;
+    }
+    views.clear();
+}
+
 void Game::update(pos a, pos b) {}
 
 bool Game::validate(pos a, pos b) {
@@ -437,7 +444,8 @@ char Game::play() {
 
         //}
     }//while
-    this->getBoard()->setToStart();
+    // this->getBoard()->clear();
+    // this->clearViews();
     if (state == whiteWin) {
         return 'w'; 
     }

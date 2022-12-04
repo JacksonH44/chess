@@ -61,6 +61,8 @@ int main() {
 			else {
 				cout << "invalid players" << endl;
 			}
+			board->clear();
+			game->clearViews();
 		}
 		else if (s == "setup") {
 			setupLoop(game);

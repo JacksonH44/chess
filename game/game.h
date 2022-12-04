@@ -37,6 +37,8 @@ public:
 
     void addView(View* view);
 
+    void clearViews();  // remove all views
+
     bool isChecked(pos kingPos, int colour);  // Determines whether a player is in check
 
     void update(pos a, pos b);  // update the board with a move
