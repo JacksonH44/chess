@@ -54,10 +54,40 @@ tuple<pos, pos, char> CPU3::determineMove(istream &in)
     }
 
     // split the safe moves into two groups: one that avoids capture and one that doesn't
-    vector<tuple<pos, pos>> avoidsCap;
-    vector<tuple<pos, pos>> getsCap;
+    vector<tuple<pos, pos>> cap;
+    vector<tuple<pos, pos>> noCap;
 
     for (auto move : safeMoves) {
+        if (theBoard->getPiece(get<1>(move)) != nullptr) 
+        { // capturing
+            cap.emplace_back(move);
+        } else 
+        { 
+            Board* snapshot = new Board{*theBoard};
+            snapshot->updateBoard(get<0>(move), get<1>(move));
+            if (snapshot->isChecked((this->getColour() + 1) % 2)) 
+            { // puts other player in check
+                cap.emplace_back(move);
+            } else {
+                noCap.emplace_back(move);
+            }
+            delete snapshot;
+        }
+    }
+
+    /**
+     * TIER 1: Moves that avoid capture and capture or put the other player in check
+     * TIER 2: Moves that capture or put the other player in check but do not avoid capture
+     * TIER 3: Moves that avoid capture
+     * TIER 4: Random moves
+     */
+    vector<tuple<pos, pos>> tier1;
+    vector<tuple<pos, pos>> tier2;
+    vector<tuple<pos, pos>> tier3;
+    vector<tuple<pos, pos>> tier4;
+
+    // check to see if any capturing moves avoid capture
+    for (auto move : cap) {
         bool getsCapped = false;
         Board* snapshot = new Board{*theBoard};
         pos start = get<0>(move);
@@ -75,70 +105,135 @@ tuple<pos, pos, char> CPU3::determineMove(istream &in)
             }
         }
 
-        for (auto oppPiece : oppAvailablePieces) {
-            for (auto oppMove : oppPiece->getValidMoves()) {
-                if (oppMove == end) 
+        for (auto oppPiece : oppAvailablePieces)
+        {
+            for (auto oppMove : oppPiece->getValidMoves())
+            {
+                if (oppMove == end)
                 { // opponent has a move that captures the piece after they've moved
-                    getsCap.emplace_back(move);
+                    tier2.emplace_back(move);
                     getsCapped = true;
                 }
             }
         }
-        if (!getsCapped) {
-            avoidsCap.emplace_back(move);
+        if (!getsCapped)
+        {
+            tier1.emplace_back(move);
         }
         delete snapshot;
     }
 
-    /**
-     * TIER 1: Moves that avoid capture and capture or put the other player in check
-     * TIER 2: Moves that avoid capture and do not capture or put the other player in check
-     * TIER 3: Moves that don't avoid capture and capture or put the other player in check
-     * TIER 4: Random moves
-    */
-   vector<tuple<pos,pos>> tier1;
-   vector<tuple<pos,pos>> tier2;
-   vector<tuple<pos,pos>> tier3;
-   vector<tuple<pos,pos>> tier4;
-
-    // check avoiding capture moves first
-    for (auto move : getsCap) {
-        if (theBoard->getPiece(get<1>(move)) != nullptr) 
-        { // other colour piece is there - capturing move
-            tier1.emplace_back(move);
-        } else {
-            Board* snapshot = new Board{*theBoard};
-            snapshot->updateBoard(get<0>(move), get<1>(move));
-            if (snapshot->isChecked((this->getColour() + 1) % 2))
-            { // puts the other player in check
-                tier1.emplace_back(move);
-            } else {
-                tier2.emplace_back(move);
-            }
-            delete snapshot;
-        }
-    }
-
-    // check non-avoiding capture moves second
-    for (auto move : avoidsCap)
+    // check to see if any non capturing moves avoid capture
+    for (auto move : noCap)
     {
-        if (theBoard->getPiece(get<1>(move)) != nullptr)
-        { // other colour piece is there - capturing move
+        bool getsCapped = false;
+        Board *snapshot = new Board{*theBoard};
+        pos start = get<0>(move);
+        pos end = get<1>(move);
+        snapshot->updateBoard(start, end);
+
+        // get opponent's pieces
+        vector<Piece *> oppPieces = snapshot->getPieces((this->getColour() + 1) % 2);
+        vector<Piece *> oppAvailablePieces;
+        for (int i = 0; i < oppPieces.size(); ++i)
+        {
+            if (!((oppPieces[i]->getValidMoves()).empty()))
+            {
+                oppAvailablePieces.emplace_back(oppPieces[i]);
+            }
+        }
+
+        for (auto oppPiece : oppAvailablePieces)
+        {
+            for (auto oppMove : oppPiece->getValidMoves())
+            {
+                if (oppMove == end)
+                { // opponent has a move that captures the piece after they've moved
+                    tier4.emplace_back(move);
+                    getsCapped = true;
+                }
+            }
+        }
+        if (!getsCapped)
+        {
             tier3.emplace_back(move);
         }
-        else
-        {
-            Board *snapshot = new Board{*theBoard};
-            snapshot->updateBoard(get<0>(move), get<1>(move));
-            if (snapshot->isChecked((this->getColour() + 1) % 2))
-            { // puts the other player in check
-                tier3.emplace_back(move);
-            } else {
-                tier4.emplace_back(move);
-            }
-            delete snapshot;
-        }
+        delete snapshot;
     }
+
+    // for (auto move : safeMoves) {
+    //     bool getsCapped = false;
+    //     Board* snapshot = new Board{*theBoard};
+    //     pos start = get<0>(move);
+    //     pos end = get<1>(move);
+    //     snapshot->updateBoard(start, end);
+
+    //     // get opponent's pieces
+    //     vector<Piece *> oppPieces = snapshot->getPieces((this->getColour() + 1) % 2);
+    //     vector<Piece *> oppAvailablePieces;
+    //     for (int i = 0; i < oppPieces.size(); ++i)
+    //     {
+    //         if (!((oppPieces[i]->getValidMoves()).empty()))
+    //         {
+    //             oppAvailablePieces.emplace_back(oppPieces[i]);
+    //         }
+    //     }
+
+    //     for (auto oppPiece : oppAvailablePieces) {
+    //         for (auto oppMove : oppPiece->getValidMoves()) {
+    //             if (oppMove == end) 
+    //             { // opponent has a move that captures the piece after they've moved
+    //                 getsCap.emplace_back(move);
+    //                 getsCapped = true;
+    //             }
+    //         }
+    //     }
+    //     if (!getsCapped) {
+    //         avoidsCap.emplace_back(move);
+    //     }
+    //     delete snapshot;
+    // }
+
+    
+
+    // // check avoiding capture moves first
+    // for (auto move : getsCap) {
+    //     if (theBoard->getPiece(get<1>(move)) != nullptr) 
+    //     { // other colour piece is there - capturing move
+    //         tier1.emplace_back(move);
+    //     } else {
+    //         Board* snapshot = new Board{*theBoard};
+    //         snapshot->updateBoard(get<0>(move), get<1>(move));
+    //         if (snapshot->isChecked((this->getColour() + 1) % 2))
+    //         { // puts the other player in check
+    //             tier1.emplace_back(move);
+    //         } else {
+    //             tier2.emplace_back(move);
+    //         }
+    //         delete snapshot;
+    //     }
+    // }
+
+    // // check non-avoiding capture moves second
+    // for (auto move : avoidsCap)
+    // {
+    //     if (theBoard->getPiece(get<1>(move)) != nullptr)
+    //     { // other colour piece is there - capturing move
+    //         tier3.emplace_back(move);
+    //     }
+    //     else
+    //     {
+    //         Board *snapshot = new Board{*theBoard};
+    //         snapshot->updateBoard(get<0>(move), get<1>(move));
+    //         if (snapshot->isChecked((this->getColour() + 1) % 2))
+    //         { // puts the other player in check
+    //             tier3.emplace_back(move);
+    //         } else {
+    //             tier4.emplace_back(move);
+    //         }
+    //         delete snapshot;
+    //     }
+    // }
 
     // for (int k = 0; k < oppAvailablePieces.size(); ++k)
     // {
