@@ -114,35 +114,39 @@ void King::updateValidMoves(Board* board, pos p) {
     }
 
     // castle left
-    if (canCastle) {
-        Piece* corner = board->getPiece(pos{this->position.x - 4, this->position.y});
+    tmpPos = pos{this->position.x - 2, this->position.y};
+    if (canCastle && tmpPos.inBounds()) {
+        Piece* corner = board->getPiece(pos{0, this->position.y});
         if ((corner != nullptr) && (corner->castle()) && 
         (board->getPiece(pos{this->position.x - 1, this->position.y}) == nullptr) &&
         (board->getPiece(pos{this->position.x - 2, this->position.y}) == nullptr) &&
         (board->getPiece(pos{this->position.x - 3, this->position.y}) == nullptr)) {
-            tmpPos = pos{this->position.x - 2, this->position.y};
             Board* snapshot = new Board(*board);
-            snapshot->getPiece(this->position)->setCanCastle(false); // prevents an infinite loop since updateBoard calls getValidMoves
-            snapshot->updateBoard(this->position, {this->position.x-1, this->position.y}); //checking for in check on the in-between space. The end space is checked in play() after the move has been made
             if (!snapshot->isChecked(this->getColour())) {
-                validMoves.emplace_back(tmpPos);
+                snapshot->getPiece(this->position)->setCanCastle(false); // prevents an infinite loop since updateBoard calls getValidMoves
+                snapshot->updateBoard(this->position, {this->position.x-1, this->position.y}); //checking for in check on the in-between space. The end space is checked in play() after the move has been made
+                if (!snapshot->isChecked(this->getColour())) {
+                    validMoves.emplace_back(tmpPos);
+                }
             }
             delete snapshot;
         }
     }
 
     // castle right
-    if (canCastle) {
-        Piece* corner = board->getPiece(pos{this->position.x + 3, this->position.y});
+    tmpPos = pos{this->position.x + 2, this->position.y};
+    if (canCastle && tmpPos.inBounds()) {
+        Piece* corner = board->getPiece(pos{7, this->position.y});
         if ((corner != nullptr) && (corner->castle()) && 
         (board->getPiece(pos{this->position.x + 1, this->position.y}) == nullptr) &&
         (board->getPiece(pos{this->position.x + 2, this->position.y}) == nullptr)) {
-            tmpPos = pos{this->position.x + 2, this->position.y};
             Board* snapshot = new Board(*board);
-            snapshot->getPiece(this->position)->setCanCastle(false); // prevents an infinite loop since updateBoard calls getValidMoves
-            snapshot->updateBoard(this->position, {this->position.x+1, this->position.y}); //checking for in check on the in-between space. The end space is checked in play() after the move has been made
             if (!snapshot->isChecked(this->getColour())) {
-                validMoves.emplace_back(tmpPos);
+                snapshot->getPiece(this->position)->setCanCastle(false); // prevents an infinite loop since updateBoard calls getValidMoves
+                snapshot->updateBoard(this->position, {this->position.x+1, this->position.y}); //checking for in check on the in-between space. The end space is checked in play() after the move has been made
+                if (!snapshot->isChecked(this->getColour())) {
+                    validMoves.emplace_back(tmpPos);
+                }
             }
             delete snapshot;
         }
