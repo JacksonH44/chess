@@ -16,6 +16,7 @@
 #include "view/textView.h"
 #include "view/graphicsView.h"
 #include <iomanip>
+#include <math.h>
 
 using namespace std;
 
@@ -79,10 +80,26 @@ int main() {
     } //while
 	delete game;
 
-    cout << "Final Score:" << endl;
-	cout << setprecision(1) << fixed;
-    cout << "White: " << whiteWins << endl;
-    cout << "Black: " << blackWins << endl;
+	cout << "Final Score:" << endl;
+
+	// check to see if there is a decimal
+	if (whiteWins == floor(whiteWins)) 
+	{ // no fractional part
+		cout << setprecision(0) << fixed;
+	} else {
+		cout << setprecision(1) << fixed;
+	}
+	cout << "White: " << whiteWins << endl;
+
+	if (blackWins == floor(blackWins))
+	{ // no fractional part
+		cout << setprecision(0) << fixed;
+	}
+	else
+	{
+		cout << setprecision(1) << fixed;
+	}
+	cout << "Black: " << blackWins << endl;
 
     return 0;
 }
