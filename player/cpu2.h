@@ -3,7 +3,6 @@
 
 #include "player.h"
 #include <tuple>
-#include "../pos.h"
 #include "../game/game.h"
 #include <istream>
 #include "../board/board.h"
@@ -11,6 +10,7 @@
 #include <vector>
 
 class Game;
+struct pos;
 
 /** CPU2 player subclass */
 class CPU2 : public Player

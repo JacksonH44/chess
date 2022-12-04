@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <iostream>
 #include <time.h>
+#include "../pos.h"
 
 using namespace std;
 

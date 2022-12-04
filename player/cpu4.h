@@ -3,10 +3,10 @@
 
 #include "player.h"
 #include <tuple>
-#include "../pos.h"
 #include <istream>
 
 class Game;
+struct pos;
 
 /** CPU4 player subclass */
 class CPU4 : public Player

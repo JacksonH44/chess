@@ -113,6 +113,10 @@ void Game::clearViews() {
     views.clear();
 }
 
+vector<View*> Game::getViews() { // views getter
+    return views;
+}
+
 void Game::update(pos a, pos b) {}
 
 bool Game::validate(pos a, pos b) {

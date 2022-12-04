@@ -39,9 +39,12 @@ int main() {
 		if (s == "game") {
 			if (board->isEmpty()) {
 				board->setToStart();
+			} 
+			if (game->getViews().empty()) 
+			{ // If we haven't entered the game from setup mode add views
+				game->addView(new TextView{board, cout});
+				game->addView(new GraphicsView{board});
 			}
-			game->addView(new TextView{board, cout});
-			game->addView(new GraphicsView{board});
 			winner = game->play();
 			if (winner == 'w') {
 				whiteWins = whiteWins + 1;
