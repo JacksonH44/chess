@@ -75,24 +75,123 @@ tuple<pos, pos, char> CPU3::determineMove(istream &in)
         }
     }
 
+    // JACKSON'S CODE THAT WORKS BUT DOESN'T PRIORITIZE MOVING PIECES OUT OF HARM'S WAY
+
+    // /**
+    //  * TIER 1: Moves that avoid capture and capture or put the other player in check
+    //  * TIER 2: Moves that capture or put the other player in check but do not avoid capture
+    //  * TIER 3: Moves that avoid capture
+    //  * TIER 4: Random moves
+    //  */
+    // vector<tuple<pos, pos>> tier1;
+    // vector<tuple<pos, pos>> tier2;
+    // vector<tuple<pos, pos>> tier3;
+    // vector<tuple<pos, pos>> tier4;
+
+    // // check to see if any capturing moves avoid capture
+    // for (auto move : cap) {
+    //     bool getsCapped = false;
+    //     Board* snapshot = new Board{*theBoard};
+    //     pos start = get<0>(move);
+    //     pos end = get<1>(move);
+    //     snapshot->updateBoard(start, end);
+
+    //     // get opponent's pieces
+    //     vector<Piece *> oppPieces = snapshot->getPieces((this->getColour() + 1) % 2);
+    //     vector<Piece *> oppAvailablePieces;
+    //     for (int i = 0; i < oppPieces.size(); ++i)
+    //     {
+    //         if (!((oppPieces[i]->getValidMoves()).empty()))
+    //         {
+    //             oppAvailablePieces.emplace_back(oppPieces[i]);
+    //         }
+    //     }
+
+    //     for (auto oppPiece : oppAvailablePieces)
+    //     {
+    //         for (auto oppMove : oppPiece->getValidMoves())
+    //         {
+    //             if (oppMove == end)
+    //             { // opponent has a move that captures the piece after they've moved
+    //                 tier2.emplace_back(move);
+    //                 getsCapped = true;
+    //             }
+    //         }
+    //     }
+    //     if (!getsCapped)
+    //     {
+    //         tier1.emplace_back(move);
+    //     }
+    //     delete snapshot;
+    // }
+
+    // // check to see if any non capturing moves avoid capture
+    // for (auto move : noCap)
+    // {
+    //     bool getsCapped = false;
+    //     Board* snapshot = new Board{*theBoard};
+    //     pos start = get<0>(move);
+    //     pos end = get<1>(move);
+    //     snapshot->updateBoard(start, end);
+
+    //     // get opponent's pieces
+    //     vector<Piece *> oppPieces = snapshot->getPieces((this->getColour() + 1) % 2);
+    //     vector<Piece *> oppAvailablePieces;
+    //     for (int i = 0; i < oppPieces.size(); ++i)
+    //     {
+    //         if (!((oppPieces[i]->getValidMoves()).empty()))
+    //         {
+    //             oppAvailablePieces.emplace_back(oppPieces[i]);
+    //         }
+    //     }
+
+    //     for (auto oppPiece : oppAvailablePieces)
+    //     {
+    //         for (auto oppMove : oppPiece->getValidMoves())
+    //         {
+    //             if (oppMove == end)
+    //             { // opponent has a move that captures the piece after they've moved
+    //                 tier4.emplace_back(move);
+    //                 getsCapped = true;
+    //             }
+    //         }
+    //     }
+    //     if (!getsCapped)
+    //     {
+    //         tier3.emplace_back(move);
+    //     }
+    //     delete snapshot;
+    // }
+
+
+
+
+    // BLAKE'S CODE THAT SEEMS TO WORK BUT I'M NOT SURE AND FIXES THE PROBLEM WITH JACKSON'S I THINK
+
     /**
-     * TIER 1: Moves that avoid capture and capture or put the other player in check
-     * TIER 2: Moves that capture or put the other player in check but do not avoid capture
-     * TIER 3: Moves that avoid capture
-     * TIER 4: Random moves
+     * TIER 1: Moves that remove a piece from danger and capture or check
+     * TIER 2: Moves that don't put a piece in danger and capture or check
+     * TIER 3: Moves that capture or check
+     * TIER 4: Moves that remove a piece from danger
+     * TIER 5: Moves that don't put a piece in danger
+     * TIER 6: Random moves
      */
+
     vector<tuple<pos, pos>> tier1;
     vector<tuple<pos, pos>> tier2;
     vector<tuple<pos, pos>> tier3;
     vector<tuple<pos, pos>> tier4;
+    vector<tuple<pos, pos>> tier5;
+    vector<tuple<pos, pos>> tier6;
 
-    // check to see if any capturing moves avoid capture
+
     for (auto move : cap) {
         bool getsCapped = false;
+        bool inDanger = false;
         Board* snapshot = new Board{*theBoard};
         pos start = get<0>(move);
         pos end = get<1>(move);
-        snapshot->updateBoard(start, end);
+        
 
         // get opponent's pieces
         vector<Piece *> oppPieces = snapshot->getPieces((this->getColour() + 1) % 2);
@@ -110,27 +209,54 @@ tuple<pos, pos, char> CPU3::determineMove(istream &in)
             for (auto oppMove : oppPiece->getValidMoves())
             {
                 if (oppMove == end)
+                { // opponent has a move that captures the piece before they've moved
+                    inDanger = true;
+                }
+            }
+        }
+
+        snapshot->updateBoard(start, end);
+        oppPieces = snapshot->getPieces((this->getColour() + 1) % 2);
+        oppAvailablePieces.clear();
+        for (int i = 0; i < oppPieces.size(); ++i)
+        {
+            if (!((oppPieces[i]->getValidMoves()).empty()))
+            {
+                oppAvailablePieces.emplace_back(oppPieces[i]);
+            }
+        }
+
+        for (auto oppPiece : oppAvailablePieces)
+        {
+            for (auto oppMove : oppPiece->getValidMoves())
+            {
+                if (oppMove == end)
                 { // opponent has a move that captures the piece after they've moved
-                    tier2.emplace_back(move);
                     getsCapped = true;
                 }
             }
         }
-        if (!getsCapped)
-        {
+
+        if (inDanger && !getsCapped) {
             tier1.emplace_back(move);
         }
+        else if (!getsCapped) {
+            tier2.emplace_back(move);
+        }
+        else {
+            tier3.emplace_back(move);
+        }
+
         delete snapshot;
     }
 
-    // check to see if any non capturing moves avoid capture
-    for (auto move : noCap)
-    {
+    for (auto move : noCap) {
         bool getsCapped = false;
-        Board *snapshot = new Board{*theBoard};
+        bool inDanger = false;
+        Board* snapshot = new Board{*theBoard};
         pos start = get<0>(move);
         pos end = get<1>(move);
-        snapshot->updateBoard(start, end);
+        
 
         // get opponent's pieces
         vector<Piece *> oppPieces = snapshot->getPieces((this->getColour() + 1) % 2);
@@ -148,19 +274,50 @@ tuple<pos, pos, char> CPU3::determineMove(istream &in)
             for (auto oppMove : oppPiece->getValidMoves())
             {
                 if (oppMove == end)
+                { // opponent has a move that captures the piece before they've moved
+                    inDanger = true;
+                }
+            }
+        }
+
+        snapshot->updateBoard(start, end);
+
+        oppAvailablePieces.clear();
+        for (int i = 0; i < oppPieces.size(); ++i)
+        {
+            if (!((oppPieces[i]->getValidMoves()).empty()))
+            {
+                oppAvailablePieces.emplace_back(oppPieces[i]);
+            }
+        }
+
+        for (auto oppPiece : oppAvailablePieces)
+        {
+            for (auto oppMove : oppPiece->getValidMoves())
+            {
+                if (oppMove == end)
                 { // opponent has a move that captures the piece after they've moved
-                    tier4.emplace_back(move);
                     getsCapped = true;
                 }
             }
         }
-        if (!getsCapped)
-        {
-            tier3.emplace_back(move);
+
+        if (inDanger && !getsCapped) {
+            tier4.emplace_back(move);
         }
+        else if (!getsCapped) {
+            tier5.emplace_back(move);
+        }
+        else {
+            tier6.emplace_back(move);
+        }
+
         delete snapshot;
     }
 
+
+
+// BELOW THIS WAS ALREADY COMMENTED IDK WHAT IT IS
     // for (auto move : safeMoves) {
     //     bool getsCapped = false;
     //     Board* snapshot = new Board{*theBoard};
@@ -353,9 +510,18 @@ tuple<pos, pos, char> CPU3::determineMove(istream &in)
         tuple<pos, pos> selectedMove = tier3[rand() % tier3.size()];
         start = get<0>(selectedMove);
         end = get<1>(selectedMove);
-    } else 
-    { // a tier4 move
+    } else if (!(tier4.empty())) 
+    { // if a tier4 move exists
         tuple<pos, pos> selectedMove = tier4[rand() % tier4.size()];
+        start = get<0>(selectedMove);
+        end = get<1>(selectedMove);
+    } else if (!(tier5.empty())) 
+    { // if a tier5 move exists
+        tuple<pos, pos> selectedMove = tier5[rand() % tier5.size()];
+        start = get<0>(selectedMove);
+        end = get<1>(selectedMove);
+    } else { // a tier6 move
+        tuple<pos, pos> selectedMove = tier6[rand() % tier6.size()];
         start = get<0>(selectedMove);
         end = get<1>(selectedMove);
     }
