@@ -13,7 +13,7 @@ HumanPlayer::HumanPlayer(int colour) : Player{colour} {}
 tuple<pos, pos, char> HumanPlayer::determineMove(istream& in) {
     string cmd;
     while (in >> cmd) {
-        // infinite loops when EOF is given
+        // breaks when EOF is given
         if (cmd == "move")
         {
             string line;

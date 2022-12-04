@@ -17,6 +17,8 @@ public:
 
     bool castle();
 
+    void setCanCastle(bool b);
+
     char getType() const override;
 
     King *deepCopy() const override;  // deep copy

@@ -50,9 +50,14 @@ pos Piece::getPos(){
     return position;
 }
 
-//Needed so we can call canCastle() on Rooks and Kings stored in Piece pointers
+//Needed so we can call castle() on Rooks and Kings stored in Piece pointers
 bool Piece::castle() {
     return false;
+}
+
+//Needed so we can call set whether a king or rook can castle
+void Piece::setCanCastle(bool b) {
+    // literally do nothing for every piece type except king and rook 
 }
 
 //Needed so we can call isPassantable() on Pawns stored in Piece pointers

@@ -21,6 +21,10 @@ bool King::castle(){
     return canCastle;
 }
 
+void King::setCanCastle(bool b) {
+    this->canCastle = b;
+}
+
 char King::getType() const
 {
     return type;
@@ -108,17 +112,45 @@ void King::updateValidMoves(Board* board, pos p) {
             validMoves.emplace_back(tmpPos);
         }
     }
+
+    // castle left
+    if (canCastle) {
+        Piece* corner = board->getPiece(pos{this->position.x - 4, this->position.y});
+        if ((corner != nullptr) && (corner->castle()) && 
+        (board->getPiece(pos{this->position.x - 1, this->position.y}) == nullptr) &&
+        (board->getPiece(pos{this->position.x - 2, this->position.y}) == nullptr) &&
+        (board->getPiece(pos{this->position.x - 3, this->position.y}) == nullptr)) {
+            tmpPos = pos{this->position.x - 2, this->position.y};
+            Board* snapshot = new Board(*board);
+            snapshot->getPiece(this->position)->setCanCastle(false); // prevents an infinite loop since updateBoard calls getValidMoves
+            snapshot->updateBoard(this->position, {this->position.x-1, this->position.y}); //checking for in check on the in-between space. The end space is checked in play() after the move has been made
+            if (!snapshot->isChecked(this->getColour())) {
+                validMoves.emplace_back(tmpPos);
+            }
+            delete snapshot;
+        }
+    }
+
+    // castle right
+    if (canCastle) {
+        Piece* corner = board->getPiece(pos{this->position.x + 3, this->position.y});
+        if ((corner != nullptr) && (corner->castle()) && 
+        (board->getPiece(pos{this->position.x + 1, this->position.y}) == nullptr) &&
+        (board->getPiece(pos{this->position.x + 2, this->position.y}) == nullptr)) {
+            tmpPos = pos{this->position.x + 2, this->position.y};
+            Board* snapshot = new Board(*board);
+            snapshot->getPiece(this->position)->setCanCastle(false); // prevents an infinite loop since updateBoard calls getValidMoves
+            snapshot->updateBoard(this->position, {this->position.x+1, this->position.y}); //checking for in check on the in-between space. The end space is checked in play() after the move has been made
+            if (!snapshot->isChecked(this->getColour())) {
+                validMoves.emplace_back(tmpPos);
+            }
+            delete snapshot;
+        }
+    }
 }
 
 bool King::validate(pos p, Board* board) {
-    if (canCastle && (p.x - this->position.x == -2 || p.x - this->position.x == 2) //castle case
-                && (p.y - this->position.y == 0)) 
-    {
-        //the rest of this is handled in game.cc
-        canCastle = false;
-        return true;
-    }
-    else if (find(validMoves.begin(), validMoves.end(), p) != validMoves.end()) //normal case
+    if (find(validMoves.begin(), validMoves.end(), p) != validMoves.end()) //normal case
     {
         canCastle = false;
         return true;

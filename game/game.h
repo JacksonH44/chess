@@ -56,7 +56,7 @@ public:
 
     bool handlePromotion(pos a, pos b, char piece);
 
-    bool handleCastle(pos a, pos b);
+    void handleCastle(pos a, pos b);
 
     void handlePassant(pos a, pos b);
 

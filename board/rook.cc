@@ -123,8 +123,6 @@ void Rook::updateValidMoves(Board* board, pos p) {
         }
         ++i;
     }
-
-    // TODO: Implement castling moves
 }
     
 
@@ -142,6 +140,10 @@ bool Rook::validate(pos p, Board* board){
 
 bool Rook::castle() {
     return canCastle;
+}
+
+void Rook::setCanCastle(bool b) {
+    this->canCastle = b;
 }
 
 char Rook::getType() const {

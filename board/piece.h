@@ -37,7 +37,9 @@ public:
 
    virtual Piece *deepCopy() const = 0; // Allows us to deep copy a subtype of piece without knowing which one
 
-   virtual bool castle(); //Needed so we can call canCastle() on Rooks and Kings stored in Piece pointers
+   virtual bool castle(); //Needed so we can call castle() on Rooks and Kings stored in Piece pointers
+
+   virtual void setCanCastle(bool b); //Needed so we can call set whether a king or rook can castle
 
    virtual bool isPassantable(); //Needed so we can call isPassantable() on Pawns stored in Piece pointers
 

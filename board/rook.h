@@ -17,6 +17,8 @@ public:
 
     bool castle();
 
+    void setCanCastle(bool b);
+
     char getType() const override;
 
     Rook *deepCopy() const override; // deep copy
