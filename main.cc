@@ -37,7 +37,8 @@ int main() {
 	game->setBoard(board);
     while (cin >> s){
 		bool invalid = false;
-		if (s == "game") {
+		if (s == "game") 
+		{ // start a new game
 			if (board->isEmpty()) {
 				board->setToStart();
 			} 
@@ -46,6 +47,8 @@ int main() {
 				game->addView(new TextView{board, cout});
 				game->addView(new GraphicsView{board});
 			}
+
+			// Function that plays a game
 			winner = game->play();
 			if (winner == 'w') {
 				whiteWins = whiteWins + 1;
@@ -68,13 +71,16 @@ int main() {
 			board->clear();
 			game->clearViews();
 		}
-		else if (s == "setup") {
+		else if (s == "setup") 
+		{ // enter setup mode
 			setupLoop(game);
 		}
-		else {
+		else 
+		{ // some other input
 			invalid = true;
 		}
-		if (invalid) {
+		if (invalid) 
+		{
 			cout << "invalid input" << endl;
 		}
     } //while
@@ -107,7 +113,8 @@ int main() {
 
 void setupLoop(Game* game) {
 	Board* board = game->getBoard();
-	board->clear();
+
+	// add views
 	game->addView(new TextView{board, cout});
 	game->addView(new GraphicsView{board});
 	string s;
@@ -122,13 +129,17 @@ void setupLoop(Game* game) {
 			cin >> chesspos;
 			pos arraypos = {0, 0};
 			Piece* p = nullptr;
-			try {
+			try 
+			{ // convert to x,y-coords from 0-7
 				arraypos = convertPos(chesspos);
 			}
-			catch(...) {
+			catch(length_error e) {
+				invalid = true;
+			} catch (out_of_range e) {
 				invalid = true;
 			}
-			if (!invalid) {
+			if (!invalid) 
+			{ // add a piece
 				//white
 				if (s == "K") {
 					p = new King(1, arraypos, false);
@@ -181,13 +192,17 @@ void setupLoop(Game* game) {
 		else if (s == "-") {
 			cin >> chesspos;
 			pos arraypos = {0, 0};
-			try {
+			try 
+			{ // convert piece to x,y-coords
 				arraypos = convertPos(chesspos);
 			}
-			catch(...) {
+			catch(length_error e) {
+				invalid = true;
+			} catch (out_of_range e) {
 				invalid = true;
 			}
-			if (!invalid) {
+			if (!invalid) 
+			{ // set that position to nullptr
 				game->getBoard()->setPiece(nullptr, arraypos);
 			}
 			game->notify(arraypos, arraypos);
@@ -206,24 +221,32 @@ void setupLoop(Game* game) {
 			}
 		}
 
-		else if (s == "done") {
-			// game->setBoard(board);
+		else if (s == "done") 
+		{ // exit setup mode
 			board->updateBoard(pos{-1, -1}, pos{-1, -1}); // this just makes it updateValidMoves for all pieces
 			if (game->isBoardValid()) {
 				return;
 			} else {
 				cout << "This board setup is not valid." << endl;
 			}
-			// check that board is valid, then break
-			//TODO
-			// cout << "not implemented yet" << endl;
-			// return;
 		}
 
 		else if (s == "default") {
 			board->clear();
 			board->setToStart();
-			game->notify({0, 0}, {7, 7});
+
+			// notify all relevant spaces
+			for (int i = 6; i < 8; ++i) {
+				for (int j = 0; j < 8; ++j) {
+					game->notify({j, i}, {j, i});
+				}
+			}
+
+			for (int i = 0; i < 2; ++i) {
+				for (int j = 0; j < 8; ++j) {
+					game->notify({j, i}, {j, i});
+				}
+			}
 		}
 
 		else if (s == "clear") {
