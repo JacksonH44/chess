@@ -11,7 +11,7 @@ Pawn::Pawn(int colour, pos position, bool canMoveTwo) : Piece{colour, position},
     }
 }
 
-Pawn::Pawn(const Pawn &other) : Piece{other}, type{other.type}, canMoveTwo{other.canMoveTwo} {} // copy ctor
+Pawn::Pawn(const Pawn &other) : Piece{other}, canMoveTwo{other.canMoveTwo}, type{other.type} {} // copy ctor
 
 Pawn *Pawn::deepCopy() const
 { // deep copy method

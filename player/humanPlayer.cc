@@ -10,6 +10,8 @@ using namespace std;
 
 HumanPlayer::HumanPlayer(int colour) : Player{colour} {}
 
+HumanPlayer::~HumanPlayer() {} // dtor
+
 tuple<pos, pos, char> HumanPlayer::determineMove(istream& in) {
     string cmd;
     while (in >> cmd) {
@@ -55,4 +57,5 @@ tuple<pos, pos, char> HumanPlayer::determineMove(istream& in) {
             cout << "invalid input. Try again." << endl;
         }
     }
+    return {{-1, -1}, {-1, -1}, ' '};
 }

@@ -2,8 +2,9 @@
 #define _PLAYER_H_
 
 #include <tuple>
-#include "../pos.h"
 #include <istream>
+
+struct pos;
 
 /** Player class representing an abstract player */
 class Player {
@@ -15,6 +16,8 @@ protected:
 
 public:
     virtual std::tuple<pos, pos, char> determineMove(std::istream& in) = 0;
+
+    virtual ~Player(); // dtor
     
     Player(int colour); // ctor
 

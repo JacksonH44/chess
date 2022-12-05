@@ -3,6 +3,8 @@
 
 Player::Player(int colour) : colour{colour}, checked{false} {} // Ctor
 
+Player::~Player() {}
+
 bool Player::isChecked() {
     return checked;
 }

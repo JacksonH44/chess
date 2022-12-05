@@ -19,9 +19,11 @@ Game* game;
 
 public:
     CPU2(int colour, Game* game);
+
+    ~CPU2() override; // dtor
+
     Game* getGame();
-    std::vector<pos> checkingMoves(std::vector<pos, std::allocator<pos>> availableMoves);
-    std::vector<pos> capturingMoves(std::vector<pos, std::allocator<pos>> availableMoves);
+    
     std::tuple<pos, pos, char> determineMove(std::istream& in) override;
 };
 

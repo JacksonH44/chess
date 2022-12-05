@@ -16,7 +16,6 @@
 #include "view/textView.h"
 #include "view/graphicsView.h"
 #include <iomanip>
-#include <math.h>
 
 using namespace std;
 
@@ -89,7 +88,7 @@ int main() {
 	cout << "Final Score:" << endl;
 
 	// check to see if there is a decimal
-	if (whiteWins == floor(whiteWins)) 
+	if (whiteWins == int(whiteWins)) 
 	{ // no fractional part
 		cout << setprecision(0) << fixed;
 	} else {
@@ -97,7 +96,7 @@ int main() {
 	}
 	cout << "White: " << whiteWins << endl;
 
-	if (blackWins == floor(blackWins))
+	if (blackWins == int(blackWins))
 	{ // no fractional part
 		cout << setprecision(0) << fixed;
 	}
@@ -118,7 +117,6 @@ void setupLoop(Game* game) {
 	game->addView(new TextView{board, cout});
 	game->addView(new GraphicsView{board});
 	string s;
-    int colour = 1;
 	
     while (cin >> s) {
 		bool invalid = false;
@@ -133,9 +131,9 @@ void setupLoop(Game* game) {
 			{ // convert to x,y-coords from 0-7
 				arraypos = convertPos(chesspos);
 			}
-			catch(length_error e) {
+			catch(length_error& e) {
 				invalid = true;
-			} catch (out_of_range e) {
+			} catch (out_of_range& e) {
 				invalid = true;
 			}
 			if (!invalid) 
@@ -196,9 +194,9 @@ void setupLoop(Game* game) {
 			{ // convert piece to x,y-coords
 				arraypos = convertPos(chesspos);
 			}
-			catch(length_error e) {
+			catch(length_error& e) {
 				invalid = true;
-			} catch (out_of_range e) {
+			} catch (out_of_range& e) {
 				invalid = true;
 			}
 			if (!invalid) 

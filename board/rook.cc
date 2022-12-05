@@ -10,7 +10,7 @@ Rook::Rook(int colour, pos position, bool canCastle) : Piece{colour, position}, 
     }
 }
 
-Rook::Rook(const Rook &other) : Piece{other}, type{other.type}, canCastle{other.canCastle} {} // copy ctor
+Rook::Rook(const Rook &other) : Piece{other}, canCastle{other.canCastle}, type{other.type} {} // copy ctor
 
 Rook *Rook::deepCopy() const
 { // deep copy method

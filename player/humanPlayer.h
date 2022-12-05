@@ -11,6 +11,8 @@ class HumanPlayer : public Player {
 public:
     HumanPlayer(int colour);
 
+    ~HumanPlayer() override;
+
     std::tuple<pos, pos, char> determineMove(std::istream& in) override;
 };
 
