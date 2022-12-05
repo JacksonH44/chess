@@ -11,7 +11,9 @@ protected:
 
 public:
     void printBoard(pos a, pos b);   // print
+
     View(Board* board); // ctor
+    
     virtual ~View() = 0; // dtor
 };
 

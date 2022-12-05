@@ -43,11 +43,6 @@ public:
 
     bool isChecked(pos kingPos, int colour);  // Determines whether a player is in check
 
-    void update(pos a, pos b);  // update the board with a move
-
-    // checks to see if a move is valid (only in the sense that it adheres to direction and blocking)
-    bool validate(pos a, pos b);  
-
     char play(); // plays a game, runs game loop
 
     void setTurn(int colour); // sets curMove to [colour]

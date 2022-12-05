@@ -117,12 +117,6 @@ vector<View*> Game::getViews() { // views getter
     return views;
 }
 
-void Game::update(pos a, pos b) {}
-
-bool Game::validate(pos a, pos b) {
-    return false;
-}
-
 void Game::setTurn(int colour) {
     curMove = colour;
 }
@@ -384,26 +378,11 @@ char Game::play() {
                 }
             }
         }
-
-        
-
-	    //if (isMovePromotion(from, to)) { // need a method in the game class to check if a move promotes a pawn
-	        // prompt player for new piece
-            // char newPiece = curPlayer->promptPromotion();
-            
-	        // validate piece, replace it on the board using setPiece()
-	    //}
         //validate move
 	    if (state == whiteWin || state == blackWin) {
 	        break;
 	    }
-        //game->blackPlayer->determineMove(&from, &to);
-        //if (game->isMovePromotion(from, to)) {
-
-        //}
-    }//while
-    // this->getBoard()->clear();
-    // this->clearViews();
+    } //while
     if (state == whiteWin) {
         return 'w'; 
     }

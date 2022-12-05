@@ -86,6 +86,7 @@ pos Board::findPiece(char type) {
     return pos{-1, -1};
 }
 
+// Sets the board to the start of a default game
 void Board::setToStart() {
     for (int i = 0; i < 8; ++i) {
         for (int j = 0; j < 8; ++j) {
@@ -132,6 +133,7 @@ void Board::setToStart() {
     }
 }
 
+// Returns a piece from the board
 Piece* Board::getPiece(pos a){
     if (theBoard[a.y][a.x] != nullptr) {
         return theBoard[a.y][a.x];
@@ -140,6 +142,7 @@ Piece* Board::getPiece(pos a){
     }
 }
 
+// Get all pieces of one player
 vector<Piece*> Board::getPieces(int col){
     vector<Piece*> AvailablePieces = {};
     for (int i = 0; i < 8; ++i) {
