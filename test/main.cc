@@ -67,7 +67,7 @@ int main() {
 			else {
 				cout << "invalid players" << endl;
 			}
-			board->clear();
+			game->getBoard()->clear();
 			game->clearViews();
 		}
 		else if (s == "setup") 
