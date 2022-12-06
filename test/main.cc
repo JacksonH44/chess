@@ -43,8 +43,8 @@ int main() {
 			} 
 			if (game->getViews().empty()) 
 			{ // If we haven't entered the game from setup mode add views
-				game->addView(new TextView{board, cout});
-				game->addView(new GraphicsView{board});
+				game->addView(new TextView{game, cout});
+				game->addView(new GraphicsView{game});
 			}
 
 			// Function that plays a game
@@ -114,8 +114,8 @@ void setupLoop(Game* game) {
 	Board* board = game->getBoard();
 
 	// add views
-	game->addView(new TextView{board, cout});
-	game->addView(new GraphicsView{board});
+	game->addView(new TextView{game, cout});
+	game->addView(new GraphicsView{game});
 	string s;
 	
     while (cin >> s) {

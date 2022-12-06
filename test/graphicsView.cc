@@ -2,11 +2,13 @@
 #include "board.h"
 #include "window.h"
 #include "piece.h"
+#include "game.h"
 #include <string>
 
 using namespace std;
 
-GraphicsView::GraphicsView(Board* board) : View{board}, window{new Xwindow(1200, 1200)} {
+GraphicsView::GraphicsView(Game* game) : View{game}, window{new Xwindow(1200, 1200)} {
+    Board *board = game->getBoard();
     for (int i = 0; i < 8; ++i) {
         window->drawString(32, i * 75 + 32, to_string(8 - i));
         for (int j = 0; j < 8; ++j) {
@@ -37,6 +39,7 @@ GraphicsView::GraphicsView(Board* board) : View{board}, window{new Xwindow(1200,
 } // ctor
 
 void GraphicsView::printOutput(pos a, pos b) {
+    Board *board = game->getBoard();
     Piece* startPiece = board->getPiece(a);
     int colour;
     if ((a.x + a.y) % 2 == 1)

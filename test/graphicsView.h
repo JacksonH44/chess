@@ -5,13 +5,13 @@
 #include "window.h"
 
 struct pos;
-class Board;
+class Game;
 
 class GraphicsView : public View {
     Xwindow* window; 
 
 public:
-    GraphicsView(Board* board); // ctor
+    GraphicsView(Game* game); // ctor
 
     void printOutput(pos a, pos b) override;
 

@@ -12,7 +12,7 @@ class TextView : public View {
 public:
     void printOutput(pos a, pos b) override;
 
-    TextView(Board* board, std::ostream& out); // ctor
+    TextView(Game* game, std::ostream& out); // ctor
 };
 
 #endif

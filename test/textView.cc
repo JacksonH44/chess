@@ -1,12 +1,14 @@
 #include "textView.h"
 #include "piece.h"
 #include "board.h"
+#include "game.h"
 #include <iostream>
 
 
 using namespace std;
 
-TextView::TextView(Board* board, std::ostream& out) : View{board}, out{out} {
+TextView::TextView(Game* game, std::ostream& out) : View{game}, out{out} {
+    Board* board = game->getBoard();
     for (int i = 0; i < 8; ++i)
     {
         out << (8 - i) << " ";
@@ -37,6 +39,7 @@ TextView::TextView(Board* board, std::ostream& out) : View{board}, out{out} {
 }
 
 void TextView::printOutput(pos a, pos b) {
+    Board *board = game->getBoard();
     for (int i = 0; i < 8; ++i)
     {
         out << (8 - i) << " ";

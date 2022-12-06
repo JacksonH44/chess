@@ -339,16 +339,13 @@ char Game::play() {
                     handleCastle(get<0>(move), get<1>(move));
                     if (!handlePromotion(get<0>(move), get<1>(move), get<2>(move)))
                     {
-                        delete theBoard;
-                        theBoard = snapshot;
+                        this->setBoard(snapshot);
                         cout << "You cannot promote to that piece. Please try again." << endl;
                     } else {
-                        
                         theBoard->updateBoard(start, end);
                         if (theBoard->isChecked(curMove))
                         { // player puts themselves in check
-                            delete theBoard;
-                            theBoard = snapshot;
+                            this->setBoard(snapshot);
                             cout << "You are in check. Please make another move." << endl;
                         } else {  // happy path
                             delete snapshot;
